@@ -3,285 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Vimuktam</title>
-
-    <!-- Google Fonts -->
+    <meta name="description" content="Vimuktam — a learning, education and cultural initiative exploring human development, Indian knowledge systems, philosophy and practical life.">
+    <title>Vimuktam — Learning, Culture &amp; Human Development</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --beige: #E9DDC8;
-            --white: #FFFDF8;
-            --peacock-teal: #176B6B;
-            --lotus-pink: #D9829A;
-            --text-dark: #302B27;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--beige);
-            color: var(--text-dark);
-            font-family: 'Mukta', sans-serif;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: 'Rozha One', serif;
-            font-weight: 400;
-            line-height: 1.1;
-        }
-
-        /* --------------------------------
-           HEADER
-        -------------------------------- */
-
-        header {
-            min-height: 90px;
-            padding: 24px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--white);
-        }
-
-        .logo {
-            font-family: 'Rozha One', serif;
-            font-size: 2.2rem;
-            color: var(--peacock-teal);
-            text-decoration: none;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        nav a:hover {
-            color: var(--lotus-pink);
-        }
-
-        /* --------------------------------
-           HERO
-        -------------------------------- */
-
-        .hero {
-            min-height: 75vh;
-            padding: 8rem 8%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .hero-inner {
-            max-width: 900px;
-        }
-
-        .eyebrow {
-            color: var(--lotus-pink);
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 {
-            color: var(--peacock-teal);
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            margin-bottom: 1.5rem;
-        }
-
-        .hero p {
-            max-width: 680px;
-            margin: 0 auto;
-            font-size: 1.3rem;
-        }
-
-        /* --------------------------------
-           SAMPLE CONTENT SECTION
-        -------------------------------- */
-
-        .section {
-            padding: 7rem 8%;
-            background: var(--white);
-        }
-
-        .section-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section h2 {
-            color: var(--peacock-teal);
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .section-intro {
-            max-width: 700px;
-            font-size: 1.2rem;
-        }
-
-        /* --------------------------------
-           PALETTE TEST
-        -------------------------------- */
-
-        .palette {
-            display: flex;
-            gap: 1rem;
-            margin-top: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .swatch {
-            width: 130px;
-            height: 130px;
-            display: flex;
-            align-items: flex-end;
-            padding: 12px;
-            font-size: 0.9rem;
-        }
-
-        .swatch.beige {
-            background: var(--beige);
-        }
-
-        .swatch.white {
-            background: var(--white);
-            border: 1px solid #ddd;
-        }
-
-        .swatch.teal {
-            background: var(--peacock-teal);
-            color: white;
-        }
-
-        .swatch.pink {
-            background: var(--lotus-pink);
-            color: white;
-        }
-
-        /* --------------------------------
-           FOOTER
-        -------------------------------- */
-
-        footer {
-            padding: 3rem 8%;
-            background: var(--peacock-teal);
-            color: var(--white);
-            text-align: center;
-        }
-
-        footer .logo {
-            color: var(--white);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* --------------------------------
-           MOBILE
-        -------------------------------- */
-
-        @media (max-width: 700px) {
-
-            header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            nav {
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero {
-                padding: 5rem 6%;
-            }
-
-            .section {
-                padding: 5rem 6%;
-            }
-        }
+        :root { --beige:#E9DDC8; --white:#FFFDF8; --peacock-teal:#176B6B; --lotus-pink:#D9829A; --text-dark:#302B27; --muted:#70665d; --line:rgba(48,43,39,.16); }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--beige); color:var(--text-dark); font-family:'Mukta',sans-serif; font-size:18px; line-height:1.6; }
+        h1,h2,h3,h4 { font-family:'Rozha One',serif; font-weight:400; line-height:1.1; }
+        header { min-height:90px; padding:24px 6%; display:flex; align-items:center; justify-content:space-between; background:var(--white); }
+        .logo { font-family:'Rozha One',serif; font-size:2.2rem; color:var(--peacock-teal); text-decoration:none; }
+        nav { display:flex; gap:2rem; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; transition:color .2s ease; }
+        nav a:hover { color:var(--lotus-pink); }
+        .hero { min-height:68vh; padding:8rem 8%; display:flex; align-items:center; justify-content:center; text-align:center; background:var(--white); }
+        .hero-inner { max-width:900px; }
+        .eyebrow { color:var(--lotus-pink); font-size:1rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; margin-bottom:1.5rem; }
+        .hero h1 { color:var(--peacock-teal); font-size:clamp(3.5rem,8vw,7rem); margin-bottom:1.5rem; }
+        .hero p { max-width:700px; margin:0 auto; font-size:1.3rem; }
+        .section { padding:7rem 8%; background:var(--beige); }
+        .section-inner { max-width:1100px; margin:0 auto; }
+        .section h2 { color:var(--peacock-teal); font-size:clamp(2.5rem,5vw,4.5rem); margin-bottom:1rem; }
+        .section-intro { max-width:750px; font-size:1.2rem; }
+        .explore-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; margin-top:3rem; background:var(--line); border:1px solid var(--line); }
+        .explore-card { background:var(--white); padding:3rem; text-decoration:none; color:var(--text-dark); display:block; transition:transform .2s ease, background .2s ease; }
+        .explore-card:hover { transform:translateY(-4px); background:#fffaf1; }
+        .explore-card .number { color:var(--lotus-pink); font-weight:700; letter-spacing:.12em; font-size:.9rem; }
+        .explore-card h3 { color:var(--peacock-teal); font-size:2.5rem; margin:.7rem 0; }
+        .explore-card p { max-width:520px; }
+        .arrow { display:inline-block; margin-top:1.5rem; color:var(--peacock-teal); font-weight:700; }
+        footer { padding:3rem 8%; background:var(--peacock-teal); color:var(--white); text-align:center; }
+        footer .logo { color:var(--white); margin-bottom:.5rem; display:block; }
+        @media (max-width:700px) { header{flex-direction:column;gap:1rem;} nav{gap:1rem;flex-wrap:wrap;justify-content:center;} .hero{padding:5rem 6%;} .section{padding:5rem 6%;} .explore-grid{grid-template-columns:1fr;} .explore-card{padding:2rem;} }
     </style>
 </head>
-
 <body>
-
-    <header>
-        <a href="#" class="logo">Vimuktam</a>
-
-        <nav>
-            <a href="#">Services</a>
-            <a href="brand-identity.html">Vimuktam</a>
-            <a href="#">Me</a>
-        </nav>
-    </header>
-
-    <main>
-
-        <section class="hero">
-            <div class="hero-inner">
-
-                <div class="eyebrow">A living exploration</div>
-
-                <h1>Vimuktam</h1>
-
-                <p>
-                    A space for learning, experiencing and engaging with
-                    the many worlds of Indian culture.
-                </p>
-
+<header>
+    <a href="index.html" class="logo">Vimuktam</a>
+    <nav><a href="#services">Services</a><a href="#vimuktam">Vimuktam</a><a href="#me">Me</a></nav>
+</header>
+<main>
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="eyebrow">A living exploration</div>
+            <h1>Vimuktam</h1>
+            <p>A space for learning, education, culture and the exploration of how people can live, work and grow better.</p>
+        </div>
+    </section>
+    <section class="section" id="vimuktam">
+        <div class="section-inner">
+            <h2>Enter Vimuktam</h2>
+            <p class="section-intro">The framework is deep enough to explore for years. Start wherever your curiosity takes you.</p>
+            <div class="explore-grid">
+                <a class="explore-card" href="philosophical-overview.html">
+                    <span class="number">01 · THE FRAMEWORK</span>
+                    <h3>Vimuktam Philosophical Overview</h3>
+                    <p>Vimuktam Tantra Darshana — the developing philosophical and psycho-educational tome behind the wider Vimuktam project.</p>
+                    <span class="arrow">Enter the Tome →</span>
+                </a>
+                <a class="explore-card" href="brand-identity.html">
+                    <span class="number">02 · THE LIVING IDENTITY</span>
+                    <h3>Branding Document</h3>
+                    <p>The living record of what Vimuktam is, whom it serves, what it believes, how it speaks and how its identity is developing.</p>
+                    <span class="arrow">Open Brand Identity →</span>
+                </a>
             </div>
-        </section>
-
-        <section class="section">
-            <div class="section-inner">
-
-                <h2>The visual language</h2>
-
-                <p class="section-intro">
-                    This is our starting point. Warm beige forms the ground,
-                    white provides breathing space, while peacock teal and
-                    lotus pink bring colour and character.
-                </p>
-
-                <div class="palette">
-                    <div class="swatch beige">Beige</div>
-                    <div class="swatch white">White</div>
-                    <div class="swatch teal">Peacock Teal</div>
-                    <div class="swatch pink">Lotus Pink</div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <span class="logo">Vimuktam</span>
-        <p>Learning • Culture • Experience</p>
-    </footer>
-
+        </div>
+    </section>
+    <section class="section" id="services">
+        <div class="section-inner">
+            <h2>Services</h2>
+            <p class="section-intro">Trainings, learning experiences and practical programmes for people, organisations and communities. This section will grow as the offerings are developed.</p>
+        </div>
+    </section>
+    <section class="section" id="me">
+        <div class="section-inner">
+            <h2>Me</h2>
+            <p class="section-intro">The founder, the life behind Vimuktam, and the continuing library of people, teachers, music, travels, experiments and experiences that shape the work.</p>
+        </div>
+    </section>
+</main>
+<footer>
+    <span class="logo">Vimuktam</span>
+    <p>Learning • Culture • Experience</p>
+</footer>
 </body>
 </html>
