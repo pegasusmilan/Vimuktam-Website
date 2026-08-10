@@ -5,440 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The living Vimuktam Brand Identity: purpose, positioning, principles, personality, audience and visual identity. A working document that evolves with Vimuktam.">
     <title>Brand Identity — Vimuktam</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --beige: #E9DDC8;
-            --white: #FFFDF8;
-            --peacock-teal: #176B6B;
-            --lotus-pink: #D9829A;
-            --text-dark: #302B27;
-            --muted: #70665d;
-            --line: rgba(48, 43, 39, 0.16);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background: var(--beige);
-            color: var(--text-dark);
-            font-family: 'Mukta', sans-serif;
-            font-size: 18px;
-            line-height: 1.7;
-        }
-
-        a { color: inherit; }
-
-        h1, h2, h3 {
-            font-family: 'Rozha One', serif;
-            font-weight: 400;
-            line-height: 1.08;
-        }
-
-        header {
-            padding: 24px 6%;
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .logo {
-            font-family: 'Rozha One', serif;
-            font-size: 2.2rem;
-            color: var(--peacock-teal);
-            text-decoration: none;
-        }
-
-        nav { display: flex; gap: 2rem; }
-        nav a { text-decoration: none; font-weight: 500; }
-        nav a:hover { color: var(--lotus-pink); }
-
-        .intro {
-            padding: 9rem 8% 7rem;
-            background: var(--white);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .intro-inner { max-width: 1100px; margin: auto; }
-
-        .eyebrow {
-            color: var(--lotus-pink);
-            font-weight: 700;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-            font-size: .9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .intro h1 {
-            color: var(--peacock-teal);
-            font-size: clamp(4rem, 9vw, 8rem);
-            margin-bottom: 1.5rem;
-        }
-
-        .intro p {
-            max-width: 780px;
-            font-size: 1.35rem;
-        }
-
-        .note {
-            margin-top: 2.5rem;
-            padding-left: 1.5rem;
-            border-left: 3px solid var(--lotus-pink);
-            color: var(--muted);
-            max-width: 800px;
-        }
-
-        main { padding: 6rem 8%; }
-        .content { max-width: 1100px; margin: auto; }
-
-        .section {
-            padding: 4rem 0;
-            border-top: 1px solid var(--line);
-        }
-
-        .section:first-child { border-top: 0; }
-
-        .section h2 {
-            color: var(--peacock-teal);
-            font-size: clamp(2.7rem, 5vw, 4.5rem);
-            margin-bottom: 1.5rem;
-        }
-
-        .section h3 {
-            font-size: 2rem;
-            margin: 2.5rem 0 .6rem;
-            color: var(--text-dark);
-        }
-
-        .lead { font-size: 1.25rem; max-width: 850px; }
-        p { max-width: 850px; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1px;
-            margin-top: 2.5rem;
-            background: var(--line);
-            border: 1px solid var(--line);
-        }
-
-        .card {
-            background: var(--white);
-            padding: 2rem;
-        }
-
-        .card h3 { margin-top: 0; font-size: 1.8rem; color: var(--peacock-teal); }
-
-        ul { margin: 1rem 0 0 1.2rem; max-width: 850px; }
-        li { margin-bottom: .35rem; }
-
-        .statement {
-            margin-top: 2.5rem;
-            padding: 2.5rem;
-            background: var(--peacock-teal);
-            color: var(--white);
-            font-family: 'Rozha One', serif;
-            font-size: clamp(1.8rem, 3vw, 2.8rem);
-            line-height: 1.2;
-        }
-
-        .may {
-            color: var(--lotus-pink);
-            font-style: italic;
-        }
-
-        .identity-mark {
-            margin-top: 2.5rem;
-            padding: 3rem;
-            background: var(--white);
-            border: 1px solid var(--line);
-        }
-
-        .identity-mark .wordmark {
-            font-family: 'Rozha One', serif;
-            color: var(--peacock-teal);
-            font-size: clamp(3rem, 7vw, 6rem);
-        }
-
-        .identity-mark .dot { color: var(--lotus-pink); }
-
-        footer {
-            padding: 3rem 8%;
-            background: var(--peacock-teal);
-            color: var(--white);
-        }
-
-        footer .logo { color: var(--white); display: block; margin-bottom: .5rem; }
-
-        @media (max-width: 700px) {
-            header { flex-direction: column; gap: 1rem; }
-            nav { gap: 1rem; flex-wrap: wrap; justify-content: center; }
-            .intro { padding: 6rem 6% 5rem; }
-            main { padding: 4rem 6%; }
-            .grid { grid-template-columns: 1fr; }
-        }
+        :root { --beige:#E9DDC8; --white:#FFFDF8; --peacock-teal:#176B6B; --lotus-pink:#D9829A; --text-dark:#302B27; --muted:#70665d; --line:rgba(48,43,39,.16); }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--beige); color:var(--text-dark); font-family:'Mukta',sans-serif; font-size:18px; line-height:1.7; }
+        a { color:inherit; }
+        h1,h2,h3 { font-family:'Rozha One',serif; font-weight:400; line-height:1.08; }
+        header { padding:24px 6%; background:var(--white); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; border-bottom:1px solid var(--line); }
+        .logo { font-family:'Rozha One',serif; font-size:2.2rem; color:var(--peacock-teal); text-decoration:none; }
+        nav { display:flex; gap:2rem; } nav a { text-decoration:none; font-weight:500; } nav a:hover { color:var(--lotus-pink); }
+        .intro { padding:9rem 8% 7rem; background:var(--white); border-bottom:1px solid var(--line); }
+        .intro-inner,.content { max-width:1100px; margin:auto; }
+        .eyebrow { color:var(--lotus-pink); font-weight:700; letter-spacing:.16em; text-transform:uppercase; font-size:.9rem; margin-bottom:1.5rem; }
+        .intro h1 { color:var(--peacock-teal); font-size:clamp(4rem,9vw,8rem); margin-bottom:1.5rem; }
+        .intro p { max-width:780px; font-size:1.35rem; }
+        .note { margin-top:2.5rem; padding-left:1.5rem; border-left:3px solid var(--lotus-pink); color:var(--muted); max-width:800px; }
+        main { padding:6rem 8%; }
+        .section { padding:4rem 0; border-top:1px solid var(--line); } .section:first-child { border-top:0; }
+        .section h2 { color:var(--peacock-teal); font-size:clamp(2.7rem,5vw,4.5rem); margin-bottom:1.5rem; }
+        .section h3 { font-size:2rem; margin:2.5rem 0 .6rem; color:var(--text-dark); }
+        .lead { font-size:1.25rem; max-width:850px; } p { max-width:850px; }
+        .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; margin-top:2.5rem; background:var(--line); border:1px solid var(--line); }
+        .card { background:var(--white); padding:2rem; } .card h3 { margin-top:0; font-size:1.8rem; color:var(--peacock-teal); }
+        ul { margin:1rem 0 0 1.2rem; max-width:850px; } li { margin-bottom:.35rem; }
+        .statement { margin-top:2.5rem; padding:2.5rem; background:var(--peacock-teal); color:var(--white); font-family:'Rozha One',serif; font-size:clamp(1.8rem,3vw,2.8rem); line-height:1.2; }
+        .may { color:var(--lotus-pink); font-style:italic; }
+        .identity-mark { margin-top:2.5rem; padding:3rem; background:var(--white); border:1px solid var(--line); }
+        .identity-mark .wordmark { font-family:'Rozha One',serif; color:var(--peacock-teal); font-size:clamp(3rem,7vw,6rem); }
+        .identity-mark .i-dot { color:var(--lotus-pink); display:inline-block; transform:scaleX(.75) translateY(-.02em); transform-origin:center; }
+        footer { padding:3rem 8%; background:var(--peacock-teal); color:var(--white); } footer .logo { color:var(--white); display:block; margin-bottom:.5rem; }
+        @media (max-width:700px) { header{flex-direction:column;gap:1rem;} nav{gap:1rem;flex-wrap:wrap;justify-content:center;} .intro{padding:6rem 6% 5rem;} main{padding:4rem 6%;} .grid{grid-template-columns:1fr;} }
     </style>
 </head>
 <body>
-
 <header>
     <a href="index.html" class="logo">Vimuktam</a>
-    <nav>
-        <a href="#positioning">Services</a>
-        <a href="brand-identity.html">Vimuktam</a>
-        <a href="#personality">Me</a>
-    </nav>
+    <nav><a href="index.html#services">Services</a><a href="brand-identity.html">Vimuktam</a><a href="index.html#me">Me</a></nav>
 </header>
-
-<section class="intro">
-    <div class="intro-inner">
-        <div class="eyebrow">A living document · Brand Identity</div>
-        <h1>Vimuktam</h1>
-        <p>
-            The working identity of Vimuktam: what it is, why it exists,
-            whom it serves, what it believes, how it speaks, and how it is
-            beginning to express itself visually.
-        </p>
-        <div class="note">
-            This is deliberately a living document. It records what Vimuktam
-            currently believes and intends. As the work develops, hypotheses
-            may be tested, language may change, and the identity may become
-            more precise.
-        </div>
-    </div>
-</section>
-
-<main>
-<div class="content">
-
-<section class="section" id="essence">
-    <h2>01 · Essence</h2>
-    <p class="lead"><strong>Current category:</strong> Training and Education Initiative.</p>
-    <p>
-        Vimuktam creates trainings, learning resources, curated experiences,
-        and eventually technology products such as the DNC, around a
-        psycho-philosophic-educational framework for human development.
-    </p>
-</section>
-
-<section class="section" id="purpose">
-    <h2>02 · Purpose</h2>
-    <p class="lead">
-        Vimuktam exists because there is a major gap between the practical
-        application of philosophical ideas and real-world economic goals.
-    </p>
-    <p>
-        Vimuktam intends to enter influential organisations and help accelerate
-        growth through a human-centred approach, while generating wealth with
-        the goal of reducing the burden on the environment.
-    </p>
-    <div class="statement">
-        Philosophy should not have to remain idealistic. If an idea about human
-        beings is useful, its consequences should eventually be visible in life,
-        work and the world.
-    </div>
-</section>
-
-<section class="section" id="positioning">
-    <h2>03 · Positioning</h2>
-    <p class="lead">
-        Vimuktam challenges the assumption that philosophy is an idealistic
-        embellishment with little bearing on business, productivity or real life.
-    </p>
-
-    <div class="grid">
-        <div class="card">
-            <h3>Philosophy + Psychology</h3>
-            <p>Seen as potentially hard business impactors, rather than flowery embellishments to Human Resources.</p>
-        </div>
-        <div class="card">
-            <h3>Education as Continuum</h3>
-            <p>Education is not limited to school. It is a continuous flow through an individual's life.</p>
-        </div>
-        <div class="card">
-            <h3>Conversation</h3>
-            <p>Conversation is treated as central to business, community and personal development enterprises.</p>
-        </div>
-        <div class="card">
-            <h3>Evidence</h3>
-            <p>Vimuktam refuses to take claims on face value where they can be tested, measured and falsified.</p>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="vision">
-    <h2>04 · Vision</h2>
-    <p class="lead">
-        A world in which people understand themselves better, organisations
-        create genuine value, and economic growth becomes increasingly compatible
-        with human welfare and the environment.
-    </p>
-    <ul>
-        <li>People live with greater deliberation and fulfilment.</li>
-        <li>Workforces are less tired, more motivated and proud of the brands they work for.</li>
-        <li>Businesses create useful, efficient and increasingly eco-friendly products and services.</li>
-        <li>Customer service becomes capable, efficient and profitable.</li>
-        <li>People choose products and systems that help them live more deliberately.</li>
-    </ul>
-</section>
-
-<section class="section" id="audience">
-    <h2>05 · Audience</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>01 · Business</h3>
-            <p>Business owners, L&amp;D leaders and people leaders who can give the framework real legitimacy by testing its impact in the economic world.</p>
-        </div>
-        <div class="card">
-            <h3>02 · Individuals &amp; Parents</h3>
-            <p>The people who can benefit directly from Vimuktam's learning, self-development and educational resources.</p>
-        </div>
-        <div class="card">
-            <h3>03 · Researchers &amp; Thinkers</h3>
-            <p>Researchers, educators and thinkers who contribute critique, reputation, refinement and intellectual depth.</p>
-        </div>
-        <div class="card">
-            <h3>The Vimuktam Person</h3>
-            <p>Economically stable enough for self-reflection; ambitious about development; interested in culture, philosophy, art and literature; attentive to quality; frustrated by dishonesty, poor communication and mediocrity; and attracted to clean, sophisticated aesthetics.</p>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="personality">
-    <h2>06 · Personality</h2>
-    <p class="lead">
-        Cultured. Ambitious. Empathetic. Moral. Ethical. Spiritual. Creative.
-        Scholarly. An excellent communicator.
-    </p>
-    <p>
-        Vimuktam is intended to be a kind-hearted, gentle model of self-development
-        with a sharpness that favours the welfare of all living beings.
-    </p>
-    <h3>It must not become</h3>
-    <p>
-        Vague, excessively idealistic, intellectually evasive, or unwilling to
-        engage respectfully with disagreement. It should not resemble generic
-        corporate branding, visual mediocrity, or humour-by-template.
-    </p>
-</section>
-
-<section class="section" id="promise">
-    <h2>07 · Value &amp; Transformation</h2>
-    <p class="lead"><strong>Products:</strong> Trainings, learning resources, curated experiences, and eventually technology products such as the DNC.</p>
-    <h3>Organisational outcomes sought</h3>
-    <ul>
-        <li>Reduced wastage of time and resources, especially in L&amp;D.</li>
-        <li>More visibly participatory workforces.</li>
-        <li>Measurable differences in relevant mental-health parameters, where responsibly measurable.</li>
-        <li>Measurable differences in productivity, including creativity and discipline.</li>
-    </ul>
-    <h3>Individual transformation sought</h3>
-    <p>
-        Vimuktamites become better speakers, thinkers and leaders; more organised;
-        and measurably happier than they were before engaging with the
-        psycho-philosophic-educational frameworks.
-    </p>
-</section>
-
-<section class="section" id="epistemology">
-    <h2>08 · A note on evidence</h2>
-    <p class="lead">
-        Vimuktam is willing to make ambitious hypotheses, but does not want to
-        confuse hypotheses with established facts.
-    </p>
-    <p>
-        Among its developing hypotheses are that Vimuktam <span class="may">may</span>
-        have solved an important part of the puzzle of subjective happiness and
-        <span class="may">may</span> have found principles relevant to the environmental
-        crisis. These remain claims to investigate, test and refine—not facts to
-        announce prematurely.
-    </p>
-</section>
-
-<section class="section" id="language">
-    <h2>09 · Language &amp; Nomenclature</h2>
-    <p class="lead">
-        Vimuktam's multilingual identity is not intended to make one language a
-        translation of another.
-    </p>
-    <p>
-        For Indian regional-language publications, the relevant regional-language
-        wordmark may be primary, with Hindi as the secondary bridge language.
-        For international-language publications, the non-Roman-script wordmark
-        may be primary with English as the secondary language, depending on the
-        audience and context.
-    </p>
-    <p>
-        This system will continue to be developed as Vimuktam's content library,
-        regional work and international presence grow.
-    </p>
-</section>
-
-<section class="section" id="logo">
-    <h2>10 · Logo Direction</h2>
-    <p class="lead">
-        The present direction is a wordmark rather than a separate emblem.
-    </p>
-    <div class="identity-mark">
-        <div class="wordmark">Vimukt<span class="dot">a</span>m</div>
-        <p>
-            The intended wordmark is set in Rozha Roman in deep peacock teal.
-            The dot of the <em>i</em> is intended to become a subtle lotus-bud
-            form in lotus pink. The <em>a</em> is imagined with a solid interior,
-            carrying a few restrained circuit-like lines through its body.
-            Nothing loud: traditional botanical suggestion and contemporary
-            technological suggestion should coexist quietly.
-        </p>
-    </div>
-    <h3>Applications</h3>
-    <p>
-        The identity must eventually work across the website, favicon, YouTube,
-        social media, certificates, corporate proposals, presentations, books,
-        products, clothing and embroidery, events, conference backdrops,
-        podcast artwork, the DNC and future products.
-    </p>
-</section>
-
-<section class="section" id="calendar">
-    <h2>11 · The Vimuktam Year</h2>
-    <p>
-        Vimuktam's own content and cultural cycle is intended to begin and end
-        on Vaishakh Purnima. Formal annual reports and market-facing reporting
-        may follow conventional financial or calendar-year norms, while the
-        Vimuktam content cycle may retain its own beginning and end.
-    </p>
-</section>
-
-<section class="section">
-    <h2>12 · Still Becoming</h2>
-    <p class="lead">
-        This page is not a declaration that the brand has been finished. It is
-        the record of a brand learning to describe itself accurately.
-    </p>
-    <p>
-        Positioning, value propositions, nomenclature, voice, visual identity,
-        logo specifications and commercial architecture will continue to be
-        developed as Vimuktam tests its ideas in the world.
-    </p>
-</section>
-
-</div>
-</main>
-
-<footer>
-    <span class="logo">Vimuktam</span>
-    <p>Brand Identity · A living document</p>
-</footer>
-
+<section class="intro"><div class="intro-inner">
+    <div class="eyebrow">A living document · Brand Identity</div>
+    <h1>Vimuktam</h1>
+    <p>The working identity of Vimuktam: what it is, why it exists, whom it serves, what it believes, how it speaks, and how it is beginning to express itself visually.</p>
+    <div class="note">This is deliberately a living document. It records what Vimuktam currently believes and intends. As the work develops, hypotheses may be tested, language may change, and the identity may become more precise.</div>
+</div></section>
+<main><div class="content">
+<section class="section" id="essence"><h2>01 · Essence</h2><p class="lead"><strong>Current category:</strong> Training and Education Initiative.</p><p>Vimuktam creates trainings, learning resources, curated experiences, and eventually technology products such as the DNC, around a psycho-philosophic-educational framework for human development.</p></section>
+<section class="section" id="purpose"><h2>02 · Purpose</h2><p class="lead">Vimuktam exists because there is a major gap between the practical application of philosophical ideas and real-world economic goals.</p><p>Vimuktam intends to enter influential organisations and help accelerate growth through a human-centred approach, while generating wealth with the goal of reducing the burden on the environment.</p><div class="statement">Philosophy should not have to remain idealistic. If an idea about human beings is useful, its consequences should eventually be visible in life, work and the world.</div></section>
+<section class="section" id="positioning"><h2>03 · Positioning</h2><p class="lead">Vimuktam challenges the assumption that philosophy is an idealistic embellishment with little bearing on business, productivity or real life.</p><div class="grid"><div class="card"><h3>Philosophy + Psychology</h3><p>Seen as potentially hard business impactors, rather than flowery embellishments to Human Resources.</p></div><div class="card"><h3>Education as Continuum</h3><p>Education is not limited to school. It is a continuous flow through an individual's life.</p></div><div class="card"><h3>Conversation</h3><p>Conversation is treated as central to business, community and personal development enterprises.</p></div><div class="card"><h3>Evidence</h3><p>Vimuktam refuses to take claims on face value where they can be tested, measured and falsified.</p></div></div></section>
+<section class="section" id="vision"><h2>04 · Vision</h2><p class="lead">A world in which people understand themselves better, organisations create genuine value, and economic growth becomes increasingly compatible with human welfare and the environment.</p><ul><li>People live with greater deliberation and fulfilment.</li><li>Workforces are less tired, more motivated and proud of the brands they work for.</li><li>Businesses create useful, efficient and increasingly eco-friendly products and services.</li><li>Customer service becomes capable, efficient and profitable.</li><li>People choose products and systems that help them live more deliberately.</li></ul></section>
+<section class="section" id="audience"><h2>05 · Audience</h2><div class="grid"><div class="card"><h3>01 · Business</h3><p>Business owners, L&amp;D leaders and people leaders who can give the framework real legitimacy by testing its impact in the economic world.</p></div><div class="card"><h3>02 · Individuals &amp; Parents</h3><p>The people who can benefit directly from Vimuktam's learning, self-development and educational resources.</p></div><div class="card"><h3>03 · Researchers &amp; Thinkers</h3><p>Researchers, educators and thinkers who contribute critique, reputation, refinement and intellectual depth.</p></div><div class="card"><h3>The Vimuktam Person</h3><p>Economically stable enough for self-reflection; ambitious about development; interested in culture, philosophy, art and literature; attentive to quality; frustrated by dishonesty, poor communication and mediocrity; and attracted to clean, sophisticated aesthetics.</p></div></div></section>
+<section class="section" id="personality"><h2>06 · Personality</h2><p class="lead">Cultured. Ambitious. Empathetic. Moral. Ethical. Spiritual. Creative. Scholarly. An excellent communicator.</p><p>Vimuktam is intended to be a kind-hearted, gentle model of self-development with a sharpness that favours the welfare of all living beings.</p><h3>It must not become</h3><p>Vague, excessively idealistic, intellectually evasive, or unwilling to engage respectfully with disagreement. It should not resemble generic corporate branding, visual mediocrity, or humour-by-template.</p></section>
+<section class="section" id="promise"><h2>07 · Value &amp; Transformation</h2><p class="lead"><strong>Products:</strong> Trainings, learning resources, curated experiences, and eventually technology products such as the DNC.</p><h3>Organisational outcomes sought</h3><ul><li>Reduced wastage of time and resources, especially in L&amp;D.</li><li>More visibly participatory workforces.</li><li>Measurable differences in relevant mental-health parameters, where responsibly measurable.</li><li>Measurable differences in productivity, including creativity and discipline.</li></ul><h3>Individual transformation sought</h3><p>Vimuktamites become better speakers, thinkers and leaders; more organised; and measurably happier than they were before engaging with the psycho-philosophic-educational frameworks.</p></section>
+<section class="section" id="epistemology"><h2>08 · A Note on Evidence</h2><p class="lead">Vimuktam is willing to make ambitious hypotheses, but does not want to confuse hypotheses with established facts.</p><p>Among its developing hypotheses are that Vimuktam <span class="may">may</span> have solved an important part of the puzzle of subjective happiness and <span class="may">may</span> have found principles relevant to the environmental crisis. These remain claims to investigate, test and refine—not facts to announce prematurely.</p></section>
+<section class="section" id="language"><h2>09 · Language &amp; Nomenclature</h2><p class="lead">Vimuktam's multilingual identity is not intended to make one language a translation of another.</p><p>For Indian regional-language publications, the relevant regional-language wordmark is intended to be primary, with <strong>Hindi secondary</strong> as an Indian bridge language. For international-language publications, the relevant non-Roman-script wordmark may be primary with English secondary, depending on the audience and context.</p><p>This system will continue to be developed as Vimuktam's content library, regional work and international presence grow.</p></section>
+<section class="section" id="logo"><h2>10 · Logo Direction</h2><p class="lead">The present direction is a wordmark rather than a separate emblem.</p><div class="identity-mark"><div class="wordmark">V<span class="i-dot">i</span>muktam</div><p>The intended wordmark is set in Rozha Roman in deep peacock teal. The dot of the <em>i</em> is intended to become a subtle lotus-bud form in lotus pink. The <em>a</em> is imagined with a solid interior, carrying a few restrained circuit-like lines through its body. Nothing loud: traditional botanical suggestion and contemporary technological suggestion should coexist quietly.</p></div><h3>Applications</h3><p>The identity must eventually work across the website, favicon, YouTube, social media, certificates, corporate proposals, presentations, books, products, clothing and embroidery, events, conference backdrops, podcast artwork, the DNC and future products.</p></section>
+<section class="section" id="calendar"><h2>11 · The Vimuktam Year</h2><p>Vimuktam's own content and cultural cycle is intended to begin and end on Vaishakh Purnima. Formal annual reports and market-facing reporting may follow conventional financial or calendar-year norms, while the Vimuktam content cycle may retain its own beginning and end.</p></section>
+<section class="section"><h2>12 · Still Becoming</h2><p class="lead">This page is not a declaration that the brand has been finished. It is the record of a brand learning to describe itself accurately.</p><p>Positioning, value propositions, nomenclature, voice, visual identity, logo specifications and commercial architecture will continue to be developed as Vimuktam tests its ideas in the world.</p></section>
+</div></main>
+<footer><span class="logo">Vimuktam</span><p>Brand Identity · A living document</p></footer>
 </body>
 </html>
