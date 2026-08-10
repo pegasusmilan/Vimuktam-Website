@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The living Vimuktam Brand Identity: purpose, positioning, principles, personality, audience and visual identity. A working document that evolves with Vimuktam.">
+    <meta name="description" content="The living Vimuktam Brand Identity: purpose, positioning, value proposition, principles, personality, audience and visual identity. A working document that evolves with Vimuktam.">
     <title>Brand Identity — Vimuktam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +11,7 @@
     <style>
         :root { --beige:#E9DDC8; --white:#FFFDF8; --peacock-teal:#176B6B; --lotus-pink:#D9829A; --text-dark:#302B27; --muted:#70665d; --line:rgba(48,43,39,.16); }
         * { box-sizing:border-box; margin:0; padding:0; }
+        html { scroll-behavior:smooth; scroll-padding-top:100px; }
         body { background:var(--beige); color:var(--text-dark); font-family:'Mukta',sans-serif; font-size:18px; line-height:1.7; }
         a { color:inherit; }
         h1,h2,h3 { font-family:'Rozha One',serif; font-weight:400; line-height:1.08; }
@@ -18,11 +19,17 @@
         .logo { font-family:'Rozha One',serif; font-size:2.2rem; color:var(--peacock-teal); text-decoration:none; }
         nav { display:flex; gap:2rem; } nav a { text-decoration:none; font-weight:500; } nav a:hover { color:var(--lotus-pink); }
         .intro { padding:9rem 8% 7rem; background:var(--white); border-bottom:1px solid var(--line); }
-        .intro-inner,.content { max-width:1100px; margin:auto; }
+        .intro-inner,.content,.index-inner { max-width:1100px; margin:auto; }
         .eyebrow { color:var(--lotus-pink); font-weight:700; letter-spacing:.16em; text-transform:uppercase; font-size:.9rem; margin-bottom:1.5rem; }
         .intro h1 { color:var(--peacock-teal); font-size:clamp(4rem,9vw,8rem); margin-bottom:1.5rem; }
         .intro p { max-width:780px; font-size:1.35rem; }
         .note { margin-top:2.5rem; padding-left:1.5rem; border-left:3px solid var(--lotus-pink); color:var(--muted); max-width:800px; }
+        .index { padding:5rem 8%; background:var(--beige); border-bottom:1px solid var(--line); }
+        .index h2 { color:var(--peacock-teal); font-size:clamp(2.7rem,5vw,4.5rem); margin-bottom:1.5rem; }
+        .index-list { columns:2; column-gap:4rem; list-style:none; }
+        .index-list li { break-inside:avoid; border-top:1px solid var(--line); }
+        .index-list a { display:block; padding:1rem 0; text-decoration:none; font-weight:600; }
+        .index-list a:hover { color:var(--lotus-pink); }
         main { padding:6rem 8%; }
         .section { padding:4rem 0; border-top:1px solid var(--line); } .section:first-child { border-top:0; }
         .section h2 { color:var(--peacock-teal); font-size:clamp(2.7rem,5vw,4.5rem); margin-bottom:1.5rem; }
@@ -38,19 +45,37 @@
         .identity-mark .i-dot { color:var(--lotus-pink); display:inline-block; transform:scaleX(.75) translateY(-.02em); transform-origin:center; }
         .developing { background:var(--white); padding:2.5rem; border-left:3px solid var(--lotus-pink); margin-top:2rem; }
         footer { padding:3rem 8%; background:var(--peacock-teal); color:var(--white); } footer .logo { color:var(--white); display:block; margin-bottom:.5rem; }
-        @media (max-width:700px) { header{flex-direction:column;gap:1rem;} nav{gap:1rem;flex-wrap:wrap;justify-content:center;} .intro{padding:6rem 6% 5rem;} main{padding:4rem 6%;} .grid{grid-template-columns:1fr;} }
+        @media (max-width:700px) { header{flex-direction:column;gap:1rem;} nav{gap:1rem;flex-wrap:wrap;justify-content:center;} .intro{padding:6rem 6% 5rem;} .index,main{padding:4rem 6%;} .grid{grid-template-columns:1fr;} .index-list{columns:1;} }
     </style>
 </head>
 <body>
 <header>
     <a href="index.html" class="logo">Vimuktam</a>
-    <nav><a href="index.html#services">Services</a><a href="brand-identity.html">Vimuktam</a><a href="index.html#me">Me</a></nav>
+    <nav><a href="index.html#services">Services</a><a href="index.html#vimuktam">Vimuktam</a><a href="index.html#me">Me</a></nav>
 </header>
 <section class="intro"><div class="intro-inner">
     <div class="eyebrow">A living document · Brand Identity</div>
     <h1>Vimuktam</h1>
     <p>The working identity of Vimuktam: what it is, why it exists, whom it serves, what it believes, how it speaks, and how it is beginning to express itself visually.</p>
     <div class="note">This is deliberately a living document. It records what Vimuktam currently believes and intends. As the work develops, hypotheses may be tested, language may change, and the identity may become more precise.</div>
+</div></section>
+<section class="index"><div class="index-inner">
+    <h2>Contents</h2>
+    <ol class="index-list">
+        <li><a href="#essence">01 · Essence</a></li>
+        <li><a href="#purpose">02 · Purpose</a></li>
+        <li><a href="#positioning">03 · Positioning</a></li>
+        <li><a href="#promise">04 · Value Proposition &amp; Brand Promise</a></li>
+        <li><a href="#vision">05 · Vision</a></li>
+        <li><a href="#audience">06 · Audience</a></li>
+        <li><a href="#personality">07 · Personality</a></li>
+        <li><a href="#epistemology">08 · A Note on Evidence</a></li>
+        <li><a href="#language">09 · Language &amp; Nomenclature</a></li>
+        <li><a href="#logo">10 · Logo Direction</a></li>
+        <li><a href="#calendar">11 · The Vimuktam Year</a></li>
+        <li><a href="#developing">12 · Developing Ideas</a></li>
+        <li><a href="#still-becoming">13 · Still Becoming</a></li>
+    </ol>
 </div></section>
 <main><div class="content">
 <section class="section" id="essence"><h2>01 · Essence</h2><p class="lead"><strong>Current category:</strong> A for-profit community and culture engine, with education and training as its primary offering.</p><p>Vimuktam is not simply a training company. It is a for-profit community that recognises the importance of commerce and intends to use commerce as a means of creating useful cultural, educational and social impact.</p><p>Its primary offerings are trainings, learning resources and curated experiences, with technology products such as the DNC developing as part of the larger ecosystem.</p></section>
@@ -65,7 +90,7 @@
 <section class="section" id="logo"><h2>10 · Logo Direction</h2><p class="lead">The present direction is a wordmark rather than a separate emblem.</p><div class="identity-mark"><div class="wordmark">V<span class="i-dot">i</span>muktam</div><p>The intended wordmark is set in Rozha Roman in deep peacock teal. The dot of the <em>i</em> is intended to become a subtle lotus-bud form in lotus pink. The <em>a</em> is imagined with a solid interior, carrying a few restrained circuit-like lines through its body. Nothing loud: traditional botanical suggestion and contemporary technological suggestion should coexist quietly.</p></div><h3>Applications</h3><p>The identity must eventually work across the website, favicon, YouTube, social media, certificates, corporate proposals, presentations, books, products, clothing and embroidery, events, conference backdrops, podcast artwork, the DNC and future products.</p></section>
 <section class="section" id="calendar"><h2>11 · The Vimuktam Year</h2><p>Vimuktam's own content and cultural cycle is intended to begin and end on Vaishakh Purnima. Formal annual reports and market-facing reporting may follow conventional financial or calendar-year norms, while the Vimuktam content cycle may retain its own beginning and end.</p></section>
 <section class="section" id="developing"><h2>12 · Developing Ideas</h2><div class="developing"><p><strong>Brand Architecture:</strong> How Me, Vimuktam, Services, products, content, community and future sub-brands relate to one another.</p><p><strong>Nomenclature:</strong> What Vimuktam calls its learners, customers, programmes, courses, experiences, communities and products.</p><p><strong>Voice &amp; Tone:</strong> The precise rules governing how Vimuktam speaks across corporate, educational, cultural and personal contexts.</p><p><strong>Commercial Architecture:</strong> How the community, services, products, TagMango transactions and future technology products fit together commercially.</p></div></section>
-<section class="section"><h2>13 · Still Becoming</h2><p class="lead">This page is not a declaration that the brand has been finished. It is the record of a brand learning to describe itself accurately.</p><p>Positioning, value propositions, nomenclature, voice, visual identity, logo specifications and commercial architecture will continue to be developed as Vimuktam tests its ideas in the world.</p></section>
+<section class="section" id="still-becoming"><h2>13 · Still Becoming</h2><p class="lead">This page is not a declaration that the brand has been finished. It is the record of a brand learning to describe itself accurately.</p><p>Positioning, value propositions, nomenclature, voice, visual identity, logo specifications and commercial architecture will continue to be developed as Vimuktam tests its ideas in the world.</p></section>
 </div></main>
 <footer><span class="logo">Vimuktam</span><p>Brand Identity · A living document</p></footer>
 </body>
