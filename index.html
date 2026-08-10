@@ -3,12 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Vimuktam</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --beige: #E9DDC8;
+            --white: #FFFDF8;
+            --peacock-teal: #176B6B;
+            --lotus-pink: #D9829A;
+            --text-dark: #302B27;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--beige);
+            color: var(--text-dark);
+            font-family: 'Mukta', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Rozha One', serif;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        /* --------------------------------
+           HEADER
+        -------------------------------- */
+
+        header {
+            min-height: 90px;
+            padding: 24px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+        }
+
+        .logo {
+            font-family: 'Rozha One', serif;
+            font-size: 2.2rem;
+            color: var(--peacock-teal);
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--lotus-pink);
+        }
+
+        /* --------------------------------
+           HERO
+        -------------------------------- */
+
+        .hero {
+            min-height: 75vh;
+            padding: 8rem 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+        }
+
+        .eyebrow {
+            color: var(--lotus-pink);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            color: var(--peacock-teal);
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1.3rem;
+        }
+
+        /* --------------------------------
+           SAMPLE CONTENT SECTION
+        -------------------------------- */
+
+        .section {
+            padding: 7rem 8%;
+            background: var(--white);
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            color: var(--peacock-teal);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .section-intro {
+            max-width: 700px;
+            font-size: 1.2rem;
+        }
+
+        /* --------------------------------
+           PALETTE TEST
+        -------------------------------- */
+
+        .palette {
+            display: flex;
+            gap: 1rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        .swatch.beige {
+            background: var(--beige);
+        }
+
+        .swatch.white {
+            background: var(--white);
+            border: 1px solid #ddd;
+        }
+
+        .swatch.teal {
+            background: var(--peacock-teal);
+            color: white;
+        }
+
+        .swatch.pink {
+            background: var(--lotus-pink);
+            color: white;
+        }
+
+        /* --------------------------------
+           FOOTER
+        -------------------------------- */
+
+        footer {
+            padding: 3rem 8%;
+            background: var(--peacock-teal);
+            color: var(--white);
+            text-align: center;
+        }
+
+        footer .logo {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* --------------------------------
+           MOBILE
+        -------------------------------- */
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 5rem 6%;
+            }
+
+            .section {
+                padding: 5rem 6%;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Vimuktam</h1>
-    <p>A living exploration of Indian culture.</p>
+    <header>
+        <a href="#" class="logo">Vimuktam</a>
+
+        <nav>
+            <a href="#">About</a>
+            <a href="#">Learn</a>
+            <a href="#">Experiences</a>
+            <a href="#">Journal</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-inner">
+
+                <div class="eyebrow">A living exploration</div>
+
+                <h1>Vimuktam</h1>
+
+                <p>
+                    A space for learning, experiencing and engaging with
+                    the many worlds of Indian culture.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-inner">
+
+                <h2>The visual language</h2>
+
+                <p class="section-intro">
+                    This is our starting point. Warm beige forms the ground,
+                    white provides breathing space, while peacock teal and
+                    lotus pink bring colour and character.
+                </p>
+
+                <div class="palette">
+                    <div class="swatch beige">Beige</div>
+                    <div class="swatch white">White</div>
+                    <div class="swatch teal">Peacock Teal</div>
+                    <div class="swatch pink">Lotus Pink</div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <span class="logo">Vimuktam</span>
+        <p>Learning • Culture • Experience</p>
+    </footer>
 
 </body>
 </html>
