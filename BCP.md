@@ -4,8 +4,6 @@
 **Prepared:** August 2026  
 **Status:** Living document
 
-## 1. THE PRINCIPLE OF CONTINUITY
-
 > The ultimate continuity of the manifestation of Vimuktam is in the behaviours of the real humans that participate in Vimuktam. All the other tools, systems and databases are only the means to achieve this.
 
 Vimuktam is not ultimately contained in a website, repository, database, company account or particular piece of technology. These are instruments through which Vimuktam manifests. This document exists so that a human being can understand, recover and continue Vimuktam even if one or more of its current systems are lost, compromised, inaccessible or discontinued.
@@ -227,56 +225,7 @@ The Credential Key is deliberately separate from the BCP. It contains actual pas
 6. If the Key is lost, stolen, photographed, scanned, copied or otherwise exposed, treat the affected credentials as compromised and change them as soon as practical.
 7. Never send the completed Credential Key to ChatGPT or upload it to any online service.
 
-## 14. WEEKLY MAINTENANCE
-
-- [ ] Confirm the live Vimuktam website is accessible.
-- [ ] Confirm the GitHub repository is accessible.
-- [ ] Confirm the latest Bitbucket backup has succeeded.
-- [ ] Once established, confirm the second independent backup has succeeded.
-- [ ] Check for obvious account/security warnings.
-- [ ] Record any changes in the Credential Key and any incidents in the Incident Report.
-
-## 15. MONTHLY MAINTENANCE
-
-The monthly check asks: **Is Vimuktam's infrastructure still in order?**
-
-### Website and backups
-
-- [ ] Check GitHub repository.
-- [ ] Check Bitbucket backup.
-- [ ] Check second independent backup once established.
-- [ ] Confirm recent changes exist in backups.
-- [ ] Check Cloudflare and live deployment.
-- [ ] Check domain status.
-
-### Accounts and security
-
-- [ ] Review Google security notifications.
-- [ ] Review GitHub security notifications.
-- [ ] Review Atlassian/Bitbucket notifications.
-- [ ] Review Cloudflare notifications.
-- [ ] Confirm recovery methods remain usable.
-- [ ] Confirm Credential Key access.
-
-### Subscriptions, renewals and payments — every 30th
-
-- [ ] Check whether any subscription requires payment.
-- [ ] Check whether any service requires renewal.
-- [ ] Check domain renewal status.
-- [ ] Check Hostinger status.
-- [ ] Check token/API credential expiry dates.
-- [ ] Check hosting and cloud services.
-- [ ] Check software subscriptions.
-- [ ] Check any other recurring Vimuktam service or payment.
-
-This monthly check is intended to catch annual as well as monthly obligations. Important deadlines may also have separate reminders.
-
-### Documentation
-
-- [ ] Update the BCP if infrastructure has changed.
-- [ ] Update the Credential Key if credentials have changed.
-- [ ] Confirm the BCP copies remain available.
-- [ ] Record significant changes to Vimuktam's systems.
+**After any significant incident, complete the full Monthly Maintenance checklist as soon as practical, even if the incident appears to concern only one system. The purpose is to ensure the entire Vimuktam system is checked and not merely the faulty section.**
 
 ## 16. DOCUMENT CUSTODY
 
@@ -351,8 +300,88 @@ The objective is not necessarily to restore everything simultaneously. It is to 
 - Succession/incapacity: Future BCP module.
 - YouTube / Instagram / Facebook: Future BCP module.
 
-## 20. BCP REVIEW PRINCIPLE
+## 20. WEEKLY MAINTENANCE
 
-The BCP must distinguish between what is implemented, what is verified, what is planned, and what remains a material risk.
+**Week beginning / date:** ______________________________________________  
+**Executive / person performing check:** _________________________________
 
-No resilience measure should be treated as complete until the relevant recovery path has been tested or otherwise verified.
+**Purpose:** A short operational check that asks whether the machine is alive.
+
+- [ ] Confirm the live Vimuktam website is accessible.
+- [ ] Confirm the GitHub repository is accessible.
+- [ ] Confirm the latest Bitbucket backup has succeeded.
+- [ ] Once established, confirm the second independent backup has succeeded.
+- [ ] Check for obvious account/security warnings.
+- [ ] Confirm any credential changes have been recorded in the Credential Key.
+- [ ] Confirm any incidents have been recorded in the Incident Report.
+
+**Notes / exceptions:** __________________________________________________  
+_________________________________________________________________________
+
+**Signature / initials:** ______________________    **Date:** ________________
+
+---
+
+## 21. MONTHLY MAINTENANCE
+
+**Maintenance date (normally the 30th):** _______________________________  
+**Executive / person performing check:** _________________________________
+
+**Purpose:** The monthly check asks: Is Vimuktam's infrastructure still in order?
+
+### Website and backups
+
+- [ ] Check GitHub repository.
+- [ ] Check Bitbucket backup.
+- [ ] Check the second independent backup once established.
+- [ ] Confirm recent changes exist in the backups.
+- [ ] Check Cloudflare and live deployment.
+- [ ] Check domain status.
+
+### Accounts and security
+
+- [ ] Review Google security notifications.
+- [ ] Review GitHub security notifications.
+- [ ] Review Atlassian/Bitbucket notifications.
+- [ ] Review Cloudflare notifications.
+- [ ] Confirm recovery methods remain usable.
+- [ ] Confirm Credential Key access.
+
+### Subscriptions, renewals and payments — every 30th
+
+- [ ] Check whether any subscription requires payment.
+- [ ] Check whether any service requires renewal.
+- [ ] Check domain renewal status.
+- [ ] Check Hostinger status.
+- [ ] Check token/API credential expiry dates.
+- [ ] Check hosting and cloud services.
+- [ ] Check software subscriptions.
+- [ ] Check any other recurring Vimuktam service or payment.
+
+### Documentation
+
+- [ ] Update the BCP if infrastructure has changed.
+- [ ] Update the Credential Key if credentials have changed.
+- [ ] Confirm the BCP copies remain available.
+- [ ] Record significant changes to Vimuktam's systems.
+
+**Notes / exceptions:** __________________________________________________  
+_________________________________________________________________________
+
+**Incident requiring full-system check?**  Yes / No
+
+**Signature / initials:** ______________________    **Date:** ________________
+
+If an incident occurred at any point during the month, this full checklist must be completed after the incident as well, regardless of whether the incident appeared isolated.
+
+---
+
+## BCP PORTAL — WEBSITE
+
+Vimuktam will maintain a private BCP portal on the website for authorised custodians/executives. The portal is intended to present the current BCP, Incident Report and Weekly/Monthly Maintenance Logs, together with the date and name of the person who last performed each maintenance check.
+
+**Security requirement:** The portal must be protected by server-side access control (preferably Cloudflare Access) before it is exposed publicly. A password written into static HTML or JavaScript is not considered adequate security and must not be used.
+
+Until Cloudflare Access or equivalent server-side protection is configured, the BCP portal must remain unpublished/unlinked from the public website.
+
+**Operational principle:** The online BCP is a working operational view; the physical BCP and physical Credential Key remain the continuity fallback. Actual credentials never appear in the online BCP portal.
