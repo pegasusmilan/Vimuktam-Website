@@ -111,7 +111,18 @@ const title=document.getElementById('archive-title'), subtitle=document.getEleme
 title.textContent=current.title; subtitle.textContent=current.subtitle; document.title=`Vimuktam — ${current.title}`;
 Object.entries(ARCHIVES).forEach(([name,archive])=>{const link=document.createElement('a');link.href=`archive.html?source=${encodeURIComponent(name)}`;link.textContent=archive.title;if(name===key)link.className='active';list.appendChild(link);});
 
-fetch(sourceUrl(current.source),{cache:'no-store'}).then(response=>{if(!response.ok)throw new Error(`Could not read ${current.source} (${response.status})`);return response.text();}).then(markdown=>{
+async function loadSource(){
+  try{
+    const local=await fetch(sourceUrl(current.source),{cache:'no-store'});
+    if(local.ok)return local.text();
+  }catch(_){ }
+  const rawUrl='https://raw.githubusercontent.com/pegasusmilan/Vimuktam-Website/main/'+sourceUrl(current.source);
+  const raw=await fetch(rawUrl,{cache:'no-store'});
+  if(!raw.ok)throw new Error(`Could not read ${current.source} (${raw.status})`);
+  return raw.text();
+}
+
+loadSource().then(markdown=>{
   content.innerHTML=renderMarkdown(markdown);
   const entries=[...content.querySelectorAll('.entry')].map(entry=>({id:entry.querySelector('.entry-label')?.textContent.trim()||entry.id,anchor:entry.id,title:entry.querySelector('h2,h3,h4,h5,h6')?.textContent.trim()||entry.id,text:entry.textContent.replace(/\s+/g,' ').trim()}));
   status.textContent=`Source: ${current.source} · ${entries.length ? `${entries.length} indexed entries` : 'Long-form archive'} · rendered from Markdown at reading time`;
