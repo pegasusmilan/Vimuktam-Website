@@ -36,20 +36,27 @@ const inline = raw => {
 
 function renderMarkdown(md){
   const lines = md.replace(/\r\n?/g,'\n').split('\n');
-  let html='', i=0, inEntry=null, indexId='archive-index';
+  let html='', i=0, inEntry=null;
   const closeEntry=()=>{ if(inEntry){ html += '<a class="back-index" href="#archive-index">↑ Back to Index</a></section>'; inEntry=null; } };
   const isTableSep = line => /^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?\s*$/.test(line);
+  const roleClass = text => {
+    const clean=text.replace(/^#+\s*/,'').trim().toUpperCase();
+    if(clean==='USER INPUT') return 'user-input';
+    if(clean==='ASSISTANT RESPONSE') return 'assistant-response';
+    if(clean==='SYNTHESIS') return 'synthesis';
+    return '';
+  };
   while(i<lines.length){
     const line=lines[i];
-    if(/^```/.test(line)){ closeEntry(); const lang=line.slice(3).trim(); const buf=[]; i++; while(i<lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]); i++; html+=`<pre><code${lang?` class="language-${esc(lang)}"`:''}>${esc(buf.join('\n'))}</code></pre>`; continue; }
+    if(/^```/.test(line)){ const lang=line.slice(3).trim(); const buf=[]; i++; while(i<lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]); i++; html+=`<pre><code${lang?` class="language-${esc(lang)}"`:''}>${esc(buf.join('\n'))}</code></pre>`; continue; }
     const h=line.match(/^(#{1,6})\s+(.+?)\s*#*$/);
     if(h){
-      const level=h[1].length, text=h[2].trim(), id=slug(text);
+      const level=h[1].length, text=h[2].trim(), id=slug(text), role=roleClass(text);
       if(/^PN-\d{4}\b/i.test(text)){
         closeEntry(); inEntry=id; html += `<section class="entry" id="${id}"><div class="entry-label">${esc(text.match(/^PN-\d{4}/i)[0])}</div><h${Math.min(level+1,6)} id="${id}-heading">${inline(text.replace(/^PN-\d{4}\s*[—:-]?\s*/i,''))}</h${Math.min(level+1,6)}>`;
       } else {
         if(level<=1) closeEntry();
-        html += `<h${level} id="${id}">${inline(text)}</h${level}>`;
+        html += `<h${level}${role?` class="archive-role ${role}"`:''} id="${id}">${inline(text)}</h${level}>`;
       }
       i++; continue;
     }
@@ -65,10 +72,7 @@ function renderMarkdown(md){
     }
     if(!line.trim()){i++;continue;}
     const buf=[line.trim()]; i++; while(i<lines.length && lines[i].trim() && !/^(#{1,6})\s+/.test(lines[i]) && !/^\s*[-*+]\s+/.test(lines[i]) && !/^\s*\d+[.)]\s+/.test(lines[i]) && !/^\s*>/.test(lines[i]) && !/^```/.test(lines[i]) && !/^\s*---+\s*$/.test(lines[i])){buf.push(lines[i].trim());i++;}
-    const p=buf.join(' ');
-    let cls='';
-    if(/^\*\*(USER INPUT|ASSISTANT RESPONSE|SYNTHESIS)\*\*/i.test(p)) cls=p.match(/^\*\*(USER INPUT|ASSISTANT RESPONSE|SYNTHESIS)\*\*/i)[1].toLowerCase().replace(/ /g,'-');
-    if(cls){html+=`<div class="${cls}"><p>${inline(p)}</p></div>`;} else html+=`<p>${inline(p)}</p>`;
+    const p=buf.join(' '); html+=`<p>${inline(p)}</p>`;
   }
   closeEntry();
   return html;
@@ -85,10 +89,8 @@ Object.entries(ARCHIVES).forEach(([k,a])=>{const link=document.createElement('a'
 
 fetch(sourceUrl(current.source),{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(`Could not read ${current.source} (${r.status})`);return r.text();}).then(md=>{
   content.innerHTML=renderMarkdown(md);
-  const index=document.getElementById('input-index') || document.querySelector('#input-index, h1[id="input-index"]');
-  if(index && index.tagName==='H1') index.id='archive-index';
-  else if(index) index.id='archive-index';
-  document.querySelectorAll('.archive-content table a[href^="#"]').forEach(a=>{a.addEventListener('click',()=>{setTimeout(()=>document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({block:'start'}),0);});});
+  const index=document.getElementById('input-index');
+  if(index) index.id='archive-index';
   const entries=[...document.querySelectorAll('.entry')].map(el=>({id:el.id,text:el.innerText,heading:(el.querySelector('h2,h3,h4,h5,h6')||{}).innerText||el.id}));
   status.textContent=`Source: ${current.source} · ${entries.length ? `${entries.length} indexed entries` : 'Long-form archive'} · Markdown rendered at reading time`;
   setupSearch(entries);
