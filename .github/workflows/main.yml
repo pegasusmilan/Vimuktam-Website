@@ -1,0 +1,25 @@
+name: Backup GitHub repository to GitLab
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mirror repository to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git clone --mirror "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" repo.git
+          cd repo.git
+          git push --mirror "https://oauth2:${GITLAB_TOKEN}@gitlab.com/vimuktam-group/Vimuktam-Website.git"
