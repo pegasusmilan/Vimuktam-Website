@@ -1,141 +1,21 @@
 const ARCHIVES = {
-  'DNC Niyam CSE Dump.md': {
-    title: 'DNC / Niyam / CSE Source Dump',
-    subtitle: 'Living source archive of the Digital Niyam Companion, Niyam, People’s Log, Cultural Systems Engineering and related ideas.',
-    source: 'Company docs/DNC Niyam CSE Dump.md'
-  },
-  'Philosophical Overview Dump.md': {
-    title: 'Philosophical Overview Dump',
-    subtitle: 'Living indexed archive of Vimuktam’s philosophical development.',
-    source: 'Company docs/Philosophical Overview Dump.md'
-  },
-  'Balaram System Dump.md': {
-    title: 'Balaram System Dump',
-    subtitle: 'Living source archive of Vimuktam’s system architecture and the evolution of its organising intelligence.',
-    source: 'Company docs/Balaram System Dump.md'
-  },
-  'Purana Narration Dump.md': {
-    title: 'Vimuktam Purāṇa — Purāṇa Narration Dump',
-    subtitle: 'Living source archive of the Vimuktam Purāṇa and its evolving narrative world.',
-    source: 'Company docs/Purana Narration Dump.md'
-  }
+  balaram: { file: 'Balaram System Dump.md', title: 'Balaram System Dump', subtitle: 'The living source archive of Vimuktam’s organising intelligence, Niyam, DNC and the evolution of the wider system.' },
+  philosophy: { file: 'Philosophical Overview Dump.md', title: 'Philosophical Overview Dump', subtitle: 'A living source archive preserving the development of Vimuktam’s philosophical thought before canonical editing.' },
+  purana: { file: 'Purana Narration Dump.md', title: 'Purāṇa Narration Dump', subtitle: 'The living source archive of the Vimuktam Purāṇa and its developing narrative world.' },
+  dnc: { file: 'DNC Niyam CSE Dump.md', title: 'DNC / Niyam / CSE Source Dump', subtitle: 'The living source archive of Niyam, the DNC, People’s Log, Cultural Systems Engineering and related system ideas.' }
 };
-
-const esc = value => String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const slug = value => String(value).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[`*_~]/g,'').replace(/[^\p{L}\p{N}\s-]/gu,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
-
-function inline(raw){
-  const stash=[];
-  const hold=html => { const id=stash.push(html)-1; return `\u0000${id}\u0000`; };
-  let s=String(raw);
-  s=s.replace(/`([^`]+)`/g,(_,text)=>hold(`<code>${esc(text)}</code>`));
-  s=esc(s);
-  s=s.replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+"([^"]*)")?\)/g,(_,alt,url,title)=>`<img src="${esc(url)}" alt="${esc(alt)}"${title?` title="${esc(title)}"`:''}>`);
-  s=s.replace(/\[([^\]]+)\]\((#[^)\s]+)(?:\s+"([^"]*)")?\)/g,(_,text,url,title)=>`<a href="${url}"${title?` title="${esc(title)}"`:''}>${text}</a>`);
-  s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)(?:\s+"([^"]*)")?\)/g,(_,text,url,title)=>`<a href="${esc(url)}" target="_blank" rel="noopener"${title?` title="${esc(title)}"`:''}>${text}</a>`);
-  s=s.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,(_,text,url,title)=>`<a href="${esc(url)}"${title?` title="${esc(title)}"`:''}>${text}</a>`);
-  s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/__([^_]+)__/g,'<strong>$1</strong>');
-  s=s.replace(/\*([^*\n]+)\*/g,'<em>$1</em>').replace(/_([^_\n]+)_/g,'<em>$1</em>');
-  s=s.replace(/~~([^~]+)~~/g,'<del>$1</del>');
-  return s.replace(/\u0000(\d+)\u0000/g,(_,id)=>stash[Number(id)]);
-}
-
-function tableRow(line){ return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(cell=>cell.trim()); }
-function isTableSeparator(line){ return /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(line); }
-function isEntryHeading(text){ return /^PN-\d{4}\b/i.test(text.trim()); }
-function roleName(text){ const value=text.trim().toUpperCase(); return ['USER INPUT','ASSISTANT RESPONSE','SYNTHESIS'].includes(value) ? value : null; }
-
-function renderMarkdown(markdown){
-  const lines=markdown.replace(/\r\n?/g,'\n').split('\n');
-  let html='', i=0, entryOpen=false, roleOpen=false;
-  const closeRole=()=>{ if(roleOpen){ html+='</section>'; roleOpen=false; } };
-  const closeEntry=()=>{ closeRole(); if(entryOpen){ html+='<a class="back-index" href="#archive-index">↑ Back to Index</a></section>'; entryOpen=false; } };
-
-  while(i<lines.length){
-    const line=lines[i];
-    if(!line.trim()){i++;continue;}
-
-    const explicit=line.trim().match(/^<a\s+id=["']([^"']+)["']\s*><\/a>$/i);
-    if(explicit){ html+=`<span id="${esc(explicit[1])}" class="explicit-anchor"></span>`; i++; continue; }
-
-    if(/^```/.test(line.trim())){
-      closeRole(); const language=line.trim().slice(3).trim(); const code=[]; i++;
-      while(i<lines.length && !/^```/.test(lines[i].trim())) code.push(lines[i++]);
-      if(i<lines.length)i++;
-      html+=`<pre><code${language?` class="language-${esc(language)}"`:''}>${esc(code.join('\n'))}</code></pre>`; continue;
-    }
-
-    const heading=line.match(/^(#{1,6})\s+(.+?)\s*#*$/);
-    if(heading){
-      const level=heading[1].length, text=heading[2].trim(), role=roleName(text);
-      if(role){ closeRole(); const cls=role.toLowerCase().replace(/ /g,'-'); html+=`<section class="role-block ${cls}"><h${level} class="entry-label role-heading">${esc(role)}</h${level}>`; roleOpen=true; i++; continue; }
-      if(isEntryHeading(text)){
-        closeEntry(); const id=slug(text); const match=text.match(/^(PN-\d{4})\s*[—:-]?\s*(.*)$/i); const entryId=match[1].toUpperCase(); const title=match[2]||text;
-        html+=`<section class="entry" id="${id}"><div class="entry-label">${esc(entryId)}</div><h${Math.min(level+1,6)} id="${id}-heading">${inline(title)}</h${Math.min(level+1,6)}>`; entryOpen=true; i++; continue;
-      }
-      closeRole(); const id=/^Input Index$/i.test(text)?'archive-index':slug(text); html+=`<h${level} id="${id}">${inline(text)}</h${level}>`; i++; continue;
-    }
-
-    if(/^\s*(?:---+|\*\s*\*\s*\*|___+)\s*$/.test(line)){closeRole();html+='<hr>';i++;continue;}
-
-    if(/^\s*>/.test(line)){
-      closeRole(); const quote=[]; while(i<lines.length && /^\s*>/.test(lines[i])){quote.push(lines[i].replace(/^\s*>\s?/,'').trim());i++;}
-      html+=`<blockquote>${quote.map(x=>`<p>${inline(x)}</p>`).join('')}</blockquote>`; continue;
-    }
-
-    if(/^\s*[-*+]\s+/.test(line) || /^\s*\d+[.)]\s+/.test(line)){
-      closeRole(); const ordered=/^\s*\d+[.)]\s+/.test(line), items=[];
-      while(i<lines.length){const match=lines[i].match(ordered?/^\s*\d+[.)]\s+(.+)$/:/^\s*[-*+]\s+(.+)$/);if(!match)break;items.push(`<li>${inline(match[1])}</li>`);i++;}
-      html+=`<${ordered?'ol':'ul'}>${items.join('')}</${ordered?'ol':'ul'}>`; continue;
-    }
-
-    if(line.includes('|') && i+1<lines.length && isTableSeparator(lines[i+1])){
-      closeRole(); const heads=tableRow(line); i+=2; const rows=[];
-      while(i<lines.length && lines[i].trim() && lines[i].includes('|')){rows.push(tableRow(lines[i]));i++;}
-      html+='<table><thead><tr>'+heads.map(x=>`<th>${inline(x)}</th>`).join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+heads.map((_,n)=>`<td>${inline(row[n]||'')}</td>`).join('')+'</tr>').join('')+'</tbody></table>'; continue;
-    }
-
-    const paragraph=[line.trim()]; i++;
-    while(i<lines.length && lines[i].trim() && !/^(#{1,6})\s+/.test(lines[i]) && !/^\s*(?:[-*+]\s+|\d+[.)]\s+|>)/.test(lines[i]) && !/^```/.test(lines[i].trim()) && !/^\s*(?:---+|\*\s*\*\s*\*|___+)\s*$/.test(lines[i])){paragraph.push(lines[i].trim());i++;}
-    html+=`<p>${inline(paragraph.join(' '))}</p>`;
-  }
-  closeEntry(); return html;
-}
-
-function sourceUrl(path){ return path.split('/').map(encodeURIComponent).join('/'); }
-const params=new URLSearchParams(location.search);
-const key=params.get('source') || 'Purana Narration Dump.md';
-const current=ARCHIVES[key] || ARCHIVES['Purana Narration Dump.md'];
-const title=document.getElementById('archive-title'), subtitle=document.getElementById('archive-subtitle'), content=document.getElementById('archive-content'), status=document.getElementById('archive-status'), search=document.getElementById('archive-search'), results=document.getElementById('search-results'), list=document.getElementById('archive-list');
-
-title.textContent=current.title; subtitle.textContent=current.subtitle; document.title=`Vimuktam — ${current.title}`;
-Object.entries(ARCHIVES).forEach(([name,archive])=>{const link=document.createElement('a');link.href=`archive.html?source=${encodeURIComponent(name)}`;link.textContent=archive.title;if(name===key)link.className='active';list.appendChild(link);});
-
-async function loadSource(){
-  try{
-    const local=await fetch(sourceUrl(current.source),{cache:'no-store'});
-    if(local.ok)return local.text();
-  }catch(_){ }
-  const rawUrl='https://raw.githubusercontent.com/pegasusmilan/Vimuktam-Website/main/'+sourceUrl(current.source);
-  const raw=await fetch(rawUrl,{cache:'no-store'});
-  if(!raw.ok)throw new Error(`Could not read ${current.source} (${raw.status})`);
-  return raw.text();
-}
-
-loadSource().then(markdown=>{
-  content.innerHTML=renderMarkdown(markdown);
-  const entries=[...content.querySelectorAll('.entry')].map(entry=>({id:entry.querySelector('.entry-label')?.textContent.trim()||entry.id,anchor:entry.id,title:entry.querySelector('h2,h3,h4,h5,h6')?.textContent.trim()||entry.id,text:entry.textContent.replace(/\s+/g,' ').trim()}));
-  status.textContent=`Source: ${current.source} · ${entries.length ? `${entries.length} indexed entries` : 'Long-form archive'} · rendered from Markdown at reading time`;
-  setupSearch(entries);
-  if(location.hash)requestAnimationFrame(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({block:'start'}));
-}).catch(error=>{status.textContent='The archive could not be loaded.';content.innerHTML=`<div class="error"><strong>Archive unavailable.</strong><p>${esc(error.message)}</p><p>The Markdown source remains the permanent source of truth in <em>Company docs/</em>.</p></div>`;});
-
-function setupSearch(entries){
-  search.addEventListener('input',()=>{
-    const query=search.value.trim().toLowerCase(); if(query.length<2){results.hidden=true;results.innerHTML='';return;}
-    const hits=entries.filter(entry=>(entry.id+' '+entry.title+' '+entry.text).toLowerCase().includes(query)).slice(0,25);
-    results.innerHTML=hits.length?hits.map(entry=>`<a class="search-result" href="#${entry.anchor}"><strong>${esc(entry.id)} — ${esc(entry.title)}</strong><span>${esc(entry.text.slice(0,180))}${entry.text.length>180?'…':''}</span></a>`).join(''):'<div class="search-result"><span>No matching archive entry.</span></div>';
-    results.hidden=false; results.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{results.hidden=true;search.value='';}));
-  });
-  document.addEventListener('click',event=>{if(!event.target.closest('.archive-search-wrap'))results.hidden=true;});
-}
+const RAW_ROOT='https://raw.githubusercontent.com/pegasusmilan/Vimuktam-Website/main/Company%20docs/';
+const key=new URLSearchParams(location.search).get('doc')||'balaram';
+const config=ARCHIVES[key]||ARCHIVES.balaram;
+const $=id=>document.getElementById(id);
+const titleEl=$('archive-title'),subtitleEl=$('archive-subtitle'),statusEl=$('archive-status'),contentEl=$('archive-content'),listEl=$('archive-list'),searchEl=$('archive-search'),resultsEl=$('search-results');
+function esc(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function slug(v){return v.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[`*_~]/g,'').replace(/[^\p{L}\p{N}\s-]/gu,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');}
+function inline(raw){const stash=[],hold=h=>{const t=`\u0000${stash.length}\u0000`;stash.push(h);return t;};let s=esc(raw);s=s.replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+["']([^"']*)["'])?\)/g,(_,a,u,t)=>/^(https?:|data:image\/)/i.test(u)?hold(`<img src="${esc(u)}" alt="${esc(a)}"${t?` title="${esc(t)}"`:''}>`):esc(a));s=s.replace(/\[([^\]]+)\]\(([^\s)]+)(?:\s+["']([^"']*)["'])?\)/g,(_,t,u,cap)=>{const safe=/^(https?:|mailto:|#|\/|\.\/|\.\.\/)/i.test(u)?u:'#';return hold(`<a href="${esc(safe)}"${/^https?:/i.test(safe)?' target="_blank" rel="noopener"':''}${cap?` title="${esc(cap)}"`:''}>${t}</a>`);});s=s.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/__([^_]+)__/g,'<strong>$1</strong>').replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/(?<!_)_([^_\n]+)_(?!_)/g,'<em>$1</em>').replace(/~~([^~]+)~~/g,'<del>$1</del>');return s.replace(/\u0000(\d+)\u0000/g,(_,n)=>stash[+n]);}
+function render(md){const lines=md.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');let html='',i=0,p=[],lt=null,li=[],q=[];const fp=()=>{if(p.length){html+=`<p>${inline(p.join(' '))}</p>`;p=[];}},fl=()=>{if(lt){html+=`<${lt}>${li.join('')}</${lt}>`;lt=null;li=[];}},fq=()=>{if(q.length){html+=`<blockquote>${q.map(x=>`<p>${inline(x)}</p>`).join('')}</blockquote>`;q=[];}},flush=()=>{fp();fl();fq();},row=s=>s.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(x=>x.trim()),sep=s=>/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(s);while(i<lines.length){const line=lines[i];if(!line.trim()){flush();i++;continue;}if(/^\s*```/.test(line)){flush();const lang=line.trim().slice(3).trim(),code=[];i++;while(i<lines.length&&!/^\s*```/.test(lines[i]))code.push(lines[i++]);if(i<lines.length)i++;html+=`<pre><code${lang?` data-language="${esc(lang)}"`:''}>${esc(code.join('\n'))}</code></pre>`;continue;}const h=line.match(/^\s*(#{1,6})\s+(.+?)\s*#*\s*$/);if(h){flush();const n=h[1].length,t=h[2].trim(),m=t.match(/^([A-Za-z]{2,8}-\d{4})\b/),id=m?m[1].toLowerCase():/^Input Index$/i.test(t)?'archive-index':slug(t);html+=`<h${n} id="${esc(id)}">${inline(t)}</h${n}>`;i++;continue;}if(/^\s*(---+|\*\s*\*\s*\*|___+)\s*$/.test(line)){flush();html+='<hr>';i++;continue;}if(/^\s*>/.test(line)){fp();fl();q=[];while(i<lines.length&&/^\s*>/.test(lines[i]))q.push(lines[i++].replace(/^\s*>\s?/,'').trim());fq();continue;}if(line.includes('|')&&i+1<lines.length&&sep(lines[i+1])){flush();const heads=row(line);i+=2;const rows=[];while(i<lines.length&&lines[i].includes('|')&&lines[i].trim())rows.push(row(lines[i++]));html+='<table><thead><tr>'+heads.map(x=>`<th>${inline(x)}</th>`).join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+heads.map((_,n)=>`<td>${inline(r[n]||'')}</td>`).join('')+'</tr>').join('')+'</tbody></table>';continue;}const item=line.match(/^\s*([-+*]|\d+[.)])\s+(.+)$/);if(item){fp();fq();const type=/^\d/.test(item[1])?'ol':'ul';if(lt&&lt!==type)fl();lt=type;li.push(`<li>${inline(item[2])}</li>`);i++;continue;}if(lt&&line.trim()&&!/^\s+/.test(line))fl();p=[line.trim()];i++;while(i<lines.length&&lines[i].trim()&&!/^(\s*#{1,6}\s+|\s*[-+*]\s+|\s*\d+[.)]\s+|\s*>|\s*```)/.test(lines[i])&&!/^\s*(---+|\*\s*\*\s*\*|___+)\s*$/.test(lines[i]))p.push(lines[i++].trim());fp();}flush();return html;}
+function enhance(){const entryPattern=/^([A-Za-z]{2,8}-\d{4})\b/;[...contentEl.querySelectorAll('h2')].forEach(h=>{const m=h.textContent.trim().match(entryPattern);if(!m)return;const wrap=document.createElement('section');wrap.className='entry';wrap.id=m[1].toLowerCase();h.id=wrap.id;h.parentNode.insertBefore(wrap,h);let node=h;while(node){const next=node.nextSibling;wrap.appendChild(node);if(next&&next.nodeType===1&&next.matches('h2'))break;node=next;}const back=document.createElement('a');back.className='back-index';back.href='#archive-index';back.textContent='↑ Back to Index';wrap.appendChild(back);});[...contentEl.querySelectorAll('h3')].forEach(h=>{const label=h.textContent.trim().toUpperCase(),cls=label==='USER INPUT'?'user-input':label==='ASSISTANT RESPONSE'?'assistant-response':label==='SYNTHESIS'?'synthesis':'';if(!cls)return;const box=document.createElement('div');box.className=cls;h.parentNode.insertBefore(box,h);let node=h;while(node){const next=node.nextSibling;box.appendChild(node);if(next&&next.nodeType===1&&next.matches('h3'))break;node=next;}h.className='entry-label';});const index=[...contentEl.querySelectorAll('h2')].find(h=>/^INPUT INDEX$/i.test(h.textContent.trim()));if(index)index.id='archive-index';}
+function buildRail(){listEl.innerHTML=Object.entries(ARCHIVES).map(([id,a])=>`<a href="archive.html?doc=${id}" class="${id===key?'active':''}">${esc(a.title)}</a>`).join('');}
+function sections(){const es=[...contentEl.querySelectorAll('.entry')],os=[...contentEl.querySelectorAll('h2')].filter(h=>!h.closest('.entry'));return [...es,...os].map(el=>{const h=el.querySelector('h2')||el;return{id:el.id||h.id,title:h.textContent.trim(),text:el.textContent.toLowerCase()};}).filter(x=>x.id);}
+function search(q){q=q.trim().toLowerCase();if(!q){resultsEl.hidden=true;resultsEl.innerHTML='';return;}const terms=q.split(/\s+/),hits=sections().filter(x=>terms.every(t=>x.text.includes(t)||x.title.toLowerCase().includes(t)));resultsEl.innerHTML=hits.slice(0,30).map(x=>{const at=x.text.indexOf(terms[0]),snippet=x.text.slice(Math.max(0,at-70),Math.max(0,at-70)+180).replace(/\s+/g,' ');return`<a class="search-result" href="#${esc(x.id)}"><strong>${esc(x.title)}</strong><span>${esc(snippet)}${snippet.length>=180?'…':''}</span></a>`;}).join('')||'<div class="search-empty">No matching passages found.</div>';resultsEl.hidden=false;}
+async function load(){titleEl.textContent=config.title;subtitleEl.textContent=config.subtitle;document.title=`Vimuktam — ${config.title}`;buildRail();try{const sources=[`Company%20docs/${encodeURIComponent(config.file)}`,RAW_ROOT+encodeURIComponent(config.file)];let md=null,last=null;for(const s of sources){try{const r=await fetch(s,{cache:'no-store'});if(r.ok){md=await r.text();break;}last=new Error(`Source returned ${r.status}`);}catch(e){last=e;}}if(md===null)throw(last||new Error('No archive source available'));contentEl.innerHTML=render(md);enhance();statusEl.textContent=`${contentEl.querySelectorAll('.entry').length||'Long-form'} indexed source entries · rendered from Company docs/${config.file}`;if(location.hash)requestAnimationFrame(()=>document.getElementById(location.hash.slice(1).toLowerCase())?.scrollIntoView());}catch(e){statusEl.textContent='The source archive could not be loaded.';contentEl.innerHTML=`<div class="error"><strong>Archive unavailable.</strong><p>${esc(e.message)}. The permanent Markdown source remains in <em>Company docs/</em>.</p></div>`;}}
+searchEl.addEventListener('input',e=>search(e.target.value));searchEl.addEventListener('keydown',e=>{if(e.key==='Escape'){searchEl.value='';search('');searchEl.blur();}});resultsEl.addEventListener('click',()=>resultsEl.hidden=true);document.addEventListener('click',e=>{if(!e.target.closest('.archive-search-wrap'))resultsEl.hidden=true;});load();

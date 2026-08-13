@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Vimuktam — a searchable reading interface for the living archival documents behind the project.">
-  <title>Vimuktam — Archive</title>
+  <meta name="description" content="Vimuktam intellectual source archive viewer">
+  <title>Vimuktam — Source Archive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
@@ -13,36 +13,24 @@
 <body>
   <header class="archive-topbar">
     <a class="wordmark" href="login.html">Vimuktam</a>
-    <span class="topbar-label">Intellectual Archive</span>
+    <span class="topbar-label">Living Source Archive</span>
     <a class="back-link" href="login.html">← Executive Area</a>
   </header>
-
   <main class="archive-shell">
     <aside class="archive-rail" aria-label="Archive navigation">
-      <div class="rail-heading">ARCHIVE</div>
-      <div id="archive-list" class="archive-list"></div>
-      <div class="rail-note">The Markdown source in <em>Company docs/</em> remains the permanent source of truth.</div>
+      <div class="rail-heading">ARCHIVE COLLECTION</div>
+      <nav id="archive-list" class="archive-list" aria-label="Available archives"></nav>
+      <div class="rail-note"><strong>Source of truth</strong><p>The Markdown files in <em>Company docs/</em> remain the permanent, editable archives. This page is their reading interface only.</p></div>
     </aside>
-
     <section class="archive-main">
       <div class="archive-heading-row">
-        <div>
-          <div class="eyebrow">Vimuktam · Source Archive</div>
-          <h1 id="archive-title">Archive</h1>
-          <p id="archive-subtitle" class="archive-subtitle"></p>
-        </div>
-        <div class="archive-search-wrap">
-          <label for="archive-search">Search this archive</label>
-          <input id="archive-search" type="search" placeholder="ID, title, word, theme…" autocomplete="off">
-          <div id="search-results" class="search-results" hidden></div>
-        </div>
+        <div><div class="eyebrow">Vimuktam · Source Archive</div><h1 id="archive-title">Archive</h1><p id="archive-subtitle" class="archive-subtitle"></p></div>
+        <div class="archive-search-wrap"><label for="archive-search">Search this archive</label><input id="archive-search" type="search" placeholder="ID, title, word, theme…" autocomplete="off" aria-controls="search-results"><div id="search-results" class="search-results" hidden role="listbox"></div></div>
       </div>
-
-      <div id="archive-status" class="archive-status">Reading the source archive…</div>
+      <div id="archive-status" class="archive-status" aria-live="polite">Reading the source archive…</div>
       <article id="archive-content" class="archive-content" aria-live="polite"></article>
     </section>
   </main>
-
   <script src="archive-viewer.js"></script>
 </body>
 </html>
