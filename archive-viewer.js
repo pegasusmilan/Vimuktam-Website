@@ -3,7 +3,7 @@ const ARCHIVES = {
   philosophy: { file: 'Philosophical Overview Dump.md', title: 'Philosophical Overview Dump', subtitle: 'A living source archive preserving the development of Vimuktam’s philosophical thought before canonical editing.' },
   purana: { file: 'Purana Narration Dump.md', title: 'Purāṇa Narration Dump', subtitle: 'The living source archive of the Vimuktam Purāṇa and its developing narrative world.' },
   dnc: { file: 'DNC Niyam CSE Dump.md', title: 'DNC / Niyam / CSE Source Dump', subtitle: 'The living source archive of Niyam, the DNC, People’s Log, Cultural Systems Engineering and related system ideas.' },
-  marketing: { file: 'Marketing Strategy Idea Dump.md', title: 'Marketing Strategy Idea Dump', subtitle: 'The living source archive of Vimuktam’s marketing thinking, hypotheses, propositions and developing strategy.' }
+  marketing: { file: 'Marketing and Branding Strategy Dump.md', title: 'Marketing and Branding Strategy Dump', subtitle: 'The living source archive of Vimuktam’s marketing and branding thinking, hypotheses, propositions and developing strategy.' }
 };
 
 const key = new URLSearchParams(location.search).get('doc') || 'balaram';
