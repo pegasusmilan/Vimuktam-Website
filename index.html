@@ -3,80 +3,622 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vimuktam — a learning, education and cultural initiative exploring human development, Indian knowledge systems, philosophy and practical life.">
-    <title>Vimuktam — Learning, Culture &amp; Human Development</title>
+
+    <meta name="description" content="Vimuktam — learning, culture, education and human development.">
+
+    <title>Vimuktam</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+
     <style>
-        :root { --beige:#E9DDC8; --white:#FFFDF8; --peacock-teal:#176B6B; --lotus-pink:#D9829A; --text-dark:#302B27; --muted:#70665d; --line:rgba(48,43,39,.16); }
-        * { box-sizing:border-box; margin:0; padding:0; }
-        body { background:var(--beige); color:var(--text-dark); font-family:'Mukta',sans-serif; font-size:18px; line-height:1.6; }
-        h1,h2,h3,h4 { font-family:'Rozha One',serif; font-weight:400; line-height:1.1; }
-        header { min-height:90px; padding:24px 6%; display:flex; align-items:center; justify-content:space-between; background:var(--white); }
-        .logo { font-family:'Rozha One',serif; font-size:2.2rem; color:var(--peacock-teal); text-decoration:none; }
-        nav { display:flex; gap:2rem; }
-        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; transition:color .2s ease; }
-        nav a:hover { color:var(--lotus-pink); }
-        .hero { min-height:68vh; padding:8rem 8%; display:flex; align-items:center; justify-content:center; text-align:center; background:var(--white); }
-        .hero-inner { max-width:900px; }
-        .eyebrow { color:var(--lotus-pink); font-size:1rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; margin-bottom:1.5rem; }
-        .hero h1 { color:var(--peacock-teal); font-size:clamp(3.5rem,8vw,7rem); margin-bottom:1.5rem; }
-        .hero p { max-width:700px; margin:0 auto; font-size:1.3rem; }
-        .section { padding:7rem 8%; background:var(--beige); }
-        .section-inner { max-width:1100px; margin:0 auto; }
-        .section h2 { color:var(--peacock-teal); font-size:clamp(2.5rem,5vw,4.5rem); margin-bottom:1rem; }
-        .section-intro { max-width:750px; font-size:1.2rem; }
-        .explore-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; margin-top:3rem; background:var(--line); border:1px solid var(--line); }
-        .explore-card { background:var(--white); padding:3rem; text-decoration:none; color:var(--text-dark); display:block; transition:transform .2s ease, background .2s ease; }
-        .explore-card:hover { transform:translateY(-4px); background:#fffaf1; }
-        .explore-card .number { color:var(--lotus-pink); font-weight:700; letter-spacing:.12em; font-size:.9rem; }
-        .explore-card h3 { color:var(--peacock-teal); font-size:2.3rem; margin:.7rem 0; }
-        .explore-card p { max-width:520px; }
-        .arrow { display:inline-block; margin-top:1.5rem; color:var(--peacock-teal); font-weight:700; }
-        footer { padding:3rem 8%; background:var(--peacock-teal); color:var(--white); text-align:center; }
-        footer .logo { color:var(--white); margin-bottom:.5rem; display:block; }
-        @media (max-width:700px) { header{flex-direction:column;gap:1rem;} nav{gap:1rem;flex-wrap:wrap;justify-content:center;} .hero{padding:5rem 6%;} .section{padding:5rem 6%;} .explore-grid{grid-template-columns:1fr;} .explore-card{padding:2rem;} }
+        :root {
+            --beige: #E9DDC8;
+            --white: #FFFDF8;
+            --peacock-teal: #176B6B;
+            --lotus-pink: #D9829A;
+            --gold: #B58B45;
+            --text-dark: #302B27;
+            --muted: #70665D;
+            --line: rgba(48,43,39,.16);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--beige);
+            color: var(--text-dark);
+            font-family: 'Mukta', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Rozha One', serif;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* HEADER */
+
+        header {
+            min-height: 92px;
+            padding: 22px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-placeholder {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--peacock-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--peacock-teal);
+            font-size: 10px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .wordmark {
+            font-family: 'Rozha One', serif;
+            font-size: 2.25rem;
+            color: var(--peacock-teal);
+        }
+
+        nav {
+            display: flex;
+            gap: 2.2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color .2s ease;
+        }
+
+        nav a:hover {
+            color: var(--lotus-pink);
+        }
+
+        /* IMAGE CAROUSEL */
+
+        .carousel {
+            background: var(--white);
+            padding: 2rem 6% 0;
+        }
+
+        .carousel-window {
+            position: relative;
+            min-height: 58vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--beige);
+            border: 1px solid var(--line);
+            overflow: hidden;
+        }
+
+        .carousel-placeholder {
+            width: 100%;
+            height: 58vh;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+            font-size: 1rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--line);
+            background: rgba(255,253,248,.9);
+            color: var(--peacock-teal);
+            cursor: pointer;
+            font-size: 1.4rem;
+        }
+
+        .carousel-arrow.left {
+            left: 20px;
+        }
+
+        .carousel-arrow.right {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 9px;
+            padding: 18px 0 8px;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--line);
+        }
+
+        .dot.active {
+            background: var(--lotus-pink);
+        }
+
+        /* GENERAL SECTIONS */
+
+        .section {
+            padding: 7rem 8%;
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: var(--peacock-teal);
+            font-size: clamp(2.7rem, 5vw, 4.5rem);
+            margin-bottom: 2rem;
+        }
+
+        /* INTRODUCTION */
+
+        .introduction {
+            background: var(--beige);
+            text-align: center;
+        }
+
+        .introduction .section-inner {
+            max-width: 850px;
+        }
+
+        .introduction .section-title {
+            margin-bottom: 2rem;
+        }
+
+        .lorem {
+            color: var(--muted);
+            font-size: 1.2rem;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* TESTIMONIALS */
+
+        .testimonials {
+            background: var(--white);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+        }
+
+        .testimonial {
+            background: var(--white);
+            padding: 3rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial p {
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .testimonial-author {
+            margin-top: 2rem;
+            color: var(--peacock-teal);
+            font-weight: 600;
+        }
+
+        /* PARTNERS */
+
+        .partners {
+            background: var(--beige);
+        }
+
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .partner-placeholder {
+            min-height: 110px;
+            border: 1px solid var(--line);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: .8rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        /* CONTACT */
+
+        .contact {
+            background: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-details p {
+            margin-bottom: .8rem;
+            color: var(--muted);
+        }
+
+        .contact-label {
+            display: block;
+            color: var(--peacock-teal);
+            font-weight: 700;
+            margin-bottom: .15rem;
+        }
+
+        .socials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            align-content: flex-start;
+        }
+
+        .social-link {
+            display: inline-block;
+            padding: .7rem 1.2rem;
+            border: 1px solid var(--line);
+            text-decoration: none;
+            color: var(--peacock-teal);
+            background: var(--beige);
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .social-link:hover {
+            background: var(--peacock-teal);
+            color: var(--white);
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 3rem 8%;
+            background: var(--peacock-teal);
+            color: var(--white);
+            text-align: center;
+        }
+
+        footer .wordmark {
+            color: var(--white);
+            display: block;
+            margin-bottom: .5rem;
+        }
+
+        footer p {
+            font-size: .9rem;
+            opacity: .85;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+            }
+
+            .carousel-window,
+            .carousel-placeholder {
+                min-height: 360px;
+                height: 50vh;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .partner-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .section {
+                padding: 5rem 6%;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .logo-placeholder {
+                width: 42px;
+                height: 42px;
+            }
+
+            .wordmark {
+                font-size: 1.9rem;
+            }
+
+            .carousel {
+                padding-left: 4%;
+                padding-right: 4%;
+            }
+
+            .partner-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
+
 <body>
+
 <header>
-    <a href="index.html" class="logo">Vimuktam</a>
-    <nav><a href="#services">Services</a><a href="#vimuktam">Vimuktam</a><a href="#us">Us</a></nav>
+
+    <a href="index.html" class="brand">
+        <span class="logo-placeholder">Logo</span>
+        <span class="wordmark">Vimuktam</span>
+    </a>
+
+    <nav>
+        <a href="#services">Services</a>
+        <a href="#vimuktam">Vimuktam</a>
+        <a href="#us">Us</a>
+    </nav>
+
 </header>
+
+
 <main>
-    <section class="hero">
-        <div class="hero-inner">
-            <div class="eyebrow">A living exploration</div>
-            <h1>Vimuktam</h1>
-            <p>A space for learning, education, culture and the exploration of how people can live, work and grow better.</p>
-        </div>
-    </section>
-    <section class="section" id="vimuktam">
-        <div class="section-inner">
-            <h2>Enter Vimuktam</h2>
-            <p class="section-intro">The framework is deep enough to explore for years. Start wherever your curiosity takes you.</p>
-            <div class="explore-grid">
-                <a class="explore-card" href="philosophical-overview.html"><span class="number">01 · THE FRAMEWORK</span><h3>Vimuktam Philosophical Overview</h3><p>Vimuktam Tantra Darshana — the developing philosophical and psycho-educational tome behind the wider Vimuktam project.</p><span class="arrow">Enter the Tome →</span></a>
-                <a class="explore-card" href="brand-identity.html"><span class="number">02 · THE WORLD</span><h3>Brand Identity</h3><p>The living system for Vimuktam's identity: what it is, how it looks and sounds, and how it presents itself to the world.</p><span class="arrow">Open Brand Identity →</span></a>
-                <a class="explore-card" href="marketing-strategy.html"><span class="number">03 · THE TRIBE</span><h3>Marketing Strategy</h3><p>The working strategy for finding, speaking to and building lasting relationships with Vimuktam's right tribe.</p><span class="arrow">Open Marketing Strategy →</span></a>
-                <a class="explore-card" href="culture.html"><span class="number">04 · THE PEOPLE</span><h3>Vimuktam Culture</h3><p>The internal expression of Vimuktam: how we work, treat one another, learn, lead and create a workplace worth belonging to.</p><span class="arrow">Open Culture →</span></a>
+
+    <!-- IMAGE CAROUSEL -->
+
+    <section class="carousel">
+
+        <div class="carousel-window">
+
+            <div class="carousel-placeholder">
+                Image Placeholder
             </div>
+
+            <button class="carousel-arrow left" aria-label="Previous image">‹</button>
+            <button class="carousel-arrow right" aria-label="Next image">›</button>
+
         </div>
+
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+
     </section>
-    <section class="section" id="services">
-        <div class="section-inner"><h2>Services</h2><p class="section-intro">Trainings, learning experiences and practical programmes for people, organisations and communities. This section will grow as the offerings are developed.</p></div>
-    </section>
-    <section class="section" id="us">
+
+
+    <!-- VIMUKTAM INTRODUCTION -->
+
+    <section class="section introduction" id="vimuktam">
+
         <div class="section-inner">
-            <h2>Us</h2>
-            <p class="section-intro">The people behind Vimuktam, the relationships that sustain it, and the internal work through which the project continues to grow.</p>
-            <div class="explore-grid">
-                <a class="explore-card" href="login.html"><span class="number">EXECUTIVE AREA</span><h3>Login</h3><p>The private operational area for Vimuktam's authorised custodians. The BCP currently lives here; maintenance logs and other internal systems will be added here as they are developed.</p><span class="arrow">Enter Login →</span></a>
-            </div>
+
+            <h1 class="section-title">Vimuktam</h1>
+
+            <p class="lorem">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Curabitur vitae sem at neque elementum tincidunt. Integer
+                facilisis, sapien sed consequat feugiat, lorem ipsum
+                consectetur nunc, vitae tincidunt erat ipsum at libero.
+            </p>
+
         </div>
+
     </section>
+
+
+    <!-- TESTIMONIALS -->
+
+    <section class="section testimonials">
+
+        <div class="section-inner">
+
+            <h2 class="section-title">Testimonials</h2>
+
+            <div class="testimonial-grid">
+
+                <article class="testimonial">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer facilisis sapien vitae lorem.
+                    </p>
+                    <div class="testimonial-author">
+                        — Name / Organisation
+                    </div>
+                </article>
+
+                <article class="testimonial">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer facilisis sapien vitae lorem.
+                    </p>
+                    <div class="testimonial-author">
+                        — Name / Organisation
+                    </div>
+                </article>
+
+                <article class="testimonial">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer facilisis sapien vitae lorem.
+                    </p>
+                    <div class="testimonial-author">
+                        — Name / Organisation
+                    </div>
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PARTNERS & CLIENTS -->
+
+    <section class="section partners" id="services">
+
+        <div class="section-inner">
+
+            <h2 class="section-title">Partners &amp; Clients</h2>
+
+            <div class="partner-grid">
+
+                <div class="partner-placeholder">Logo</div>
+                <div class="partner-placeholder">Logo</div>
+                <div class="partner-placeholder">Logo</div>
+                <div class="partner-placeholder">Logo</div>
+                <div class="partner-placeholder">Logo</div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- US -->
+
+    <section class="section introduction" id="us">
+
+        <div class="section-inner">
+
+            <h2 class="section-title">Us</h2>
+
+            <p class="lorem">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Curabitur vitae sem at neque elementum tincidunt.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="section contact">
+
+        <div class="section-inner">
+
+            <h2 class="section-title">Contact</h2>
+
+            <div class="contact-grid">
+
+                <div class="contact-details">
+
+                    <p>
+                        <span class="contact-label">Address</span>
+                        [Placeholder]
+                    </p>
+
+                    <p>
+                        <span class="contact-label">Email</span>
+                        [Placeholder]
+                    </p>
+
+                    <p>
+                        <span class="contact-label">Phone</span>
+                        [Placeholder]
+                    </p>
+
+                    <p>
+                        <span class="contact-label">Other</span>
+                        [Placeholder]
+                    </p>
+
+                </div>
+
+
+                <div class="socials">
+
+                    <a href="#" class="social-link">YouTube</a>
+                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="#" class="social-link">Instagram</a>
+                    <a href="#" class="social-link">Facebook</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </main>
-<footer><span class="logo">Vimuktam</span><p>Learning • Culture • Experience • Growth</p></footer>
+
+
+<footer>
+
+    <span class="wordmark">Vimuktam</span>
+
+    <p>
+        Learning • Culture • Experience
+    </p>
+
+</footer>
+
 </body>
 </html>
