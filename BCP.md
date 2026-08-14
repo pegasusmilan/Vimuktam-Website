@@ -204,7 +204,9 @@ Recover Hostinger/domain access, verify ownership and renewal status, restore DN
 
 ### 12.10 IF CHATGPT OR THE GITHUB PLUGIN IS UNAVAILABLE
 
-Access GitHub directly. The website and digital vault remain in the repository. Development can continue through direct repository access or another suitable method. Cloudflare deployment and the independent backup remain separate systems.
+1. Uninstall the GitHub plugin from ChatGPT and remove the ChatGPT App from GitHub. Then reinstall the GitHub plugin in ChatGPT and make sure the **Approve All** action permission tab is checked. Try again to access the GitHub repository after reinstallation. If this does not fix the issue, see the next step.
+2. Check if another chat is able to work through the plugin after reinstallation. If that works, this new chat can be used as a hack and repository changes can be made with it. If this does not fix the issue, see the next step.
+3. Access GitHub directly. The website and digital vault remain in the repository. Development can continue through direct repository access or another suitable method. Cloudflare deployment and the independent backup remain separate systems.
 
 ### 12.11 IF A BACKUP FAILS
 
