@@ -4,6 +4,8 @@
 **Prepared:** August 2026  
 **Status:** Living document
 
+## 1. PRINCIPLE OF CONTINUITY
+
 > The ultimate continuity of the manifestation of Vimuktam is in the behaviours of the real humans that participate in Vimuktam. All the other tools, systems and databases are only the means to achieve this.
 
 Vimuktam is not ultimately contained in a website, repository, database, company account or particular piece of technology. These are instruments through which Vimuktam manifests. This document exists so that a human being can understand, recover and continue Vimuktam even if one or more of its current systems are lost, compromised, inaccessible or discontinued.
@@ -30,23 +32,27 @@ This does not make GitHub a password store. Passwords, tokens, recovery codes an
 
 **PRIMARY repository:** GitHub
 
-**Backup 1:** GitHub → Bitbucket
+### Backup 1 — Bitbucket
 
-**Backup 2 / Standby:** GitHub → GitLab
+**Direction:** GitHub → Bitbucket  
+**Schedule:** Daily at 2:00 AM  
+**Pipeline/Workflow:** `backup-from-github`  
+**Destination:** Independent Bitbucket copy of the GitHub repository  
+**Credential:** GitHub Personal Access Token, stored separately in the Credential Key  
+**Credential validity:** 11 August 2027
+
+### Backup 2 / Standby — GitLab
+
+**Direction:** GitHub → GitLab  
+**Schedule:** Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch  
+**Pipeline/Workflow:** `.github/workflows/main.yml`  
+**Destination:** `vimuktam-group/Vimuktam-Website`  
+**Credential:** GitLab Project Access Token, stored separately in the Credential Key  
+**Credential validity:** 11 August 2027
 
 **Bitbucket is Backup 1. GitLab is Backup 2 / Standby.**
 
-The Bitbucket pipeline is deliberately one-way and cannot modify the primary GitHub repository.
-
-**Bitbucket backup schedule:** Daily at 2:00 AM  
-**Pipeline:** `backup-from-github`  
-**Backup credential validity:** 11 August 2027
-
-**GitLab backup workflow:** `.github/workflows/main.yml`  
-**GitLab backup schedule:** Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch.  
-**GitLab destination:** `vimuktam-group/Vimuktam-Website`  
-**GitLab backup credential:** GitLab Project Access Token, stored separately in the Credential Key; the token itself is never recorded in this BCP.  
-**GitLab credential validity:** 11 August 2027
+Both backup pipelines/workflows are deliberately one-way and cannot modify the primary GitHub repository. Actual credential values are never recorded in this BCP.
 
 ## 5. PRIMARY DIGITAL VAULT — GITHUB
 
@@ -64,37 +70,43 @@ The arrangement is considered temporary until the website is linked to its inten
 
 Recovery requires access to Cloudflare, DNS/domain configuration and the GitHub deployment connection.
 
-## 7. INDEPENDENT BACKUP — BITBUCKET
+## 7. INDEPENDENT BACKUP 1 — BITBUCKET
 
 Bitbucket maintains an independent copy of the GitHub repository.
 
 **Direction:** GitHub → Bitbucket  
-**Frequency:** Daily  
-**Time:** 2:00 AM  
-**Pipeline:** `backup-from-github`
+**Schedule:** Daily at 2:00 AM  
+**Pipeline/Workflow:** `backup-from-github`  
+**Destination:** Independent Bitbucket copy of the GitHub repository  
+**Credential:** GitHub Personal Access Token, stored separately in the Credential Key  
+**Credential validity:** 11 August 2027
 
 The backup has been created, tested and verified. Bitbucket is **Backup 1** and provides an independent recovery source if GitHub becomes unavailable, compromised or inaccessible.
 
-## 8. INDEPENDENT BACKUP 2 — GITLAB STANDBY
+## 8. INDEPENDENT BACKUP 2 / STANDBY — GITLAB
 
 GitLab maintains an independent copy of the GitHub repository as **Backup 2 / Standby**.
 
 **Direction:** GitHub → GitLab  
-**Workflow:** `.github/workflows/main.yml`  
 **Schedule:** Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch.  
-**Destination:** `vimuktam-group/Vimuktam-Website`
+**Pipeline/Workflow:** `.github/workflows/main.yml`  
+**Destination:** `vimuktam-group/Vimuktam-Website`  
+**Credential:** GitLab Project Access Token, stored separately in the Credential Key  
+**Credential validity:** 11 August 2027
 
 The GitLab backup is one-way and cannot modify the primary GitHub repository. Its purpose is to provide a second independent recovery source if GitHub becomes unavailable, compromised or inaccessible.
 
-The GitLab Project Access Token is stored separately in the Credential Key. The actual token is never recorded in this BCP. The current token validity date is 11 August 2027.
+The actual GitLab Project Access Token is never recorded in this BCP.
 
 ## 9. ACCOUNT SECURITY AND RECOVERY
 
-Critical systems currently include Google/Gmail, Yahoo recovery, GitHub, Bitbucket/Atlassian, Cloudflare and Hostinger/domain access.
+Critical systems currently include Google/Gmail, Yahoo recovery, GitHub, Bitbucket/Atlassian, TutaMail, GitLab, Cloudflare and Hostinger/domain access.
+
+TutaMail is the email identity associated with the GitLab Backup 2 / Standby account and therefore forms part of that recovery pathway.
 
 The principal Google account has multiple verification and recovery methods. The recovery chain includes Google → Yahoo → an independent Gmail account held by Shalini.
 
-GitHub and Bitbucket/Atlassian have two-step verification enabled.
+GitHub and Bitbucket/Atlassian have two-step verification enabled. TutaMail and GitLab access are part of the Backup 2 / Standby recovery pathway.
 
 The actual recovery information belongs in the Credential Key, not this BCP.
 
@@ -109,7 +121,8 @@ The following access categories are required. **Actual values are not recorded h
 - GitHub Personal Access Token — automated Bitbucket backup; current backup credential valid through 11 August 2027.
 - Bitbucket / Atlassian Account — backup repository and pipeline administration.
 - Bitbucket Backup Token — pipeline authentication.
-- GitLab Account / Project — Backup 2 / Standby repository and backup administration.
+- TutaMail Account — GitLab account identity / email associated with the Backup 2 / Standby repository and GitLab administration.
+- GitLab Account / Project — Backup 2 / Standby repository and backup administration; account associated with the TutaMail account.
 - GitLab Project Access Token — authentication for the GitHub-to-GitLab backup workflow; valid through 11 August 2027. The actual token is maintained only in the Credential Key.
 - Cloudflare Account — deployment and DNS/network recovery.
 - Hostinger / Domain Account — domain ownership, renewal and DNS-related recovery; current status considered valid through November 2026.
@@ -211,7 +224,7 @@ General order:
 
 ### 12.13 IF EVERYTHING DIGITAL APPEARS LOST
 
-Do not assume Vimuktam has been lost. Locate this BCP, the Credential Key, Bitbucket backup, the second independent backup once established, physical BCP copies and recovery accounts. Establish what still exists, recover identity access, then recover the digital vault before beginning major reconstruction.
+Do not assume Vimuktam has been lost. Locate this BCP, the Credential Key, Backup 1 / Bitbucket, Backup 2 / GitLab Standby, physical BCP copies and recovery accounts. Establish what still exists, recover identity access, then recover the digital vault before beginning major reconstruction.
 
 ### 12.14 EXTERNAL MEDIA
 
@@ -247,7 +260,7 @@ The Credential Key is deliberately separate from the BCP. It contains actual pas
 
 **After any significant incident, complete the full Monthly Maintenance checklist as soon as practical, even if the incident appears to concern only one system. The purpose is to ensure the entire Vimuktam system is checked and not merely the faulty section.**
 
-## 16. DOCUMENT CUSTODY
+## 14. DOCUMENT CUSTODY
 
 Two physical BCP copies exist: one with the principal Vimuktam custodian and one with Shalini.
 
@@ -255,7 +268,7 @@ An electronic copy is also held with Shalini by email.
 
 The purpose of these copies is to ensure that recovery instructions do not disappear along with the systems they describe.
 
-## 17. FUTURE BCP MODULES
+## 15. FUTURE BCP MODULES
 
 The BCP is intentionally expandable.
 
@@ -280,7 +293,7 @@ Books, manuscripts, instruments, recordings, artwork, equipment, physical archiv
 ### G. Public and Social Media Presence
 YouTube, Instagram and Facebook / Meta, including account ownership, recovery, two-step verification, content archives, administrative access and succession.
 
-## 18. RECOVERY PRIORITY
+## 16. RECOVERY PRIORITY
 
 1. Human and identity access.
 2. Vimuktam's source and digital vault.
@@ -293,7 +306,7 @@ YouTube, Instagram and Facebook / Meta, including account ownership, recovery, t
 
 The objective is not necessarily to restore everything simultaneously. It is to restore the continuity of Vimuktam, beginning with the elements necessary for its work to continue.
 
-## 19. CURRENT STATUS — AUGUST 2026
+## 17. CURRENT STATUS — AUGUST 2026
 
 - Website: Operational.
 - Primary repository/digital vault: GitHub — Active.
@@ -324,7 +337,7 @@ The objective is not necessarily to restore everything simultaneously. It is to 
 - Succession/incapacity: Future BCP module.
 - YouTube / Instagram / Facebook: Future BCP module.
 
-## 20. WEEKLY MAINTENANCE
+## 18. WEEKLY MAINTENANCE
 
 **Week beginning / date:** ______________________________________________  
 **Executive / person performing check:** _________________________________
@@ -346,7 +359,7 @@ _________________________________________________________________________
 
 ---
 
-## 21. MONTHLY MAINTENANCE
+## 19. MONTHLY MAINTENANCE
 
 **Maintenance date (normally the 30th):** _______________________________  
 **Executive / person performing check:** _________________________________
