@@ -1,6 +1,6 @@
 # VIMUKTAM — BUSINESS CONTINUITY & RECOVERY PLAN
 
-**Version:** 1.1  
+**Version:** 1.2  
 **Prepared:** August 2026  
 **Status:** Living document
 
@@ -28,7 +28,13 @@ This does not make GitHub a password store. Passwords, tokens, recovery codes an
 
 **Primary workflow:** Human direction → ChatGPT → GitHub → Cloudflare → Live Vimuktam Website
 
-**Backup workflow:** GitHub → Bitbucket
+**PRIMARY repository:** GitHub
+
+**Backup 1:** GitHub → Bitbucket
+
+**Backup 2 / Standby:** GitHub → GitLab
+
+**Bitbucket is Backup 1. GitLab is Backup 2 / Standby.**
 
 The Bitbucket pipeline is deliberately one-way and cannot modify the primary GitHub repository.
 
@@ -36,7 +42,11 @@ The Bitbucket pipeline is deliberately one-way and cannot modify the primary Git
 **Pipeline:** `backup-from-github`  
 **Backup credential validity:** 11 August 2027
 
-A second independent repository backup is planned using a service separate from Bitbucket.
+**GitLab backup workflow:** `.github/workflows/main.yml`  
+**GitLab backup schedule:** Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch.  
+**GitLab destination:** `vimuktam-group/Vimuktam-Website`  
+**GitLab backup credential:** GitLab Project Access Token, stored separately in the Credential Key; the token itself is never recorded in this BCP.  
+**GitLab credential validity:** 11 August 2027
 
 ## 5. PRIMARY DIGITAL VAULT — GITHUB
 
@@ -63,13 +73,20 @@ Bitbucket maintains an independent copy of the GitHub repository.
 **Time:** 2:00 AM  
 **Pipeline:** `backup-from-github`
 
-The backup has been created, tested and verified. Its purpose is to provide a recovery source if GitHub becomes unavailable, compromised or inaccessible.
+The backup has been created, tested and verified. Bitbucket is **Backup 1** and provides an independent recovery source if GitHub becomes unavailable, compromised or inaccessible.
 
-## 8. SECOND INDEPENDENT BACKUP
+## 8. INDEPENDENT BACKUP 2 — GITLAB STANDBY
 
-A second independent backup is planned. It should retrieve the primary GitHub repository independently and maintain its own copy.
+GitLab maintains an independent copy of the GitHub repository as **Backup 2 / Standby**.
 
-It should be one-way, independently authenticated, independently scheduled and independently recoverable. It should be tested before being considered operational.
+**Direction:** GitHub → GitLab  
+**Workflow:** `.github/workflows/main.yml`  
+**Schedule:** Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch.  
+**Destination:** `vimuktam-group/Vimuktam-Website`
+
+The GitLab backup is one-way and cannot modify the primary GitHub repository. Its purpose is to provide a second independent recovery source if GitHub becomes unavailable, compromised or inaccessible.
+
+The GitLab Project Access Token is stored separately in the Credential Key. The actual token is never recorded in this BCP. The current token validity date is 11 August 2027.
 
 ## 9. ACCOUNT SECURITY AND RECOVERY
 
@@ -92,9 +109,10 @@ The following access categories are required. **Actual values are not recorded h
 - GitHub Personal Access Token — automated Bitbucket backup; current backup credential valid through 11 August 2027.
 - Bitbucket / Atlassian Account — backup repository and pipeline administration.
 - Bitbucket Backup Token — pipeline authentication.
+- GitLab Account / Project — Backup 2 / Standby repository and backup administration.
+- GitLab Project Access Token — authentication for the GitHub-to-GitLab backup workflow; valid through 11 August 2027. The actual token is maintained only in the Credential Key.
 - Cloudflare Account — deployment and DNS/network recovery.
 - Hostinger / Domain Account — domain ownership, renewal and DNS-related recovery; current status considered valid through November 2026.
-- Future second backup service — to be added when established.
 
 ## 11. CREDENTIAL KEY
 
@@ -129,7 +147,7 @@ The practical recovery question is:
 
 Determine whether the problem is account access, two-step verification, lost device, recovery method, service outage or repository loss.
 
-Use the Credential Key and documented recovery routes. Do not create a new repository prematurely. If GitHub cannot be recovered, use the Bitbucket backup as the recovery source.
+Use the Credential Key and documented recovery routes. Do not create a new repository prematurely. If GitHub cannot be recovered, use Bitbucket **Backup 1** as the recovery source. If Backup 1 is unavailable or unsuitable, use GitLab **Backup 2 / Standby**.
 
 ### 12.3 IF THE PHONE IS LOST
 
@@ -143,9 +161,11 @@ Use the documented Google recovery methods, then the Yahoo recovery account if r
 
 Verify that GitHub remains intact. Recover Bitbucket through Atlassian/Bitbucket recovery. Once restored, verify the latest backup, pipeline and schedule.
 
-### 12.6 IF GITHUB IS LOST AND BITBUCKET MUST BE USED
+If Bitbucket cannot be restored promptly, verify that GitLab **Backup 2 / Standby** remains available and current.
 
-1. Access Bitbucket.
+### 12.6 IF GITHUB IS LOST AND A BACKUP MUST BE USED
+
+1. Access Bitbucket **Backup 1** or GitLab **Backup 2 / Standby**.
 2. Locate the latest successful backup.
 3. Verify the expected website and Vimuktam vault material is present.
 4. Create/recover a GitHub repository.
@@ -154,7 +174,7 @@ Verify that GitHub remains intact. Recover Bitbucket through Atlassian/Bitbucket
 7. Reconnect Cloudflare.
 8. Verify DNS/domain configuration.
 9. Deploy and test the website.
-10. Re-establish automated backup.
+10. Re-establish automated Backup 1 and Backup 2 arrangements.
 11. Update this BCP with any changed infrastructure.
 
 ### 12.7 IF THE GITHUB REPOSITORY IS DAMAGED
@@ -175,7 +195,7 @@ Access GitHub directly. The website and digital vault remain in the repository. 
 
 ### 12.11 IF A BACKUP FAILS
 
-Check the latest successful backup, GitHub, the pipeline, credential/token expiry and account notifications. Correct the underlying problem, run a manual backup and verify the result. Record significant incidents.
+Identify whether the failure concerns Bitbucket **Backup 1** or GitLab **Backup 2 / Standby**. Check the latest successful backup, GitHub, the relevant pipeline/workflow, credential/token expiry and account notifications. Correct the underlying problem, run a manual backup where appropriate and verify the result. Record significant incidents.
 
 ### 12.12 IF MULTIPLE SYSTEMS FAIL
 
@@ -279,13 +299,17 @@ The objective is not necessarily to restore everything simultaneously. It is to 
 - Primary repository/digital vault: GitHub — Active.
 - GitHub security: Two-step verification enabled.
 - Website deployment: Cloudflare — Active.
-- Independent backup: Bitbucket — Active.
+- Backup 1: Bitbucket — Active.
 - Bitbucket backup: Tested successfully.
 - Bitbucket backup schedule: Daily at 2:00 AM.
 - Bitbucket backup credential: Valid through 11 August 2027.
-- Second independent backup: Planned.
+- Backup 2 / Standby: GitLab — Active.
+- GitLab backup workflow: `.github/workflows/main.yml`.
+- GitLab backup schedule: Daily at 18:00 UTC, with additional runs on pushes to `main` and manual workflow dispatch.
+- GitLab backup credential: GitLab Project Access Token; actual token stored separately in the Credential Key; valid through 11 August 2027.
 - Atlassian security: Two-step verification enabled.
 - Bitbucket security: Two-step verification enabled.
+- GitLab project security: Access credential maintained separately in the Credential Key.
 - Google security: Multiple verification/recovery methods enabled.
 - Google recovery chain: Yahoo → Shalini's independent Gmail.
 - Domain/Hostinger: Considered current through November 2026.
@@ -310,7 +334,7 @@ The objective is not necessarily to restore everything simultaneously. It is to 
 - [ ] Confirm the live Vimuktam website is accessible.
 - [ ] Confirm the GitHub repository is accessible.
 - [ ] Confirm the latest Bitbucket backup has succeeded.
-- [ ] Once established, confirm the second independent backup has succeeded.
+- [ ] Confirm the GitLab Backup 2 / Standby has succeeded.
 - [ ] Check for obvious account/security warnings.
 - [ ] Confirm any credential changes have been recorded in the Credential Key.
 - [ ] Confirm any incidents have been recorded in the Incident Report.
@@ -333,7 +357,7 @@ _________________________________________________________________________
 
 - [ ] Check GitHub repository.
 - [ ] Check Bitbucket backup.
-- [ ] Check the second independent backup once established.
+- [ ] Check GitLab Backup 2 / Standby.
 - [ ] Confirm recent changes exist in the backups.
 - [ ] Check Cloudflare and live deployment.
 - [ ] Check domain status.
@@ -343,6 +367,7 @@ _________________________________________________________________________
 - [ ] Review Google security notifications.
 - [ ] Review GitHub security notifications.
 - [ ] Review Atlassian/Bitbucket notifications.
+- [ ] Review GitLab project/account notifications.
 - [ ] Review Cloudflare notifications.
 - [ ] Confirm recovery methods remain usable.
 - [ ] Confirm Credential Key access.
