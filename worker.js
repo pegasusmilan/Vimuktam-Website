@@ -4,12 +4,12 @@ export default {
 
     if (url.pathname === "/api/r2-test") {
       try {
-        const listed = await env.MULTIMEDIA.list({ limit: 1 });
+        const listed = await env.MULTIMEDIA.list({ limit: 10 });
         return Response.json({
           ok: true,
           bucket: "vimuktam-multimedia",
           accessible: true,
-          sampleObjectCount: listed.objects.length,
+          objects: listed.objects.map((object) => object.key),
         });
       } catch (error) {
         return Response.json(
