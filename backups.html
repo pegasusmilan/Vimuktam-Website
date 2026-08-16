@@ -22,10 +22,10 @@
 <div class="cabinet-grid">
 <section class="cabinet">
 <div class="number">01 · PRIMARY</div><h3>Website Repository</h3>
-<p>The complete Vimuktam GitHub repository. Primarily a technical doorway when direct repository access is ever needed.</p>
+<p>The complete Vimuktam GitHub repository, presented through a Vimuktam-facing portal for routine viewing and management.</p>
 <span class="tag">GitHub · Full repository</span>
-<div class="form"><input id="github" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Website Repository cabinet password"><button onclick="openCabinet('github','https://github.com/pegasusmilan/Vimuktam-Website')">Enter</button></div>
-<div class="note">Underlying GitHub authentication remains separate.</div>
+<div class="form"><input id="github" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Website Repository cabinet password"><button onclick="openWebsiteRepository()">Enter</button></div>
+<div class="note">The underlying GitHub interface remains available from inside the cabinet when technically required.</div>
 </section>
 
 <section class="cabinet">
@@ -33,7 +33,7 @@
 <p>The everyday filing cupboard for BCPs, policies, agreements, PDFs, Markdown archives and other company documents.</p>
 <span class="tag">GitHub · Company docs</span>
 <div class="form"><input id="docs" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Company Documents cabinet password"><button onclick="openCabinet('docs','https://github.com/pegasusmilan/Vimuktam-Website/tree/main/Company%20docs')">Enter</button></div>
-<div class="note">The eventual cabinet will handle routine filing without requiring GitHub navigation.</div>
+<div class="note">Its Vimuktam-facing filing portal will be connected next.</div>
 </section>
 
 <section class="cabinet">
@@ -41,7 +41,7 @@
 <p>The working media and publications cupboard for images, publications and other larger files.</p>
 <span class="tag">Cloudflare · Main R2</span>
 <div class="form"><input id="mainr2" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Main R2 cabinet password"><button onclick="openCabinet('mainr2','https://dash.cloudflare.com/')">Enter</button></div>
-<div class="note">The eventual cabinet will handle routine upload and filing from Vimuktam.</div>
+<div class="note">Its Vimuktam-facing upload and filing portal will be connected next.</div>
 </section>
 </div>
 
@@ -75,13 +75,25 @@
 <footer>Vimuktam · Executive operational area · The cabinet interface is the human-facing layer; underlying credentials and service security remain outside the static page.</footer>
 </main>
 <script>
+async function openWebsiteRepository(){
+ const value=document.getElementById('github').value.trim();
+ if(!value){alert('Enter the cabinet password to continue.');return;}
+ const button=document.querySelector('#github + button');button.disabled=true;button.textContent='Checking…';
+ try{
+   const response=await fetch('/api/cabinet/website-repository/login',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password:value})});
+   const data=await response.json();
+   if(!response.ok){alert(data.error||'Unable to open cabinet.');return;}
+   window.location.href='repository-portal.html';
+ }catch(error){alert('The cabinet service could not be reached.');}
+ finally{button.disabled=false;button.textContent='Enter';}
+}
 function openCabinet(id,url){
  const value=document.getElementById(id).value.trim();
  if(!value){alert('Enter the cabinet password to continue.');return;}
- // Temporary navigation layer. Real cabinet authentication will be moved server-side;
- // passwords/secrets are not stored in this page.
+ // Other cabinets will be connected to their Vimuktam portals as those portals are built.
  window.location.href=url;
 }
+document.getElementById('github').addEventListener('keydown',event=>{if(event.key==='Enter')openWebsiteRepository();});
 </script>
 </body>
 </html>
