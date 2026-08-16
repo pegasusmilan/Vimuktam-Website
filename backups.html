@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vimuktam continuity and backup control centre">
+<title>Vimuktam — Backup Control Centre</title>
+<style>
+:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--line:rgba(48,43,39,.16)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:920px;margin:0 auto;padding:64px 28px 90px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.14em;text-transform:uppercase;font-size:8pt}h1,h2{color:var(--teal);font-weight:bold}h1{font-size:24pt;margin:12px 0 8px}h2{font-size:14pt;margin-top:38px}.intro{max-width:760px}.card{background:var(--white);border:1px solid var(--line);padding:22px;margin:14px 0}.card b{display:block;color:var(--teal);margin-bottom:6px}.meta{font-size:8pt;opacity:.72;margin:8px 0 16px}.form{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.form input{flex:1 1 260px;min-width:0;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}.form button{padding:10px 16px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer}.form button:hover{opacity:.9}.note{font-size:8pt;opacity:.72;margin-top:10px}a.back{display:inline-block;color:var(--teal);text-decoration:none;margin-bottom:24px}.status{display:inline-block;padding:3px 8px;border:1px solid var(--line);font-size:8pt}.status.live{color:var(--teal)}footer{margin-top:48px;font-size:8pt;opacity:.75}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="login.html">← Back to Executive Area</a>
+<div class="eyebrow">Vimuktam · Continuity</div>
+<h1>Backup Control Centre</h1>
+<p class="intro">The three-layer backup system protects Vimuktam's working files and operational history. Each backup retains historical recovery material for 90 days, while the primary systems remain the sources of truth.</p>
+
+<h2>Git–Bit–Git</h2>
+<div class="card">
+<b>GitHub → Bitbucket</b>
+<span>Primary Git repository mirrored to the first independent Git backup layer.</span>
+<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
+<div class="form"><input id="gbg1" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="GitHub to Bitbucket backup password"><button onclick="openConsole('gbg1','')">Open Backup</button></div>
+<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+</div>
+<div class="card">
+<b>Bitbucket → GitLab</b>
+<span>Independent second Git backup layer for repository recovery.</span>
+<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
+<div class="form"><input id="gbg2" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="Bitbucket to GitLab backup password"><button onclick="openConsole('gbg2','')">Open Backup</button></div>
+<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+</div>
+<div class="card">
+<b>GitLab → GitHub</b>
+<span>Independent return layer completing the three-location recovery chain.</span>
+<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
+<div class="form"><input id="gbg3" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="GitLab to GitHub backup password"><button onclick="openConsole('gbg3','')">Open Backup</button></div>
+<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+</div>
+
+<h2>Cloudflare R2</h2>
+<div class="card">
+<b>Media &amp; Publications Backup</b>
+<span>Main R2 → independent backup R2. New files are copied on the next backup; deleted files and historical versions are retained for 90 days.</span>
+<div class="meta"><span class="status live">9.90 GB operational ceiling</span> · Daily + manual backup · Restore to main</div>
+<div class="form"><input id="r2" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="R2 backup password"><button onclick="openConsole('r2','https://vimuktam-media-publications-backup.vimukback03.workers.dev/')">Open Backup</button></div>
+<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+</div>
+
+<footer>Vimuktam · Executive operational area · Backup control interfaces are protected separately from the public website.</footer>
+</main>
+<script>
+function openConsole(id,base){
+ const token=document.getElementById(id).value;
+ if(!token)return;
+ const target=base || '#';
+ if(target==='#'){
+   alert('This backup console is not yet connected. The retention policy and interface are ready; its protected endpoint must be configured next.');
+   return;
+ }
+ window.location.href=target+'?token='+encodeURIComponent(token);
+}
+</script>
+</body>
+</html>
