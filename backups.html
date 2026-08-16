@@ -3,64 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Vimuktam continuity and backup control centre">
-<title>Vimuktam — Backup Control Centre</title>
+<meta name="description" content="Vimuktam private repository, storage and backup control centre">
+<title>Vimuktam — Repository &amp; Storage Control Centre</title>
 <style>
 :root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--line:rgba(48,43,39,.16)}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:920px;margin:0 auto;padding:64px 28px 90px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.14em;text-transform:uppercase;font-size:8pt}h1,h2{color:var(--teal);font-weight:bold}h1{font-size:24pt;margin:12px 0 8px}h2{font-size:14pt;margin-top:38px}.intro{max-width:760px}.card{background:var(--white);border:1px solid var(--line);padding:22px;margin:14px 0}.card b{display:block;color:var(--teal);margin-bottom:6px}.meta{font-size:8pt;opacity:.72;margin:8px 0 16px}.form{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.form input{flex:1 1 260px;min-width:0;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}.form button{padding:10px 16px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer}.form button:hover{opacity:.9}.note{font-size:8pt;opacity:.72;margin-top:10px}a.back{display:inline-block;color:var(--teal);text-decoration:none;margin-bottom:24px}.status{display:inline-block;padding:3px 8px;border:1px solid var(--line);font-size:8pt}.status.live{color:var(--teal)}footer{margin-top:48px;font-size:8pt;opacity:.75}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:920px;margin:0 auto;padding:64px 28px 90px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.14em;text-transform:uppercase;font-size:8pt}h1,h2{color:var(--teal);font-weight:bold}h1{font-size:24pt;margin:12px 0 8px}h2{font-size:14pt;margin-top:38px}.intro{max-width:760px}.card{background:var(--white);border:1px solid var(--line);padding:22px;margin:14px 0}.card b{display:block;color:var(--teal);margin-bottom:6px}.meta{font-size:8pt;opacity:.72;margin:8px 0 16px}.form{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.form input{flex:1 1 260px;min-width:0;padding:10px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}.form button{padding:10px 16px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer}.form button:hover{opacity:.9}.note{font-size:8pt;opacity:.72;margin-top:10px}a.back{display:inline-block;color:var(--teal);text-decoration:none;margin-bottom:24px}.status{display:inline-block;padding:3px 8px;border:1px solid var(--line);font-size:8pt}.status.live{color:var(--teal)}.status.backup{color:#8b5a2b}footer{margin-top:48px;font-size:8pt;opacity:.75}
 </style>
 </head>
 <body>
 <main>
 <a class="back" href="login.html">← Back to Executive Area</a>
-<div class="eyebrow">Vimuktam · Continuity</div>
-<h1>Backup Control Centre</h1>
-<p class="intro">The three-layer backup system protects Vimuktam's working files and operational history. Each backup retains historical recovery material for 90 days, while the primary systems remain the sources of truth.</p>
+<div class="eyebrow">Vimuktam · Administration</div>
+<h1>Repository &amp; Storage Control Centre</h1>
+<p class="intro">A private set of doors into Vimuktam's working repositories, document store, media storage and independent recovery systems. Primary systems remain the sources of truth; backup systems remain independent recovery points.</p>
 
-<h2>Git–Bit–Git</h2>
+<h2>Primary repositories &amp; storage</h2>
+
 <div class="card">
-<b>GitHub → Bitbucket</b>
-<span>Primary Git repository mirrored to the first independent Git backup layer.</span>
-<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
-<div class="form"><input id="gbg1" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="GitHub to Bitbucket backup password"><button onclick="openConsole('gbg1','')">Open Backup</button></div>
-<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
-</div>
-<div class="card">
-<b>Bitbucket → GitLab</b>
-<span>Independent second Git backup layer for repository recovery.</span>
-<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
-<div class="form"><input id="gbg2" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="Bitbucket to GitLab backup password"><button onclick="openConsole('gbg2','')">Open Backup</button></div>
-<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
-</div>
-<div class="card">
-<b>GitLab → GitHub</b>
-<span>Independent return layer completing the three-location recovery chain.</span>
-<div class="meta"><span class="status live">90-day retention policy</span> · Current state + recoverable historical versions</div>
-<div class="form"><input id="gbg3" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="GitLab to GitHub backup password"><button onclick="openConsole('gbg3','')">Open Backup</button></div>
-<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+<b>Website Repository</b>
+<span>The complete primary GitHub repository containing the Vimuktam website source, Company docs and associated project material.</span>
+<div class="meta"><span class="status live">Primary · GitHub</span> · Technical access</div>
+<div class="form"><input id="github" type="password" autocomplete="current-password" placeholder="Admin password" aria-label="Website repository admin password"><button onclick="openLink('github','https://github.com/pegasusmilan/Vimuktam-Website')">Open Repository</button></div>
+<div class="note">The underlying GitHub account retains its own authentication and two-step verification.</div>
 </div>
 
-<h2>Cloudflare R2</h2>
 <div class="card">
-<b>Media &amp; Publications Backup</b>
-<span>Main R2 → independent backup R2. New files are copied on the next backup; deleted files and historical versions are retained for 90 days.</span>
-<div class="meta"><span class="status live">9.90 GB operational ceiling</span> · Daily + manual backup · Restore to main</div>
-<div class="form"><input id="r2" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="R2 backup password"><button onclick="openConsole('r2','https://vimuktam-media-publications-backup.vimukback03.workers.dev/')">Open Backup</button></div>
-<div class="note">Password is used only to open the protected backup console; this page does not store it.</div>
+<b>Company Documents</b>
+<span>Your everyday document cupboard inside the primary GitHub repository: BCPs, policies, agreements, PDFs, Markdown archives and other company material.</span>
+<div class="meta"><span class="status live">Primary · GitHub / Company docs</span> · Manual document filing</div>
+<div class="form"><input id="docs" type="password" autocomplete="current-password" placeholder="Admin password" aria-label="Company documents admin password"><button onclick="openLink('docs','https://github.com/pegasusmilan/Vimuktam-Website/tree/main/Company%20docs')">Open Company Documents</button></div>
+<div class="note">Add or manage documents directly in the Company docs area; GitHub remains the underlying system.</div>
 </div>
 
-<footer>Vimuktam · Executive operational area · Backup control interfaces are protected separately from the public website.</footer>
+<div class="card">
+<b>Main R2</b>
+<span>Primary media and publication storage for images, publications and other larger files that are not kept in GitHub.</span>
+<div class="meta"><span class="status live">Primary · Cloudflare R2</span> · Manual file management</div>
+<div class="form"><input id="mainr2" type="password" autocomplete="current-password" placeholder="Admin password" aria-label="Main R2 admin password"><button onclick="openLink('mainr2','https://dash.cloudflare.com/')">Open Cloudflare</button></div>
+<div class="note">Cloudflare remains responsible for authentication, account security and R2 bucket management.</div>
+</div>
+
+<h2>Independent recovery systems</h2>
+
+<div class="card">
+<b>Bitbucket — Backup 1</b>
+<span>Independent copy of the primary GitHub repository for recovery if GitHub becomes unavailable, compromised or inaccessible.</span>
+<div class="meta"><span class="status backup">Backup 1</span> · Daily at 2:00 AM · Normal Git history retained</div>
+<div class="form"><input id="bitbucket" type="password" autocomplete="current-password" placeholder="Admin password" aria-label="Bitbucket admin password"><button onclick="openLink('bitbucket','https://bitbucket.org/')">Open Bitbucket</button></div>
+<div class="note">No automatic 90-day Git pruning. Storage can be reviewed and managed manually if needed.</div>
+</div>
+
+<div class="card">
+<b>GitLab — Backup 2 / Standby</b>
+<span>Second independent copy of the GitHub repository for recovery and standby use.</span>
+<div class="meta"><span class="status backup">Backup 2 · Standby</span> · Daily at 18:00 UTC + push/manual runs · Normal Git history retained</div>
+<div class="form"><input id="gitlab" type="password" autocomplete="current-password" placeholder="Admin password" aria-label="GitLab admin password"><button onclick="openLink('gitlab','https://gitlab.com/vimuktam-group/Vimuktam-Website')">Open GitLab</button></div>
+<div class="note">No automatic 90-day Git pruning. Storage can be reviewed and managed manually if needed.</div>
+</div>
+
+<div class="card">
+<b>R2 Backup</b>
+<span>Independent disaster-recovery copy of Main R2 with automatic backup, 90-day retention for deleted files and historical versions, and restoration controls.</span>
+<div class="meta"><span class="status backup">Recovery · Cloudflare R2</span> · 9.90 GB operational ceiling · Daily + manual backup</div>
+<div class="form"><input id="r2backup" type="password" autocomplete="current-password" placeholder="Backup password" aria-label="R2 backup password"><button onclick="openLink('r2backup','https://vimuktam-media-publications-backup.vimukback03.workers.dev/')">Open Backup Console</button></div>
+<div class="note">The backup console displays used/available storage, deleted-file status, historical versions, manual deletion and restore-to-main controls.</div>
+</div>
+
+<footer>Vimuktam · Executive operational area · Underlying services retain their own authentication and security controls.</footer>
 </main>
 <script>
-function openConsole(id,base){
- const token=document.getElementById(id).value;
- if(!token)return;
- const target=base || '#';
- if(target==='#'){
-   alert('This backup console is not yet connected. The retention policy and interface are ready; its protected endpoint must be configured next.');
-   return;
- }
- window.location.href=target+'?token='+encodeURIComponent(token);
+function openLink(id,base){
+ const value=document.getElementById(id).value;
+ if(!value){alert('Enter the admin password to continue.');return;}
+ // The admin-area authentication layer will be moved to server-side protection
+ // (Cloudflare Access) before public launch. This page does not store passwords.
+ window.location.href=base;
 }
 </script>
 </body>
