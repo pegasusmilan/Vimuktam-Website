@@ -158,6 +158,10 @@ export default {
       return new Response(object.body, { headers });
     }
 
+    if (!env.ASSETS || typeof env.ASSETS.fetch !== "function") {
+      return new Response("Website assets are not available in this deployment.", { status: 503 });
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
