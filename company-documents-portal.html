@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vimuktam Company Documents portal">
+<title>Vimuktam — Company Documents</title>
+<style>
+:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.15)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:1100px;margin:0 auto;padding:44px 28px 72px}.back{color:var(--teal);text-decoration:none}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt;margin-top:28px}h1{color:var(--teal);font-size:25pt;line-height:1.15;margin:8px 0}.intro{max-width:760px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0}.toolbar input{flex:1;min-width:240px;padding:11px;border:1px solid var(--line);background:var(--white);font:inherit}.button{display:inline-block;padding:10px 14px;border:1px solid var(--teal);background:var(--teal);color:#fff;text-decoration:none;cursor:pointer;font:inherit}.button.secondary{background:transparent;color:var(--teal)}.status{background:rgba(255,253,248,.72);border:1px solid var(--line);padding:12px 15px;margin-bottom:18px}.upload{background:var(--white);border:1px solid var(--line);padding:18px;margin-bottom:18px}.upload h2,.panel h2{color:var(--teal);font-size:12pt;margin:0 0 12px}.upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.upload input[type=file]{flex:1;min-width:260px}.upload small{display:block;margin-top:8px;opacity:.65}.layout{display:grid;grid-template-columns:380px 1fr;gap:18px}.panel{background:var(--white);border:1px solid var(--line);padding:18px;min-height:520px}.files{max-height:650px;overflow:auto;border-top:1px solid var(--line)}.file{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:10px 4px;color:var(--ink);font:inherit;cursor:pointer}.file:hover,.file.active{color:var(--teal);background:rgba(233,221,200,.35)}.path{font-family:Consolas,monospace;font-size:8pt}.viewer{background:#f8f3e9;border:1px solid var(--line);padding:18px;min-height:420px;max-height:650px;overflow:auto}.viewer pre{white-space:pre-wrap;word-break:break-word;font-family:Consolas,monospace;font-size:8pt;margin:0}.viewer iframe{width:100%;height:610px;border:0}.muted{opacity:.65;font-size:8pt}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:820px){.layout{grid-template-columns:1fr}.panel{min-height:0}}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="backups.html">← Back to Almirahs</a>
+<div class="eyebrow">Vimuktam · Primary Documents</div>
+<h1>Company Documents</h1>
+<p class="intro">The everyday Vimuktam filing cupboard. Add company documents here; the portal places them directly into the <strong>Company docs/</strong> folder of the primary GitHub repository.</p>
+
+<div class="toolbar">
+<input id="search" type="search" placeholder="Search company documents…" aria-label="Search company documents">
+<a class="button secondary" href="https://github.com/pegasusmilan/Vimuktam-Website/tree/main/Company%20docs" target="_blank" rel="noopener">Open GitHub</a>
+<button class="button secondary" id="logout">Leave Cabinet</button>
+</div>
+
+<section class="upload">
+<h2>File a document</h2>
+<div class="upload-row">
+<input id="upload-file" type="file" aria-label="Choose a company document">
+<button class="button" id="upload-button">Put in Company Documents</button>
+</div>
+<small>New files are added safely to <strong>Company docs/</strong>. Existing files are not overwritten from this portal.</small>
+<div class="status" id="upload-status" style="display:none;margin:12px 0 0"></div>
+</section>
+
+<div class="status" id="status">Loading company documents…</div>
+<div class="layout">
+<section class="panel"><h2>Company Documents</h2><div id="files" class="files"></div></section>
+<section class="panel"><h2 id="viewer-title">Select a document</h2><div id="viewer" class="viewer">Choose a document to view it here.</div></section>
+</div>
+</main>
+<script>
+let tree=[];
+const filesEl=document.getElementById('files');
+const statusEl=document.getElementById('status');
+const viewerEl=document.getElementById('viewer');
+const titleEl=document.getElementById('viewer-title');
+const uploadStatus=document.getElementById('upload-status');
+
+async function loadTree(){
+  const response=await fetch('/api/company-documents/tree',{credentials:'same-origin'});
+  if(response.status===401){window.location.href='backups.html';return;}
+  const data=await response.json();
+  if(!response.ok){statusEl.textContent=data.error||'Unable to load company documents.';return;}
+  tree=data.tree||[];
+  statusEl.textContent=`Connected to ${data.repo}. ${tree.length} documents available.`;
+  renderFiles();
+}
+function renderFiles(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  filesEl.innerHTML='';
+  tree.filter(item=>item.path.toLowerCase().includes(q)).forEach(item=>{
+    const button=document.createElement('button');
+    button.className='file';
+    button.innerHTML=`<span class="path">${escapeHtml(item.path.slice('Company docs/'.length))}</span><br><span class="muted">${formatSize(item.size)}</span>`;
+    button.onclick=()=>openFile(item.path,button);
+    filesEl.appendChild(button);
+  });
+  if(!filesEl.children.length) filesEl.innerHTML='<div class="muted">No matching documents.</div>';
+}
+async function openFile(path,button){
+  document.querySelectorAll('.file').forEach(el=>el.classList.remove('active'));button.classList.add('active');
+  titleEl.textContent=path.slice('Company docs/'.length);viewerEl.textContent='Loading…';
+  const response=await fetch('/api/company-documents/file?path='+encodeURIComponent(path),{credentials:'same-origin'});
+  const data=await response.json();
+  if(!response.ok){viewerEl.textContent=data.error||'Unable to open document.';return;}
+  const lower=path.toLowerCase();
+  if(data.content && data.encoding==='base64' && /\.(md|markdown|txt|json|yaml|yml|csv|xml|html|css|js|ts)$/i.test(path)){
+    try{viewerEl.innerHTML=`<pre>${escapeHtml(decodeBase64Utf8(data.content))}</pre>`;}catch{viewerEl.textContent='This document could not be displayed here.';}
+  }else if(data.downloadUrl){
+    viewerEl.innerHTML=`<p>This file is stored safely in Company Documents.</p><div class="actions"><a class="button" href="${escapeHtml(data.downloadUrl)}" target="_blank" rel="noopener">Open / Download</a>${data.htmlUrl?`<a class="button secondary" href="${escapeHtml(data.htmlUrl)}" target="_blank" rel="noopener">Open GitHub</a>`:''}</div>`;
+  }else{
+    viewerEl.textContent='This document is stored in the repository. Open GitHub to view it.';
+  }
+}
+function decodeBase64Utf8(value){const binary=atob(value.replace(/\n/g,'').replace(/\r/g,''));const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));return new TextDecoder().decode(bytes);}
+function formatSize(size){if(size<1024)return `${size} B`;if(size<1024*1024)return `${(size/1024).toFixed(1)} KB`;return `${(size/1024/1024).toFixed(1)} MB`;}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+document.getElementById('search').addEventListener('input',renderFiles);
+document.getElementById('logout').addEventListener('click',async()=>{await fetch('/api/cabinet/company-documents/logout',{method:'POST',credentials:'same-origin'});window.location.href='backups.html';});
+document.getElementById('upload-button').addEventListener('click',uploadFile);
+async function uploadFile(){
+  const file=document.getElementById('upload-file').files[0];
+  if(!file){alert('Choose a document first.');return;}
+  if(file.size>25*1024*1024){alert('For this filing portal, please keep individual files below 25 MB.');return;}
+  uploadStatus.style.display='block';uploadStatus.textContent='Putting the document into Company Documents…';
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    const result=String(reader.result||'');
+    const content=result.includes(',')?result.split(',')[1]:'';
+    const path='Company docs/'+file.name.replace(/^[\\/]+/,'');
+    try{
+      const response=await fetch('/api/company-documents/upload',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({path,content})});
+      const data=await response.json();
+      if(!response.ok){uploadStatus.textContent=data.error||'The document could not be filed.';return;}
+      uploadStatus.textContent='Filed successfully.';document.getElementById('upload-file').value='';await loadTree();
+    }catch(error){uploadStatus.textContent='The filing service could not be reached.';}
+  };
+  reader.readAsDataURL(file);
+}
+loadTree();
+</script>
+</body>
+</html>
