@@ -183,6 +183,38 @@ export default {
       return json({ ok: true, path, url: data?.content?.html_url || null });
     }
 
+    if (url.pathname === "/api/company-documents/update" && request.method === "POST") {
+      if (!(await validSession(request, env.COMPANY_DOCS_PASSWORD, "vimuktam_docs_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
+      if (!env.GITHUB_TOKEN) return json({ ok: false, error: "GitHub access is not configured." }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
+      const path = body?.path;
+      const content = body?.content;
+      const sha = body?.sha;
+      if (!validCompanyDocsPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
+      if (typeof content !== "string") return json({ ok: false, error: "No document content was supplied." }, 400);
+      if (typeof sha !== "string" || !sha) return json({ ok: false, error: "The document version could not be verified. Reload the document and try again." }, 409);
+      if (content.length > 140000000) return json({ ok: false, error: "This document is too large for the repository portal." }, 413);
+
+      const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
+      const response = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          message: `Update company document: ${path.slice("Company docs/".length)}`,
+          content: btoa(unescape(encodeURIComponent(content))),
+          sha,
+          branch: "main",
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        if (response.status === 409) return json({ ok: false, error: "This document changed elsewhere. Reload it before saving again." }, 409);
+        return json({ ok: false, error: data?.message || `GitHub update failed (${response.status}).` }, response.status === 403 ? 502 : response.status);
+      }
+      return json({ ok: true, path, sha: data?.content?.sha || null, url: data?.content?.html_url || null });
+    }
+
     if (url.pathname === "/api/r2-test") {
       try {
         const listed = await env.MULTIMEDIA.list({ limit: 10 });
