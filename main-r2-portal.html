@@ -34,19 +34,7 @@ async function loadFiles(){
  }catch(e){box.innerHTML='<div class="empty">The storage service could not be reached.</div>';}
 }
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
-async function viewFile(key){
- const tab=window.open('about:blank','_blank');
- if(!tab){alert('Please allow pop-ups for this site to view the file.');return;}
- tab.document.title='Loading file…';
- try{
-  const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{credentials:'same-origin'});
-  if(!r.ok){const d=await r.json().catch(()=>({}));tab.close();alert(d.error||'Unable to view this file.');return;}
-  const blob=await r.blob();
-  const url=URL.createObjectURL(blob);
-  tab.location.href=url;
-  setTimeout(()=>URL.revokeObjectURL(url),60000);
- }catch(e){tab.close();alert('The file could not be opened for viewing.');}
-}
+function viewFile(key){window.open('/r2-viewer.html?key='+encodeURIComponent(key),'vimuktamR2Viewer');}
 async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok){alert(d.error||'Delete failed.');return;}loadFiles();}
 async function uploadFile(){const input=document.getElementById('file'),folder=document.getElementById('folder').value.trim().replace(/^\/|\/$/g,'');const status=document.getElementById('uploadStatus');if(!input.files.length){status.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',input.files[0]);fd.append('folder',folder);status.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){status.textContent=d.error||'Upload failed.';return;}status.textContent='Uploaded successfully.';input.value='';loadFiles();}catch(e){status.textContent='The upload service could not be reached.';}}
 loadFiles();
