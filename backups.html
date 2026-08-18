@@ -40,8 +40,8 @@
 <div class="number">03 · PRIMARY</div><h3>Main R2</h3>
 <p>The working media and publications cupboard for images, publications and other larger files.</p>
 <span class="tag">Cloudflare · Main R2</span>
-<div class="form"><input id="mainr2" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Main R2 cabinet password"><button onclick="openCabinet('mainr2','https://dash.cloudflare.com/')">Enter</button></div>
-<div class="note">Its Vimuktam-facing upload and filing portal will be connected next.</div>
+<div class="form"><input id="mainr2" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Main R2 cabinet password"><button onclick="openMainR2()">Enter</button></div>
+<div class="note">Inside: view/download, upload and delete. To edit, download the file, edit it, and upload the edited copy.</div>
 </section>
 </div>
 
@@ -78,29 +78,15 @@
 async function cabinetLogin(password, endpoint, destination, button){
  if(!password){alert('Enter the cabinet password to continue.');return;}
  button.disabled=true;button.textContent='Checking…';
- try{
-   const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password})});
-   const data=await response.json();
-   if(!response.ok){alert(data.error||'Unable to open cabinet.');return;}
-   window.location.href=destination;
- }catch(error){alert('The cabinet service could not be reached.');}
- finally{button.disabled=false;button.textContent='Enter';}
+ try{const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password})});const data=await response.json();if(!response.ok){alert(data.error||'Unable to open cabinet.');return;}window.location.href=destination;}catch(error){alert('The cabinet service could not be reached.');}finally{button.disabled=false;button.textContent='Enter';}
 }
-function openWebsiteRepository(){
- const input=document.getElementById('github');
- cabinetLogin(input.value.trim(),'/api/cabinet/website-repository/login','repository-portal.html',document.querySelector('#github + button'));
-}
-function openCompanyDocuments(){
- const input=document.getElementById('docs');
- cabinetLogin(input.value.trim(),'/api/cabinet/company-documents/login','company-documents-portal.html',document.querySelector('#docs + button'));
-}
-function openCabinet(id,url){
- const value=document.getElementById(id).value.trim();
- if(!value){alert('Enter the cabinet password to continue.');return;}
- window.location.href=url;
-}
+function openWebsiteRepository(){const input=document.getElementById('github');cabinetLogin(input.value.trim(),'/api/cabinet/website-repository/login','repository-portal.html',document.querySelector('#github + button'));}
+function openCompanyDocuments(){const input=document.getElementById('docs');cabinetLogin(input.value.trim(),'/api/cabinet/company-documents/login','company-documents-portal.html',document.querySelector('#docs + button'));}
+function openMainR2(){const input=document.getElementById('mainr2');cabinetLogin(input.value.trim(),'/api/cabinet/main-r2/login','main-r2-portal.html',document.querySelector('#mainr2 + button'));}
+function openCabinet(id,url){const value=document.getElementById(id).value.trim();if(!value){alert('Enter the cabinet password to continue.');return;}window.location.href=url;}
 document.getElementById('github').addEventListener('keydown',event=>{if(event.key==='Enter')openWebsiteRepository();});
 document.getElementById('docs').addEventListener('keydown',event=>{if(event.key==='Enter')openCompanyDocuments();});
+document.getElementById('mainr2').addEventListener('keydown',event=>{if(event.key==='Enter')openMainR2();});
 </script>
 </body>
 </html>
