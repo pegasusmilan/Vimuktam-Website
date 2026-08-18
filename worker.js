@@ -39,11 +39,9 @@ async function validSession(request, password, cookieName) {
   const escapedName = cookieName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const match = cookie.match(new RegExp(`(?:^|;\\s*)${escapedName}=([^;]+)`));
   if (!match) return false;
-
   const [expiresText, signatureText] = decodeURIComponent(match[1]).split(".");
   const expires = Number(expiresText);
   if (!Number.isFinite(expires) || expires < Date.now()) return false;
-
   const expected = await signSession(password, expires);
   return signatureText === expected.split(".")[1];
 }
@@ -66,12 +64,11 @@ function githubPath(path) {
 }
 
 function validCompanyDocsPath(path) {
-  return typeof path === "string" &&
-    path.startsWith("Company docs/") &&
-    !path.includes("..") &&
-    !path.includes("\\") &&
-    path.length > "Company docs/".length &&
-    path.length <= 240;
+  return typeof path === "string" && path.startsWith("Company docs/") && !path.includes("..") && !path.includes("\\") && path.length > "Company docs/".length && path.length <= 240;
+}
+
+function validR2Key(key) {
+  return typeof key === "string" && key.startsWith("Media/") && !key.includes("..") && !key.includes("\\") && key.length > "Media/".length && key.length <= 1024;
 }
 
 export default {
@@ -163,20 +160,13 @@ export default {
       if (!validCompanyDocsPath(path)) return json({ ok: false, error: "Choose a valid file path inside Company docs." }, 400);
       if (typeof content !== "string" || !content) return json({ ok: false, error: "No file content was supplied." }, 400);
       if (content.length > 140000000) return json({ ok: false, error: "This file is too large for the repository portal." }, 413);
-
       const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
       const existing = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}?ref=main`);
       if (existing.ok) return json({ ok: false, error: "A file with that name already exists. Rename the new file rather than replacing it here." }, 409);
       if (existing.status !== 404) return json({ ok: false, error: `GitHub file check failed (${existing.status}).` }, 502);
-
       const response = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}`, {
-        method: "PUT",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          message: `Add company document: ${path.slice("Company docs/".length)}`,
-          content,
-          branch: "main",
-        }),
+        method: "PUT", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: `Add company document: ${path.slice("Company docs/".length)}`, content, branch: "main" }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) return json({ ok: false, error: data?.message || `GitHub upload failed (${response.status}).` }, response.status === 403 ? 502 : response.status);
@@ -188,31 +178,70 @@ export default {
       if (!env.GITHUB_TOKEN) return json({ ok: false, error: "GitHub access is not configured." }, 503);
       let body;
       try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
-      const path = body?.path;
-      const content = body?.content;
-      const sha = body?.sha;
+      const path = body?.path; const content = body?.content; const sha = body?.sha;
       if (!validCompanyDocsPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
       if (typeof content !== "string") return json({ ok: false, error: "No document content was supplied." }, 400);
       if (typeof sha !== "string" || !sha) return json({ ok: false, error: "The document version could not be verified. Reload the document and try again." }, 409);
       if (content.length > 140000000) return json({ ok: false, error: "This document is too large for the repository portal." }, 413);
-
       const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
       const response = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}`, {
-        method: "PUT",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          message: `Update company document: ${path.slice("Company docs/".length)}`,
-          content: btoa(unescape(encodeURIComponent(content))),
-          sha,
-          branch: "main",
-        }),
+        method: "PUT", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: `Update company document: ${path.slice("Company docs/".length)}`, content: btoa(unescape(encodeURIComponent(content))), sha, branch: "main" }),
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        if (response.status === 409) return json({ ok: false, error: "This document changed elsewhere. Reload it before saving again." }, 409);
-        return json({ ok: false, error: data?.message || `GitHub update failed (${response.status}).` }, response.status === 403 ? 502 : response.status);
-      }
+      if (!response.ok) { if (response.status === 409) return json({ ok: false, error: "This document changed elsewhere. Reload it before saving again." }, 409); return json({ ok: false, error: data?.message || `GitHub update failed (${response.status}).` }, response.status === 403 ? 502 : response.status); }
       return json({ ok: true, path, sha: data?.content?.sha || null, url: data?.content?.html_url || null });
+    }
+
+    if (url.pathname === "/api/cabinet/main-r2/login" && request.method === "POST") {
+      if (!env.MAIN_R2_PASSWORD) return json({ ok: false, error: "Cabinet authentication is not configured." }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
+      if (!body?.password || body.password !== env.MAIN_R2_PASSWORD) return json({ ok: false, error: "Incorrect cabinet password." }, 401);
+      const expires = Date.now() + 30 * 60 * 1000;
+      const session = await signSession(env.MAIN_R2_PASSWORD, expires);
+      return json({ ok: true }, 200, { "set-cookie": `vimuktam_main_r2_session=${encodeURIComponent(session)}; Max-Age=1800; Path=/; HttpOnly; Secure; SameSite=Lax` });
+    }
+
+    if (url.pathname === "/api/cabinet/main-r2/logout" && request.method === "POST") {
+      return json({ ok: true }, 200, { "set-cookie": "vimuktam_main_r2_session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax" });
+    }
+
+    if (url.pathname === "/api/main-r2/list" && request.method === "GET") {
+      if (!(await validSession(request, env.MAIN_R2_PASSWORD, "vimuktam_main_r2_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
+      try {
+        const listed = await env.MULTIMEDIA.list({ prefix: "Media/", limit: 1000 });
+        return json({ ok: true, objects: listed.objects.map((object) => ({ key: object.key, size: object.size, uploaded: object.uploaded })) });
+      } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
+    }
+
+    if (url.pathname === "/api/main-r2/file" && (request.method === "GET" || request.method === "DELETE")) {
+      if (!(await validSession(request, env.MAIN_R2_PASSWORD, "vimuktam_main_r2_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
+      const key = url.searchParams.get("key");
+      if (!validR2Key(key)) return json({ ok: false, error: "Invalid file path." }, 400);
+      if (request.method === "DELETE") {
+        try { await env.MULTIMEDIA.delete(key); return json({ ok: true }); }
+        catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
+      }
+      try {
+        const object = await env.MULTIMEDIA.get(key);
+        if (!object) return json({ ok: false, error: "File not found." }, 404);
+        const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("content-disposition", `attachment; filename="${key.split("/").pop().replace(/[\"\\]/g, "")}"`);
+        return new Response(object.body, { headers });
+      } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
+    }
+
+    if (url.pathname === "/api/main-r2/upload" && request.method === "POST") {
+      if (!(await validSession(request, env.MAIN_R2_PASSWORD, "vimuktam_main_r2_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
+      try {
+        const form = await request.formData(); const file = form.get("file"); const folder = String(form.get("folder") || "").trim().replace(/^\/|\/$/g, "");
+        if (!(file instanceof File)) return json({ ok: false, error: "Choose a file first." }, 400);
+        if (folder.includes("..") || folder.includes("\\")) return json({ ok: false, error: "Invalid folder name." }, 400);
+        const name = file.name.replace(/[/\\]/g, "_").trim(); if (!name || name === "." || name === "..") return json({ ok: false, error: "Invalid file name." }, 400);
+        const key = `Media/${folder ? folder + "/" : ""}${name}`; if (!validR2Key(key)) return json({ ok: false, error: "Invalid storage path." }, 400);
+        await env.MULTIMEDIA.put(key, file.stream(), { httpMetadata: { contentType: file.type || "application/octet-stream" } });
+        return json({ ok: true, key });
+      } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
     }
 
     if (url.pathname === "/api/r2-test") {
@@ -227,10 +256,7 @@ export default {
     if (url.pathname === "/media/Hindi-teacher-Milan.webp") {
       const object = await env.MULTIMEDIA.get("Media/images/Hindi-teacher-Milan.webp");
       if (!object) return new Response("Not found", { status: 404 });
-      const headers = new Headers();
-      object.writeHttpMetadata(headers);
-      headers.set("etag", object.httpEtag);
-      headers.set("cache-control", "public, max-age=3600");
+      const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("cache-control", "public, max-age=3600");
       return new Response(object.body, { headers });
     }
 
