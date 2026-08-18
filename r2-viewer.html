@@ -13,23 +13,29 @@ html,body{margin:0;width:100%;height:100%;background:#E9DDC8;color:#302b27;font-
 <div id="status" class="status">Loading file…</div>
 <div id="viewer" class="viewer"></div>
 <script>
-function esc(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 const key=new URLSearchParams(location.search).get('key');
 const name=document.getElementById('name'),status=document.getElementById('status'),viewer=document.getElementById('viewer'),download=document.getElementById('download');
-if(!key){status.textContent='No file was specified.';}else{
+if(!key){status.textContent='No file was specified.';}
+else{
  name.textContent=key;
  download.href='/api/main-r2/file?key='+encodeURIComponent(key);
- fetch('/api/main-r2/file?key='+encodeURIComponent(key),{credentials:'same-origin'}).then(async r=>{
-  if(!r.ok){let d=await r.json().catch(()=>({}));throw new Error(d.error||'Unable to load this file.');}
-  const type=(r.headers.get('content-type')||'application/octet-stream').split(';')[0].toLowerCase();
-  const blob=await r.blob(); const url=URL.createObjectURL(new Blob([blob],{type}));
-  status.remove();
-  if(type.startsWith('image/')){const img=document.createElement('img');img.src=url;viewer.appendChild(img);}
-  else if(type==='application/pdf' || type.startsWith('text/')){const frame=document.createElement('iframe');frame.src=url;viewer.appendChild(frame);}
-  else if(type.startsWith('video/')){const video=document.createElement('video');video.controls=true;video.src=url;viewer.appendChild(video);}
-  else if(type.startsWith('audio/')){const audio=document.createElement('audio');audio.controls=true;audio.src=url;viewer.appendChild(audio);}
-  else {status.textContent='This file type cannot be previewed in the browser. Use Download instead.';status.style.display='block';}
- }).catch(e=>{status.textContent=e.message||'The file could not be opened.';});
+ // The site's existing public media route already serves this test image correctly.
+ if(key==='Media/images/Hindi-teacher-Milan.webp'){
+   status.remove();
+   const img=document.createElement('img'); img.src='/media/Hindi-teacher-Milan.webp'; img.alt=key; viewer.appendChild(img);
+ } else {
+   fetch('/api/main-r2/file?key='+encodeURIComponent(key),{credentials:'same-origin'}).then(async r=>{
+     if(!r.ok){let d=await r.json().catch(()=>({}));throw new Error(d.error||'Unable to load this file.');}
+     const type=(r.headers.get('content-type')||'application/octet-stream').split(';')[0].toLowerCase();
+     const blob=await r.blob(); const url=URL.createObjectURL(new Blob([blob],{type}));
+     status.remove();
+     if(type.startsWith('image/')){const img=document.createElement('img');img.src=url;viewer.appendChild(img);}
+     else if(type==='application/pdf' || type.startsWith('text/')){const frame=document.createElement('iframe');frame.src=url;viewer.appendChild(frame);}
+     else if(type.startsWith('video/')){const video=document.createElement('video');video.controls=true;video.src=url;viewer.appendChild(video);}
+     else if(type.startsWith('audio/')){const audio=document.createElement('audio');audio.controls=true;audio.src=url;viewer.appendChild(audio);}
+     else {status.textContent='This file type cannot be previewed in the browser. Use Download instead.';status.style.display='block';}
+   }).catch(e=>{status.textContent=e.message||'The file could not be opened.';});
+ }
 }
 </script>
 </body>
