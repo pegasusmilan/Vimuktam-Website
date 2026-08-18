@@ -6,7 +6,7 @@
 <title>Vimuktam — Main R2</title>
 <style>
 :root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.15)}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:10pt;line-height:1.6}main{max-width:1080px;margin:0 auto;padding:42px 24px 70px}.back{color:var(--teal);text-decoration:none}.eyebrow{margin-top:28px;color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;margin:8px 0}h2{color:var(--teal);font-size:14pt;margin:34px 0 12px}.note{background:var(--white);border:1px solid var(--line);padding:15px 17px;margin:22px 0}.upload{background:var(--white);border:1px solid var(--line);padding:20px}.upload-row{display:flex;gap:10px;flex-wrap:wrap}.upload input[type=file],.upload input[type=text]{padding:10px;border:1px solid var(--line);background:#fff;font:inherit}.upload input[type=text]{flex:1;min-width:180px}.button{padding:10px 15px;border:1px solid var(--teal);background:var(--teal);color:#fff;cursor:pointer;font:inherit}.button.secondary{background:var(--white);color:var(--teal)}.status{margin-top:10px;color:var(--muted,#70665D)}.files{display:grid;gap:10px}.file{background:var(--white);border:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;gap:14px;justify-content:space-between}.file-name{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.file-meta{font-size:8pt;opacity:.7}.actions{display:flex;gap:7px;flex-wrap:wrap}.empty{padding:22px;background:rgba(255,253,248,.65);border:1px dashed var(--line)}.small{font-size:8pt;opacity:.7}@media(max-width:700px){.file{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .button{flex:1}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:10pt;line-height:1.6}main{max-width:1080px;margin:0 auto;padding:42px 24px 70px}.back{color:var(--teal);text-decoration:none}.eyebrow{margin-top:28px;color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;margin:8px 0}h2{color:var(--teal);font-size:14pt;margin:34px 0 12px}.note{background:var(--white);border:1px solid var(--line);padding:15px 17px;margin:22px 0}.upload{background:var(--white);border:1px solid var(--line);padding:20px}.upload-row{display:flex;gap:10px;flex-wrap:wrap}.upload input[type=file],.upload input[type=text]{padding:10px;border:1px solid var(--line);background:#fff;font:inherit}.upload input[type=text]{flex:1;min-width:180px}.button{padding:10px 15px;border:1px solid var(--teal);background:var(--teal);color:#fff;cursor:pointer;font:inherit}.button.secondary{background:var(--white);color:var(--teal)}.button:disabled{opacity:.55;cursor:wait}.status{margin-top:10px;color:var(--muted,#70665D)}.files{display:grid;gap:10px}.file{background:var(--white);border:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;gap:14px;justify-content:space-between}.file-name{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.file-meta{font-size:8pt;opacity:.7}.actions{display:flex;gap:7px;flex-wrap:wrap}.empty{padding:22px;background:rgba(255,253,248,.65);border:1px dashed var(--line)}.small{font-size:8pt;opacity:.7}@media(max-width:700px){.file{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .button{flex:1}}
 </style>
 </head>
 <body>
@@ -35,15 +35,17 @@ async function loadFiles(){
 }
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
 async function viewFile(key){
+ const tab=window.open('about:blank','_blank');
+ if(!tab){alert('Please allow pop-ups for this site to view the file.');return;}
+ tab.document.title='Loading file…';
  try{
   const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{credentials:'same-origin'});
-  if(!r.ok){const d=await r.json().catch(()=>({}));alert(d.error||'Unable to view this file.');return;}
+  if(!r.ok){const d=await r.json().catch(()=>({}));tab.close();alert(d.error||'Unable to view this file.');return;}
   const blob=await r.blob();
   const url=URL.createObjectURL(blob);
-  const tab=window.open(url,'_blank');
-  if(!tab){alert('Please allow pop-ups for this site to view the file.');URL.revokeObjectURL(url);return;}
+  tab.location.href=url;
   setTimeout(()=>URL.revokeObjectURL(url),60000);
- }catch(e){alert('The file could not be opened for viewing.');}
+ }catch(e){tab.close();alert('The file could not be opened for viewing.');}
 }
 async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok){alert(d.error||'Delete failed.');return;}loadFiles();}
 async function uploadFile(){const input=document.getElementById('file'),folder=document.getElementById('folder').value.trim().replace(/^\/|\/$/g,'');const status=document.getElementById('uploadStatus');if(!input.files.length){status.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',input.files[0]);fd.append('folder',folder);status.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){status.textContent=d.error||'Upload failed.';return;}status.textContent='Uploaded successfully.';input.value='';loadFiles();}catch(e){status.textContent='The upload service could not be reached.';}}
