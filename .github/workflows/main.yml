@@ -1,4 +1,4 @@
-name: Backup GitHub repository to GitLab
+name: Backup and deploy Vimuktam website
 
 on:
   push:
@@ -23,3 +23,17 @@ jobs:
           git clone --mirror "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" repo.git
           cd repo.git
           git push --mirror "https://oauth2:${GITLAB_TOKEN}@gitlab.com/vimuktam-group/Vimuktam-Website.git"
+
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Worker to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
