@@ -51,7 +51,7 @@
 <div class="number">04 · RECOVERY</div><h3>Bitbucket · Backup 1</h3>
 <p>Independent Git recovery copy of the primary repository. Normal Git history is retained.</p>
 <span class="tag">Bitbucket · Daily backup</span>
-<div class="form"><input id="bitbucket" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Bitbucket cabinet password"><button onclick="openCabinet('bitbucket','https://bitbucket.org/')">Enter</button></div>
+<div class="form"><input id="bitbucket" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Bitbucket cabinet password"><button onclick="openBitbucketBackup1()">Enter</button></div>
 <div class="note">No automatic 90-day Git pruning. Storage can be reviewed manually.</div>
 </section>
 
@@ -83,10 +83,12 @@ async function cabinetLogin(password, endpoint, destination, button){
 function openWebsiteRepository(){const input=document.getElementById('github');cabinetLogin(input.value.trim(),'/api/cabinet/website-repository/login','repository-portal.html',document.querySelector('#github + button'));}
 function openCompanyDocuments(){const input=document.getElementById('docs');cabinetLogin(input.value.trim(),'/api/cabinet/company-documents/login','company-documents-portal.html',document.querySelector('#docs + button'));}
 function openMainR2(){const input=document.getElementById('mainr2');cabinetLogin(input.value.trim(),'/api/cabinet/main-r2/login','main-r2-portal.html',document.querySelector('#mainr2 + button'));}
+function openBitbucketBackup1(){const input=document.getElementById('bitbucket');cabinetLogin(input.value.trim(),'/api/cabinet/bitbucket-backup1/login','https://bitbucket.org/',document.querySelector('#bitbucket + button'));}
 function openCabinet(id,url){const value=document.getElementById(id).value.trim();if(!value){alert('Enter the cabinet password to continue.');return;}window.location.href=url;}
 document.getElementById('github').addEventListener('keydown',event=>{if(event.key==='Enter')openWebsiteRepository();});
 document.getElementById('docs').addEventListener('keydown',event=>{if(event.key==='Enter')openCompanyDocuments();});
 document.getElementById('mainr2').addEventListener('keydown',event=>{if(event.key==='Enter')openMainR2();});
+document.getElementById('bitbucket').addEventListener('keydown',event=>{if(event.key==='Enter')openBitbucketBackup1();});
 </script>
 </body>
 </html>
