@@ -31,7 +31,7 @@ async function loadFiles(){
  const box=document.getElementById('files');
  try{const r=await fetch('/api/main-r2/list',{credentials:'same-origin'});const d=await r.json();if(!r.ok){box.innerHTML='<div class="empty">'+esc(d.error||'Unable to load files.')+'</div>';return;}
  if(!d.objects.length){box.innerHTML='<div class="empty">No files stored yet.</div>';return;}
- box.innerHTML=d.objects.map(o=>`<div class="file"><div><div class="file-name">${esc(o.key)}</div><div class="file-meta">${size(o.size)} · ${esc(o.uploaded||'')}</div></div><div class="actions"><a class="button secondary" href="${viewerUrl(o.key)}">View</a><button class="button secondary" onclick="downloadFile(${JSON.stringify(o.key)})">Download</button><button class="button" onclick="deleteFile(${JSON.stringify(o.key)})">Delete</button></div></div>`).join('');
+ box.innerHTML=d.objects.map(o=>`<div class="file"><div><div class="file-name">${esc(o.key)}</div><div class="file-meta">${size(o.size)} · ${esc(o.uploaded||'')}</div></div><div class="actions"><a class="button secondary" href="${viewerUrl(o.key)}" target="_blank" rel="noopener">View</a><button class="button secondary" onclick="downloadFile(${JSON.stringify(o.key)})">Download</button><button class="button" onclick="deleteFile(${JSON.stringify(o.key)})">Delete</button></div></div>`).join('');
  }catch(e){box.innerHTML='<div class="empty">The storage service could not be reached.</div>';}
 }
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
