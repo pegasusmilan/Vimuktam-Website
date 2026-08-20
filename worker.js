@@ -193,6 +193,20 @@ export default {
       return json({ ok: true, path, sha: data?.content?.sha || null, url: data?.content?.html_url || null });
     }
 
+    if (url.pathname === "/api/cabinet/bitbucket-backup1/login" && request.method === "POST") {
+      if (!env.BITBUCKET_BACKUP1_PASSWORD) return json({ ok: false, error: "Cabinet authentication is not configured." }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
+      if (!body?.password || body.password !== env.BITBUCKET_BACKUP1_PASSWORD) return json({ ok: false, error: "Incorrect cabinet password." }, 401);
+      const expires = Date.now() + 30 * 60 * 1000;
+      const session = await signSession(env.BITBUCKET_BACKUP1_PASSWORD, expires);
+      return json({ ok: true }, 200, { "set-cookie": `vimuktam_bitbucket_backup1_session=${encodeURIComponent(session)}; Max-Age=1800; Path=/; HttpOnly; Secure; SameSite=Lax` });
+    }
+
+    if (url.pathname === "/api/cabinet/bitbucket-backup1/logout" && request.method === "POST") {
+      return json({ ok: true }, 200, { "set-cookie": "vimuktam_bitbucket_backup1_session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax" });
+    }
+
     if (url.pathname === "/api/cabinet/main-r2/login" && request.method === "POST") {
       if (!env.MAIN_R2_PASSWORD) return json({ ok: false, error: "Cabinet authentication is not configured." }, 503);
       let body;
@@ -226,7 +240,7 @@ export default {
       try {
         const object = await env.MULTIMEDIA.get(key);
         if (!object) return json({ ok: false, error: "File not found." }, 404);
-        const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("content-disposition", `attachment; filename="${key.split("/").pop().replace(/[\"\\]/g, "")}"`);
+        const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("content-disposition", `attachment; filename="${key.split("/").pop().replace(/["\\]/g, "")}"`);
         return new Response(object.body, { headers });
       } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
     }
