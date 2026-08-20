@@ -18,7 +18,7 @@
 <div class="note"><strong>Editing note:</strong> To edit a document, please download it, edit the downloaded copy on your computer, and upload the edited copy here as a new version.</div>
 <h2>Upload</h2>
 <section class="upload">
-<div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button class="button" onclick="uploadFile()">Upload</button></div>
+<div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button id="uploadButton" class="button">Upload</button></div>
 <div id="uploadStatus" class="status"></div>
 </section>
 <h2>Stored files</h2>
@@ -34,9 +34,9 @@ function esc(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<'
 function size(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';if(n<1073741824)return (n/1048576).toFixed(1)+' MB';return (n/1073741824).toFixed(1)+' GB';}
 function viewerUrl(key){return '/r2-viewer.html?key='+encodeURIComponent(key);}
 let currentPrefix='';
-function renderBreadcrumbs(){const box=document.getElementById('breadcrumbs');const parts=currentPrefix?currentPrefix.split('/'):[];let html='<button class="crumb '+(!currentPrefix?'current':'')+'" '+(currentPrefix?'onclick="openFolder(\'\')"':'')+'>Main R2</button>';let built='';for(const part of parts){built=built?built+'/'+part:part;const current=built===currentPrefix;html+='<span class="sep">/</span><button class="crumb '+(current?'current':'')+'" '+(current?'':'onclick="openFolder('+JSON.stringify(built)+')"')+'>'+esc(part)+'</button>';}box.innerHTML=html;}
-function openFolder(prefix){currentPrefix=prefix.replace(/^\/|\/$/g,'');renderBreadcrumbs();loadFiles();}
-function showViewer(key){const viewer=document.getElementById('viewer');viewer.innerHTML='<div class="viewer-head"><div class="viewer-title">'+esc(key)+'</div><button class="button secondary" onclick="closeViewer()">Close</button></div><iframe class="viewer-frame" title="Document viewer" src="'+viewerUrl(key)+'"></iframe>';}
+function renderBreadcrumbs(){const box=document.getElementById('breadcrumbs');const parts=currentPrefix?currentPrefix.split('/'):[];let html='<button class="crumb '+(!currentPrefix?'current':'')+'" data-action="folder" data-prefix="">Main R2</button>';let built='';for(const part of parts){built=built?built+'/'+part:part;const current=built===currentPrefix;html+='<span class="sep">/</span><button class="crumb '+(current?'current':'')+'" '+(current?'':'data-action="folder" data-prefix="'+esc(built)+'"')+'>'+esc(part)+'</button>';}box.innerHTML=html;}
+function openFolder(prefix){currentPrefix=String(prefix||'').replace(/^\/|\/$/g,'');renderBreadcrumbs();loadFiles();}
+function showViewer(key){const viewer=document.getElementById('viewer');viewer.innerHTML='<div class="viewer-head"><div class="viewer-title">'+esc(key)+'</div><button class="button secondary" data-action="close-viewer">Close</button></div><iframe class="viewer-frame" title="Document viewer" src="'+viewerUrl(key)+'"></iframe>';}
 function closeViewer(){document.getElementById('viewer').innerHTML='<div class="viewer-empty">Select View on a file to open its viewer here.</div>';}
 async function loadFiles(){
  const box=document.getElementById('files');
@@ -44,14 +44,25 @@ async function loadFiles(){
  const prefix=currentPrefix?currentPrefix+'/':'';const items=d.objects.filter(o=>o.key.startsWith('Media/'+prefix));const folders=new Set();const files=[];
  for(const o of items){const rest=o.key.slice(('Media/'+prefix).length);if(!rest)continue;const slash=rest.indexOf('/');if(slash>=0)folders.add(rest.slice(0,slash));else files.push(o);}
  if(!folders.size&&!files.length){box.innerHTML='<div class="empty">No files in this folder.</div>';return;}
- let html=Array.from(folders).sort().map(name=>'<div class="file"><div><div class="file-name folder-name" onclick="openFolder('+JSON.stringify(currentPrefix?currentPrefix+'/'+name:name)+')">📁 '+esc(name)+'</div><div class="file-meta">Folder</div></div></div>').join('');
- html+=files.map(o=>`<div class="file"><div><div class="file-name">${esc(o.key.slice(6))}</div><div class="file-meta">${size(o.size)} · ${esc(o.uploaded||'')}</div></div><div class="actions"><button class="button secondary" onclick="showViewer(${JSON.stringify(o.key)})">View</button><button class="button secondary" onclick="downloadFile(${JSON.stringify(o.key)})">Download</button><button class="button" onclick="deleteFile(${JSON.stringify(o.key)})">Delete</button></div></div>`).join('');
+ let html=Array.from(folders).sort().map(name=>'<div class="file"><div><div class="file-name folder-name" data-action="folder" data-prefix="'+esc(currentPrefix?currentPrefix+'/'+name:name)+'">📁 '+esc(name)+'</div><div class="file-meta">Folder</div></div></div>').join('');
+ html+=files.map(o=>`<div class="file"><div><div class="file-name">${esc(o.key.slice(6))}</div><div class="file-meta">${size(o.size)} · ${esc(o.uploaded||'')}</div></div><div class="actions"><button class="button secondary" data-action="view" data-key="${esc(o.key)}">View</button><button class="button secondary" data-action="download" data-key="${esc(o.key)}">Download</button><button class="button" data-action="delete" data-key="${esc(o.key)}">Delete</button></div></div>`).join('');
  box.innerHTML=html;
  }catch(e){box.innerHTML='<div class="empty">The storage service could not be reached.</div>';}
 }
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
 async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok){alert(d.error||'Delete failed.');return;}closeViewer();loadFiles();}
 async function uploadFile(){const input=document.getElementById('file'),folderInput=document.getElementById('folder');const folder=(folderInput.value.trim()||currentPrefix).replace(/^\/|\/$/g,'');const status=document.getElementById('uploadStatus');if(!input.files.length){status.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',input.files[0]);fd.append('folder',folder);status.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){status.textContent=d.error||'Upload failed';return;}status.textContent='Uploaded successfully.';input.value='';folderInput.value='';loadFiles();}catch(e){status.textContent='The upload service could not be reached.';}}
+
+document.addEventListener('click',function(event){
+ const el=event.target.closest('[data-action]'); if(!el)return;
+ const action=el.dataset.action;
+ if(action==='folder') openFolder(el.dataset.prefix||'');
+ else if(action==='view') showViewer(el.dataset.key);
+ else if(action==='download') downloadFile(el.dataset.key);
+ else if(action==='delete') deleteFile(el.dataset.key);
+ else if(action==='close-viewer') closeViewer();
+});
+document.getElementById('uploadButton').addEventListener('click',uploadFile);
 renderBreadcrumbs();loadFiles();
 </script>
 </main>
