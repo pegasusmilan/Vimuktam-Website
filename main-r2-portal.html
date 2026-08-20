@@ -35,6 +35,11 @@ function esc(v){return String(v).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;'
 function size(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';if(n<1073741824)return (n/1048576).toFixed(1)+' MB';return (n/1073741824).toFixed(1)+' GB';}
 function folderHref(prefix){return '?folder='+encodeURIComponent(prefix);}
 function viewerUrl(key){return '/r2-viewer.html?key='+encodeURIComponent(key);}
+function cleanName(name){return String(name||'').trim().replace(/^\/|\/$/g,'');}
+function simpleName(name){const clean=cleanName(name);return !!clean&&!clean.includes('/')&&!clean.includes('\\')&&!clean.includes('..');}
+function parentPrefix(prefix){const parts=prefix.split('/').filter(Boolean);parts.pop();return parts.join('/');}
+function basename(key){return key.split('/').pop()||'';}
+function folderKey(prefix){return 'Media/'+prefix.replace(/^\/|\/$/g,'')+'/';}
 function renderBreadcrumbs(){
  let html='<a class="crumb '+(!currentPrefix?'current':'')+'" href="'+(currentPrefix?'?':'#')+'">Main R2</a>';
  let built='';
@@ -52,13 +57,16 @@ function renderFiles(){
   const row=document.createElement('div');row.className='file';
   const info=document.createElement('div');info.style.width='100%';
   const a=document.createElement('a');a.className='folder-link';a.href=folderHref(currentPrefix?currentPrefix+'/'+name:name);a.innerHTML='📁 <strong>'+esc(name)+'</strong>';
-  const meta=document.createElement('div');meta.className='file-meta';meta.textContent='Folder';info.append(a,meta);row.appendChild(info);filesBox.appendChild(row);
+  const meta=document.createElement('div');meta.className='file-meta';meta.textContent='Folder';info.append(a,meta);
+  const actions=document.createElement('div');actions.className='actions';
+  for(const [label,action] of [['Rename','rename-folder'],['Delete','delete-folder']]){const b=document.createElement('button');b.type='button';b.className='button secondary';b.textContent=label;b.dataset.action=action;b.dataset.key=currentPrefix?currentPrefix+'/'+name:name;actions.appendChild(b);}
+  row.append(info,actions);filesBox.appendChild(row);
  }
  for(const o of files.sort((a,b)=>a.key.localeCompare(b.key))){
   const row=document.createElement('div');row.className='file';
   const info=document.createElement('div');const n=document.createElement('div');n.className='file-name';n.textContent=o.key.slice(6);const m=document.createElement('div');m.className='file-meta';m.textContent=size(o.size)+(o.uploaded?' · '+o.uploaded:'');info.append(n,m);
   const actions=document.createElement('div');actions.className='actions';
-  for(const [label,action] of [['View','view'],['Download','download'],['Delete','delete']]){const b=document.createElement('button');b.type='button';b.className='button '+(action==='delete'?'':'secondary');b.textContent=label;b.dataset.action=action;b.dataset.key=o.key;actions.appendChild(b);}
+  for(const [label,action] of [['View','view'],['Download','download'],['Rename','rename-file'],['Delete','delete']]){const b=document.createElement('button');b.type='button';b.className='button '+(action==='delete'?'':'secondary');b.textContent=label;b.dataset.action=action;b.dataset.key=o.key;actions.appendChild(b);}
   row.append(info,actions);filesBox.appendChild(row);
  }
 }
@@ -66,6 +74,11 @@ function showViewer(key){viewerBox.innerHTML='<div class="viewer-head"><div clas
 function closeViewer(){viewerBox.innerHTML='<div class="viewer-empty">Select View on a file to open its viewer here.</div>';}
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
 async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok){alert(d.error||'Delete failed.');return;}closeViewer();await loadFiles();}
+async function fetchBlob(key){const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{credentials:'same-origin'});if(!r.ok)throw new Error('Could not read '+key);return await r.blob();}
+async function putBlob(blob,key){const parts=key.split('/');const name=parts.pop();const folder=parts.slice(1).join('/');const file=new File([blob],name,{type:blob.type||'application/octet-stream'});const fd=new FormData();fd.append('file',file);fd.append('folder',folder);const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Upload failed.');}
+async function renameFile(oldKey){const oldName=basename(oldKey);const newName=prompt('New file name:',oldName);if(newName===null)return;if(!simpleName(newName)){alert('Enter a simple file name without /, \\, or ...');return;}if(newName===oldName)return;const parts=oldKey.split('/');parts.pop();const newKey=parts.join('/')+'/'+newName;uploadStatus.textContent='Renaming file…';try{const blob=await fetchBlob(oldKey);await putBlob(blob,newKey);const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(oldKey),{method:'DELETE',credentials:'same-origin'});if(!r.ok)throw new Error('The old file could not be removed.');uploadStatus.textContent='File renamed.';await loadFiles();}catch(e){uploadStatus.textContent=e.message||'Rename failed.';}}
+async function renameFolder(prefix){const oldName=basename(prefix);const newName=prompt('New folder name:',oldName);if(newName===null)return;if(!simpleName(newName)){alert('Enter a simple folder name without /, \\, or ...');return;}if(newName===oldName)return;const parent=parentPrefix(prefix);const targetPrefix=parent?(parent+'/'+newName):newName;const source='Media/'+prefix.replace(/\/$/,'')+'/';const targets=objects.filter(o=>o.key.startsWith(source));if(!targets.length){alert('This folder is empty.');return;}if(targets.some(o=>objects.some(x=>x.key==='Media/'+targetPrefix+'/'+o.key.slice(source.length)))){alert('A file or folder with that name already exists.');return;}uploadStatus.textContent='Renaming folder…';try{for(const o of targets){const relative=o.key.slice(source.length);const targetKey='Media/'+targetPrefix+'/'+relative;const blob=await fetchBlob(o.key);await putBlob(blob,targetKey);}for(const o of targets){const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(o.key),{method:'DELETE',credentials:'same-origin'});if(!r.ok)throw new Error('The old folder could not be fully removed.');}uploadStatus.textContent='Folder renamed.';if(currentPrefix===prefix||currentPrefix.startsWith(prefix+'/')){currentPrefix=targetPrefix;history.replaceState(null,'',folderHref(currentPrefix));}await loadFiles();}catch(e){uploadStatus.textContent=e.message||'Folder rename failed.';}}
+async function deleteFolder(prefix){const source='Media/'+prefix.replace(/\/$/,'')+'/';const targets=objects.filter(o=>o.key.startsWith(source));if(!confirm('Delete this folder and everything inside it?'))return;if(!targets.length){uploadStatus.textContent='Folder is already empty.';return;}uploadStatus.textContent='Deleting folder…';try{for(const o of targets){const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(o.key),{method:'DELETE',credentials:'same-origin'});if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.error||'Folder deletion failed.');}}uploadStatus.textContent='Folder deleted.';if(currentPrefix===prefix||currentPrefix.startsWith(prefix+'/')){currentPrefix=parentPrefix(prefix);history.replaceState(null,'',currentPrefix?folderHref(currentPrefix):'?');}await loadFiles();}catch(e){uploadStatus.textContent=e.message||'Folder deletion failed.';}}
 async function loadFiles(){filesBox.innerHTML='<div class="empty">Loading…</div>';try{const r=await fetch('/api/main-r2/list',{credentials:'same-origin'});const d=await r.json();if(!r.ok){filesBox.innerHTML='<div class="empty">'+esc(d.error||'Unable to load files.')+'</div>';return;}objects=Array.isArray(d.objects)?d.objects:[];renderBreadcrumbs();renderFiles();}catch(e){filesBox.innerHTML='<div class="empty">The storage service could not be reached.</div>';}}
 async function uploadFile(){if(!fileInput.files.length){uploadStatus.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',fileInput.files[0]);fd.append('folder',(folderInput.value.trim()||currentPrefix).replace(/^\/|\/$/g,''));uploadStatus.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){uploadStatus.textContent=d.error||'Upload failed';return;}uploadStatus.textContent='Uploaded successfully.';fileInput.value='';folderInput.value='';await loadFiles();}catch(e){uploadStatus.textContent='The upload service could not be reached.';}}
 async function newFolder(){
@@ -77,7 +90,7 @@ async function newFolder(){
  const fd=new FormData();fd.append('file',new Blob([''],{type:'text/plain'}),'.folder');fd.append('folder',parent+clean);uploadStatus.textContent='Creating folder…';
  try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok){uploadStatus.textContent=d.error||'Folder creation failed.';return;}uploadStatus.textContent='Folder created.';await loadFiles();}catch(e){uploadStatus.textContent='The storage service could not be reached.';}
 }
-filesBox.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action;if(a==='view')showViewer(b.dataset.key);if(a==='download')downloadFile(b.dataset.key);if(a==='delete')deleteFile(b.dataset.key);});
+filesBox.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action;if(a==='view')showViewer(b.dataset.key);if(a==='download')downloadFile(b.dataset.key);if(a==='rename-file')renameFile(b.dataset.key);if(a==='rename-folder')renameFolder(b.dataset.key);if(a==='delete')deleteFile(b.dataset.key);if(a==='delete-folder')deleteFolder(b.dataset.key);});
 document.getElementById('uploadButton').addEventListener('click',uploadFile);
 document.getElementById('newFolderButton').addEventListener('click',newFolder);
 renderBreadcrumbs();loadFiles();
