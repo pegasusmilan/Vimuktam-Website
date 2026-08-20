@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vimuktam — Main R2</title>
 <style>
-:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.15)}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:10pt;line-height:1.6}main{max-width:1320px;margin:0 auto;padding:42px 24px 70px}.back{color:var(--teal);text-decoration:none}.eyebrow{margin-top:28px;color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;margin:8px 0}h2{color:var(--teal);font-size:14pt;margin:34px 0 12px}.note{background:var(--white);border:1px solid var(--line);padding:15px 17px;margin:22px 0}.upload{background:var(--white);border:1px solid var(--line);padding:20px}.upload-row{display:flex;gap:10px;flex-wrap:wrap}.upload input[type=file],.upload input[type=text]{padding:10px;border:1px solid var(--line);background:#fff;font:inherit}.upload input[type=text]{flex:1;min-width:180px}.button{padding:10px 15px;border:1px solid var(--teal);background:var(--teal);color:#fff;cursor:pointer;font:inherit;text-decoration:none;display:inline-block}.button.secondary{background:var(--white);color:var(--teal)}.button:disabled{opacity:.55;cursor:wait}.status{margin-top:10px;color:var(--muted,#70665D)}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,48%);gap:18px;align-items:start}.browser{min-width:0}.breadcrumbs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 12px}.crumb{color:var(--teal);background:transparent;border:0;padding:0;cursor:pointer;font:inherit}.crumb.current{color:var(--ink);font-weight:bold;cursor:default}.sep{opacity:.45}.files{display:grid;gap:10px}.file{background:var(--white);border:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;gap:14px;justify-content:space-between}.file-name{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.folder-name{cursor:pointer}.file-meta{font-size:8pt;opacity:.7}.actions{display:flex;gap:7px;flex-wrap:wrap}.empty{padding:22px;background:rgba(255,253,248,.65);border:1px dashed var(--line)}.small{font-size:8pt;opacity:.7}.viewer{background:var(--white);border:1px solid var(--line);position:sticky;top:18px;min-height:560px}.viewer-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.viewer-title{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.viewer-frame{width:100%;height:calc(100vh - 180px);min-height:500px;border:0;background:#fff}.viewer-empty{padding:40px 22px;text-align:center;opacity:.7}@media(max-width:900px){.workspace{grid-template-columns:1fr}.viewer{position:static}.viewer-frame{height:70vh}}
+:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--line:rgba(48,43,39,.15)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:10pt;line-height:1.6}main{max-width:1320px;margin:0 auto;padding:42px 24px 70px}.back{color:var(--teal);text-decoration:none}.eyebrow{margin-top:28px;color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;margin:8px 0}h2{color:var(--teal);font-size:14pt;margin:34px 0 12px}.note,.upload{background:var(--white);border:1px solid var(--line);padding:15px 17px;margin:22px 0}.upload{margin:0;padding:20px}.upload-row{display:flex;gap:10px;flex-wrap:wrap}.upload input{padding:10px;border:1px solid var(--line);background:#fff;font:inherit}.upload input[type=text]{flex:1;min-width:180px}.button{padding:10px 15px;border:1px solid var(--teal);background:var(--teal);color:#fff;cursor:pointer;font:inherit;text-decoration:none;display:inline-block}.button.secondary{background:var(--white);color:var(--teal)}.status{margin-top:10px;color:#70665D}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,48%);gap:18px;align-items:start}.breadcrumbs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 12px}.crumb{color:var(--teal);text-decoration:none}.crumb.current{color:var(--ink);font-weight:bold}.sep{opacity:.45}.files{display:grid;gap:10px}.file{background:var(--white);border:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;gap:14px;justify-content:space-between}.file-name{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.folder-link{display:block;text-decoration:none;color:var(--teal);cursor:pointer}.file-meta{font-size:8pt;opacity:.7}.actions{display:flex;gap:7px;flex-wrap:wrap}.empty{padding:22px;background:rgba(255,253,248,.65);border:1px dashed var(--line)}.viewer{background:var(--white);border:1px solid var(--line);position:sticky;top:18px;min-height:560px}.viewer-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.viewer-title{font-weight:bold;color:var(--teal);overflow-wrap:anywhere}.viewer-frame{width:100%;height:calc(100vh - 180px);min-height:500px;border:0;background:#fff}.viewer-empty{padding:40px 22px;text-align:center;opacity:.7}@media(max-width:900px){.workspace{grid-template-columns:1fr}.viewer{position:static}.viewer-frame{height:70vh}.file{align-items:flex-start;flex-direction:column}.actions{width:100%}}
 </style>
 </head>
 <body>
@@ -17,51 +17,58 @@
 <p>Working storage for images, publications and other larger files.</p>
 <div class="note"><strong>Editing note:</strong> To edit a document, please download it, edit the downloaded copy on your computer, and upload the edited copy here as a new version.</div>
 <h2>Upload</h2>
-<section class="upload">
-<div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button id="uploadButton" class="button">Upload</button></div>
-<div id="uploadStatus" class="status"></div>
-</section>
+<section class="upload"><div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button id="uploadButton" class="button" type="button">Upload</button></div><div id="uploadStatus" class="status"></div></section>
 <h2>Stored files</h2>
-<div class="workspace">
-<section class="browser">
-<div id="breadcrumbs" class="breadcrumbs"></div>
-<div id="files" class="files"><div class="empty">Loading…</div></div>
-</section>
-<aside id="viewer" class="viewer"><div class="viewer-empty">Select View on a file to open its viewer here.</div></aside>
-</div>
+<div class="workspace"><section><div id="breadcrumbs" class="breadcrumbs"></div><div id="files" class="files"><div class="empty">Loading…</div></div></section><aside id="viewer" class="viewer"><div class="viewer-empty">Select View on a file to open its viewer here.</div></aside></div>
 <script>
-function esc(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+'use strict';
+const filesBox=document.getElementById('files');
+const crumbsBox=document.getElementById('breadcrumbs');
+const viewerBox=document.getElementById('viewer');
+const folderInput=document.getElementById('folder');
+const fileInput=document.getElementById('file');
+const uploadStatus=document.getElementById('uploadStatus');
+const params=new URLSearchParams(window.location.search);
+let currentPrefix=params.get('folder')||'';
+let objects=[];
+function esc(v){return String(v).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function size(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';if(n<1073741824)return (n/1048576).toFixed(1)+' MB';return (n/1073741824).toFixed(1)+' GB';}
+function folderHref(prefix){return '?folder='+encodeURIComponent(prefix);}
 function viewerUrl(key){return '/r2-viewer.html?key='+encodeURIComponent(key);}
-let currentPrefix='';
-function renderBreadcrumbs(){const box=document.getElementById('breadcrumbs');const parts=currentPrefix?currentPrefix.split('/'):[];let html='<button class="crumb '+(!currentPrefix?'current':'')+'" data-action="folder" data-prefix="">Main R2</button>';let built='';for(const part of parts){built=built?built+'/'+part:part;const current=built===currentPrefix;html+='<span class="sep">/</span><button class="crumb '+(current?'current':'')+'" '+(current?'':'data-action="folder" data-prefix="'+esc(built)+'"')+'>'+esc(part)+'</button>';}box.innerHTML=html;}
-function openFolder(prefix){currentPrefix=String(prefix||'').replace(/^\/|\/$/g,'');renderBreadcrumbs();loadFiles();}
-function showViewer(key){const viewer=document.getElementById('viewer');viewer.innerHTML='<div class="viewer-head"><div class="viewer-title">'+esc(key)+'</div><button class="button secondary" data-action="close-viewer">Close</button></div><iframe class="viewer-frame" title="Document viewer" src="'+viewerUrl(key)+'"></iframe>';}
-function closeViewer(){document.getElementById('viewer').innerHTML='<div class="viewer-empty">Select View on a file to open its viewer here.</div>';}
-async function loadFiles(){
- const box=document.getElementById('files');
- try{const r=await fetch('/api/main-r2/list',{credentials:'same-origin'});const d=await r.json();if(!r.ok){box.innerHTML='<div class="empty">'+esc(d.error||'Unable to load files.')+'</div>';return;}
- const prefix=currentPrefix?currentPrefix+'/':'';const items=d.objects.filter(o=>o.key.startsWith('Media/'+prefix));const folders=new Set();const files=[];
- for(const o of items){const rest=o.key.slice(('Media/'+prefix).length);if(!rest)continue;const slash=rest.indexOf('/');if(slash>=0)folders.add(rest.slice(0,slash));else files.push(o);}
- if(!folders.size&&!files.length){box.innerHTML='<div class="empty">No files in this folder.</div>';return;}
- let html=Array.from(folders).sort().map(name=>'<div class="file"><div><div class="file-name folder-name" data-action="folder" data-prefix="'+esc(currentPrefix?currentPrefix+'/'+name:name)+'">📁 '+esc(name)+'</div><div class="file-meta">Folder</div></div></div>').join('');
- html+=files.map(o=>`<div class="file"><div><div class="file-name">${esc(o.key.slice(6))}</div><div class="file-meta">${size(o.size)} · ${esc(o.uploaded||'')}</div></div><div class="actions"><button class="button secondary" data-action="view" data-key="${esc(o.key)}">View</button><button class="button secondary" data-action="download" data-key="${esc(o.key)}">Download</button><button class="button" data-action="delete" data-key="${esc(o.key)}">Delete</button></div></div>`).join('');
- box.innerHTML=html;
- }catch(e){box.innerHTML='<div class="empty">The storage service could not be reached.</div>';}
+function renderBreadcrumbs(){
+ let html='<a class="crumb '+(!currentPrefix?'current':'')+'" href="'+(currentPrefix?'?':'#')+'">Main R2</a>';
+ let built='';
+ for(const part of currentPrefix.split('/').filter(Boolean)){built=built?built+'/'+part:part;html+='<span class="sep">/</span><a class="crumb '+(built===currentPrefix?'current':'')+'" href="'+(built===currentPrefix?'#':folderHref(built))+'">'+esc(part)+'</a>';}
+ crumbsBox.innerHTML=html;
 }
+function renderFiles(){
+ filesBox.replaceChildren();
+ const prefix=currentPrefix?currentPrefix+'/':'';
+ const scope='Media/'+prefix;
+ const folders=new Set(),files=[];
+ for(const o of objects){if(!o.key.startsWith(scope))continue;const rest=o.key.slice(scope.length);if(!rest)continue;const slash=rest.indexOf('/');if(slash>=0)folders.add(rest.slice(0,slash));else files.push(o);}
+ if(!folders.size&&!files.length){const e=document.createElement('div');e.className='empty';e.textContent='No files in this folder.';filesBox.appendChild(e);return;}
+ for(const name of [...folders].sort()){
+  const row=document.createElement('div');row.className='file';
+  const info=document.createElement('div');info.style.width='100%';
+  const a=document.createElement('a');a.className='folder-link';a.href=folderHref(currentPrefix?currentPrefix+'/'+name:name);a.innerHTML='📁 <strong>'+esc(name)+'</strong>';
+  const meta=document.createElement('div');meta.className='file-meta';meta.textContent='Folder';info.append(a,meta);row.appendChild(info);filesBox.appendChild(row);
+ }
+ for(const o of files.sort((a,b)=>a.key.localeCompare(b.key))){
+  const row=document.createElement('div');row.className='file';
+  const info=document.createElement('div');const n=document.createElement('div');n.className='file-name';n.textContent=o.key.slice(6);const m=document.createElement('div');m.className='file-meta';m.textContent=size(o.size)+(o.uploaded?' · '+o.uploaded:'');info.append(n,m);
+  const actions=document.createElement('div');actions.className='actions';
+  for(const [label,action] of [['View','view'],['Download','download'],['Delete','delete']]){const b=document.createElement('button');b.type='button';b.className='button '+(action==='delete'?'':'secondary');b.textContent=label;b.dataset.action=action;b.dataset.key=o.key;actions.appendChild(b);}
+  row.append(info,actions);filesBox.appendChild(row);
+ }
+}
+function showViewer(key){viewerBox.innerHTML='<div class="viewer-head"><div class="viewer-title">'+esc(key)+'</div><button type="button" class="button secondary" id="closeViewer">Close</button></div><iframe class="viewer-frame" title="Document viewer" src="'+viewerUrl(key)+'"></iframe>';document.getElementById('closeViewer').addEventListener('click',closeViewer);}
+function closeViewer(){viewerBox.innerHTML='<div class="viewer-empty">Select View on a file to open its viewer here.</div>';}
 function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeURIComponent(key);}
-async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json();if(!r.ok){alert(d.error||'Delete failed.');return;}closeViewer();loadFiles();}
-async function uploadFile(){const input=document.getElementById('file'),folderInput=document.getElementById('folder');const folder=(folderInput.value.trim()||currentPrefix).replace(/^\/|\/$/g,'');const status=document.getElementById('uploadStatus');if(!input.files.length){status.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',input.files[0]);fd.append('folder',folder);status.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){status.textContent=d.error||'Upload failed';return;}status.textContent='Uploaded successfully.';input.value='';folderInput.value='';loadFiles();}catch(e){status.textContent='The upload service could not be reached.';}}
-
-document.addEventListener('click',function(event){
- const el=event.target.closest('[data-action]'); if(!el)return;
- const action=el.dataset.action;
- if(action==='folder') openFolder(el.dataset.prefix||'');
- else if(action==='view') showViewer(el.dataset.key);
- else if(action==='download') downloadFile(el.dataset.key);
- else if(action==='delete') deleteFile(el.dataset.key);
- else if(action==='close-viewer') closeViewer();
-});
+async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok){alert(d.error||'Delete failed.');return;}closeViewer();await loadFiles();}
+async function loadFiles(){filesBox.innerHTML='<div class="empty">Loading…</div>';try{const r=await fetch('/api/main-r2/list',{credentials:'same-origin'});const d=await r.json();if(!r.ok){filesBox.innerHTML='<div class="empty">'+esc(d.error||'Unable to load files.')+'</div>';return;}objects=Array.isArray(d.objects)?d.objects:[];renderBreadcrumbs();renderFiles();}catch(e){filesBox.innerHTML='<div class="empty">The storage service could not be reached.</div>';}}
+async function uploadFile(){if(!fileInput.files.length){uploadStatus.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',fileInput.files[0]);fd.append('folder',(folderInput.value.trim()||currentPrefix).replace(/^\/|\/$/g,''));uploadStatus.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){uploadStatus.textContent=d.error||'Upload failed';return;}uploadStatus.textContent='Uploaded successfully.';fileInput.value='';folderInput.value='';await loadFiles();}catch(e){uploadStatus.textContent='The upload service could not be reached.';}}
+filesBox.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action;if(a==='view')showViewer(b.dataset.key);if(a==='download')downloadFile(b.dataset.key);if(a==='delete')deleteFile(b.dataset.key);});
 document.getElementById('uploadButton').addEventListener('click',uploadFile);
 renderBreadcrumbs();loadFiles();
 </script>
