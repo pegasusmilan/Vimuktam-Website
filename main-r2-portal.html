@@ -17,7 +17,7 @@
 <p>Working storage for images, publications and other larger files.</p>
 <div class="note"><strong>Editing note:</strong> To edit a document, please download it, edit the downloaded copy on your computer, and upload the edited copy here as a new version.</div>
 <h2>Upload</h2>
-<section class="upload"><div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button id="uploadButton" class="button" type="button">Upload</button></div><div id="uploadStatus" class="status"></div></section>
+<section class="upload"><div class="upload-row"><input id="folder" type="text" placeholder="Folder (e.g. images, publications)"><input id="file" type="file"><button id="uploadButton" class="button" type="button">Upload</button><button id="newFolderButton" class="button secondary" type="button">New Folder</button></div><div id="uploadStatus" class="status"></div></section>
 <h2>Stored files</h2>
 <div class="workspace"><section><div id="breadcrumbs" class="breadcrumbs"></div><div id="files" class="files"><div class="empty">Loading…</div></div></section><aside id="viewer" class="viewer"><div class="viewer-empty">Select View on a file to open its viewer here.</div></aside></div>
 <script>
@@ -31,7 +31,7 @@ const uploadStatus=document.getElementById('uploadStatus');
 const params=new URLSearchParams(window.location.search);
 let currentPrefix=params.get('folder')||'';
 let objects=[];
-function esc(v){return String(v).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function esc(v){return String(v).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
 function size(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';if(n<1073741824)return (n/1048576).toFixed(1)+' MB';return (n/1073741824).toFixed(1)+' GB';}
 function folderHref(prefix){return '?folder='+encodeURIComponent(prefix);}
 function viewerUrl(key){return '/r2-viewer.html?key='+encodeURIComponent(key);}
@@ -46,7 +46,7 @@ function renderFiles(){
  const prefix=currentPrefix?currentPrefix+'/':'';
  const scope='Media/'+prefix;
  const folders=new Set(),files=[];
- for(const o of objects){if(!o.key.startsWith(scope))continue;const rest=o.key.slice(scope.length);if(!rest)continue;const slash=rest.indexOf('/');if(slash>=0)folders.add(rest.slice(0,slash));else files.push(o);}
+ for(const o of objects){if(!o.key.startsWith(scope))continue;const rest=o.key.slice(scope.length);if(!rest||rest==='.folder')continue;const slash=rest.indexOf('/');if(slash>=0)folders.add(rest.slice(0,slash));else files.push(o);}
  if(!folders.size&&!files.length){const e=document.createElement('div');e.className='empty';e.textContent='No files in this folder.';filesBox.appendChild(e);return;}
  for(const name of [...folders].sort()){
   const row=document.createElement('div');row.className='file';
@@ -68,8 +68,18 @@ function downloadFile(key){window.location.href='/api/main-r2/file?key='+encodeU
 async function deleteFile(key){if(!confirm('Delete this file from Main R2?'))return;const r=await fetch('/api/main-r2/file?key='+encodeURIComponent(key),{method:'DELETE',credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok){alert(d.error||'Delete failed.');return;}closeViewer();await loadFiles();}
 async function loadFiles(){filesBox.innerHTML='<div class="empty">Loading…</div>';try{const r=await fetch('/api/main-r2/list',{credentials:'same-origin'});const d=await r.json();if(!r.ok){filesBox.innerHTML='<div class="empty">'+esc(d.error||'Unable to load files.')+'</div>';return;}objects=Array.isArray(d.objects)?d.objects:[];renderBreadcrumbs();renderFiles();}catch(e){filesBox.innerHTML='<div class="empty">The storage service could not be reached.</div>';}}
 async function uploadFile(){if(!fileInput.files.length){uploadStatus.textContent='Choose a file first.';return;}const fd=new FormData();fd.append('file',fileInput.files[0]);fd.append('folder',(folderInput.value.trim()||currentPrefix).replace(/^\/|\/$/g,''));uploadStatus.textContent='Uploading…';try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json();if(!r.ok){uploadStatus.textContent=d.error||'Upload failed';return;}uploadStatus.textContent='Uploaded successfully.';fileInput.value='';folderInput.value='';await loadFiles();}catch(e){uploadStatus.textContent='The upload service could not be reached.';}}
+async function newFolder(){
+ const parent=currentPrefix?currentPrefix+'/':'';
+ const name=prompt('New folder name:', 'New folder');
+ if(name===null)return;
+ const clean=name.trim().replace(/^\/|\/$/g,'');
+ if(!clean||clean.includes('/')||clean.includes('..')||clean.includes('\\')){uploadStatus.textContent='Enter a simple folder name.';return;}
+ const fd=new FormData();fd.append('file',new Blob([''],{type:'text/plain'}),'.folder');fd.append('folder',parent+clean);uploadStatus.textContent='Creating folder…';
+ try{const r=await fetch('/api/main-r2/upload',{method:'POST',body:fd,credentials:'same-origin'});const d=await r.json().catch(()=>({}));if(!r.ok){uploadStatus.textContent=d.error||'Folder creation failed.';return;}uploadStatus.textContent='Folder created.';await loadFiles();}catch(e){uploadStatus.textContent='The storage service could not be reached.';}
+}
 filesBox.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action;if(a==='view')showViewer(b.dataset.key);if(a==='download')downloadFile(b.dataset.key);if(a==='delete')deleteFile(b.dataset.key);});
 document.getElementById('uploadButton').addEventListener('click',uploadFile);
+document.getElementById('newFolderButton').addEventListener('click',newFolder);
 renderBreadcrumbs();loadFiles();
 </script>
 </main>
