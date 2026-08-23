@@ -1,48 +1,25 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Vimuktam executive area">
-  <title>Vimuktam — Login</title>
-  <style>
-    :root { --ink:#302b27; --paper:#E9DDC8; --white:#FFFDF8; --teal:#176B6B; --pink:#D9829A; --line:rgba(48,43,39,.16); }
-    * { box-sizing:border-box; }
-    body { margin:0; background:var(--paper); color:var(--ink); font-family:Verdana,Arial,sans-serif; font-size:9pt; line-height:1.6; }
-    main { max-width:850px; margin:0 auto; padding:72px 28px 90px; }
-    .eyebrow { color:var(--pink); font-weight:bold; letter-spacing:.14em; text-transform:uppercase; font-size:8pt; }
-    h1,h2 { color:var(--teal); font-family:Verdana,Arial,sans-serif; font-weight:bold; }
-    h1 { font-size:24pt; margin:12px 0 8px; }
-    h2 { font-size:14pt; margin-top:38px; }
-    .notice { background:var(--white); border:1px solid var(--line); padding:24px; margin:28px 0; }
-    .card { display:block; background:var(--white); border:1px solid var(--line); padding:22px; color:inherit; text-decoration:none; margin-bottom:14px; }
-    .card:hover { border-color:var(--teal); }
-    .card b { display:block; color:var(--teal); margin-bottom:6px; }
-    footer { margin-top:48px; font-size:8pt; opacity:.75; }
-  </style>
-</head>
-<body>
-<main>
-  <div class="eyebrow">Vimuktam · Us · Executive Area</div>
-  <h1>Login</h1>
-  <p>This is the entrance to Vimuktam's private operational area.</p>
-  <div class="notice">
-    <b>Current status</b>
-    <p>The area is being built now. Proper authentication will be placed in front of it when Vimuktam launches on its own domain. Until then, no sensitive credentials or secrets are stored on this page.</p>
-  </div>
-  <h2>Continuity</h2>
-  <a class="card" href="bcp.html"><b>Business Continuity &amp; Recovery Plan</b><span>The living operational BCP, recovery arrangements and continuity information.</span></a>
-  <a class="card" href="backups.html"><b>Repository &amp; Storage Control Centre</b><span>Access Vimuktam's primary repositories, Company Documents, Main R2 and independent Bitbucket, GitLab and R2 recovery systems.</span></a>
-  <h2>Philosophy</h2>
-  <a class="card" href="archive.html?doc=philosophy"><b>Philosophical Overview Dump</b><span>The living, indexed archive of Vimuktam's philosophical development, preserving source thoughts and their evolution for future synthesis.</span></a>
-  <a class="card" href="archive.html?doc=balaram"><b>Balaram System Dump</b><span>The living source archive of Vimuktam's system architecture, Niyam, DNC, projects, product ideas and the evolution of the organising intelligence.</span></a>
-  <a class="card" href="archive.html?doc=dnc"><b>DNC / Niyam / CSE Source Dump</b><span>The living archival record of the DNC, Niyam, People's Log, Cultural Systems Engineering and related ideas, preserving their development for future canonical and technical work.</span></a>
-  <a class="card" href="archive.html?doc=purana"><b>Vimuktam Purāṇa — Purāṇa Narration Dump</b><span>The living source archive of the Vimuktam Purāṇa: its mythic origin, narrative development, Kṛṣṇa–Arjuna friendship, Vṛndāvana līlā, wartime world and evolving emotional cosmology.</span></a>
-  <h2>Marketing &amp; Strategy</h2>
-  <a class="card" href="archive.html?doc=marketing"><b>Marketing and Branding Strategy Dump</b><span>The living, indexed archive of Vimuktam's marketing and branding thinking, hypotheses, propositions and developing strategy.</span></a>
-  <h2>Coming here</h2>
-  <p>Maintenance forms, incident reporting, maintenance history and other executive-only operational tools will be added to this area. The actual Credential Key remains a separate physical document and will not be placed here.</p>
-  <footer>Vimuktam · Executive operational area · Authentication to be configured before public launch.</footer>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vimuktam executive area"><title>Vimuktam — Login</title>
+<style>:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--line:rgba(48,43,39,.16);--bad:#a33}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:850px;margin:0 auto;padding:72px 28px 90px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.14em;text-transform:uppercase;font-size:8pt}h1,h2{color:var(--teal);font-family:Verdana,Arial,sans-serif;font-weight:bold}h1{font-size:24pt;margin:12px 0 8px}h2{font-size:14pt;margin-top:38px}.notice{background:var(--white);border:1px solid var(--line);padding:24px;margin:28px 0}.card{display:block;background:var(--white);border:1px solid var(--line);padding:22px;color:inherit;text-decoration:none;margin-bottom:14px}.card:hover{border-color:var(--teal)}.card b{display:block;color:var(--teal);margin-bottom:6px}.warning{display:none;background:#fff4f4;border:2px solid var(--bad);padding:16px;margin:20px 0;color:#6e2222}.warning.show{display:block}.warning b{display:block;margin-bottom:5px}footer{margin-top:48px;font-size:8pt;opacity:.75}</style>
+</head><body><main>
+<div class="eyebrow">Vimuktam · Us · Executive Area</div><h1>Login</h1><p>This is the entrance to Vimuktam's private operational area.</p>
+<div id="backupWarning" class="warning"><b>BACKUP WARNING</b><span id="warningText"></span></div>
+<div class="notice"><b>Current status</b><p>The executive area is operational. Backup status is checked automatically when this page opens.</p></div>
+<h2>Continuity</h2>
+<a class="card" href="bcp.html"><b>Business Continuity &amp; Recovery Plan</b><span>The living operational BCP, recovery arrangements and continuity information.</span></a>
+<a class="card" href="backups.html"><b>Repository &amp; Storage Control Centre</b><span>Access Vimuktam's primary repositories and the three recovery systems.</span></a>
+<h2>Philosophy</h2>
+<a class="card" href="archive.html?doc=philosophy"><b>Philosophical Overview Dump</b><span>The living, indexed archive of Vimuktam's philosophical development.</span></a>
+<a class="card" href="archive.html?doc=balaram"><b>Balaram System Dump</b><span>The living source archive of Vimuktam's system architecture and projects.</span></a>
+<a class="card" href="archive.html?doc=dnc"><b>DNC / Niyam / CSE Source Dump</b><span>The living archival record of DNC, Niyam and related ideas.</span></a>
+<a class="card" href="archive.html?doc=purana"><b>Vimuktam Purāṇa — Purāṇa Narration Dump</b><span>The living source archive of the Vimuktam Purāṇa.</span></a>
+<h2>Marketing &amp; Strategy</h2><a class="card" href="archive.html?doc=marketing"><b>Marketing and Branding Strategy Dump</b><span>The living, indexed archive of Vimuktam's marketing and branding thinking.</span></a>
+<footer>Vimuktam · Executive operational area · The actual Credential Key remains a separate physical document.</footer>
 </main>
-</body>
-</html>
+<script>
+async function checkBackups(){try{const r=await fetch('/api/backup-status',{cache:'no-store'}),j=await r.json();if(!r.ok||!j.ok)return;const f=[];if(j.backup5?.status==='failed')f.push('Backup 5 (GitLab)');if(j.backup6&&j.backup6.ok===false)f.push('Backup 6 (R2)');if(f.length){document.getElementById('warningText').textContent=f.join(' and ')+' failed. Open the Repository & Storage Control Centre for details.';document.getElementById('backupWarning').classList.add('show');}}catch(e){}}
+checkBackups();setInterval(checkBackups,60000);
+</script></body></html>
