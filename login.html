@@ -3,23 +3,54 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Vimuktam executive area"><title>Vimuktam — Login</title>
-<style>:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--line:rgba(48,43,39,.16);--bad:#a33}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:1040px;margin:0 auto;padding:48px 28px 76px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1,h2{color:var(--teal);font-family:Verdana,Arial,sans-serif;font-weight:bold}h1{font-size:25pt;margin:10px 0 12px}h2{font-size:13pt;margin:42px 0 14px}.notice{background:var(--white);border:1px solid var(--line);padding:24px;margin:28px 0}.login{display:flex;gap:8px;margin-top:16px}.login input{flex:1;padding:11px;border:1px solid var(--line);background:#fff;font:inherit}.login button{padding:11px 16px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer}.login button:disabled{opacity:.6;cursor:wait}.error{display:none;color:var(--bad);margin-top:10px}.error.show{display:block}.protected{display:none}.protected.show{display:block}.warning{display:none;background:#fff4f4;border:2px solid var(--bad);padding:16px;margin:20px 0;color:#6e2222}.warning.show{display:block}.warning b{display:block;margin-bottom:5px}.card{display:block;background:var(--white);border:1px solid var(--line);padding:18px 22px;margin:0 0 12px;text-decoration:none;color:var(--ink)}.card:hover{background:#fffaf1}.card b{display:block;color:var(--teal);font-size:12pt;margin-bottom:4px}.card span{display:block;color:var(--ink)}footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);font-size:8pt;opacity:.7}@media(max-width:800px){main{padding:34px 18px 60px}.login{flex-direction:column}.login button{align-self:flex-start}}
+<style>
+:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.16);--bad:#a33}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}
+main{max-width:1040px;margin:0 auto;padding:48px 28px 76px}
+.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}
+h1,h2{color:var(--teal);font-family:Verdana,Arial,sans-serif;font-weight:bold}
+h1{font-size:25pt;margin:10px 0 10px}
+h2{font-size:13pt;margin:42px 0 14px}
+.lead{max-width:760px;margin:0 0 28px}
+.notice{background:var(--white);border:1px solid var(--line);padding:24px;margin:28px 0}
+.login{display:flex;gap:8px;margin-top:16px;max-width:620px}
+.login input{flex:1;padding:11px;border:1px solid var(--line);background:#fff;font:inherit;min-width:0}
+.login button{padding:11px 18px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer}
+.login button:disabled{opacity:.6;cursor:wait}
+.error{display:none;color:var(--bad);margin-top:10px}.error.show{display:block}
+.protected{display:none}.protected.show{display:block}
+.warning{display:none;background:#fff4f4;border:2px solid var(--bad);padding:16px;margin:20px 0;color:#6e2222}.warning.show{display:block}.warning b{display:block;margin-bottom:5px}
+.section-intro{max-width:760px;margin:0 0 18px;opacity:.85}
+.card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{display:block;background:var(--white);border:1px solid var(--line);padding:20px 22px;text-decoration:none;color:var(--ink);min-height:132px;transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.card:hover{background:#fffaf1;transform:translateY(-1px);box-shadow:0 5px 14px rgba(48,43,39,.08)}
+.card b{display:block;color:var(--teal);font-size:12pt;margin-bottom:7px}.card span{display:block;color:var(--ink)}
+footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);font-size:8pt;opacity:.7}
+@media(max-width:800px){main{padding:34px 18px 60px}.login{flex-direction:column}.login button{align-self:flex-start}.card-grid{grid-template-columns:1fr}}
 </style>
 </head><body><main>
-<div class="eyebrow">Vimuktam · Us · Executive Area</div><h1>Login</h1><p>This is the entrance to Vimuktam's private operational area.</p>
+<div class="eyebrow">Vimuktam · Us · Executive Area</div><h1>Executive Area</h1><p class="lead">This is the entrance to Vimuktam's private operational area.</p>
 <div id="loginBox" class="notice"><b>Executive password</b><div class="login"><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password"><button id="loginButton" type="button">Enter</button></div><div id="loginError" class="error">Incorrect password.</div></div>
 <div id="protectedArea" class="protected">
 <div id="backupWarning" class="warning"><b>BACKUP WARNING</b><span id="warningText"></span></div>
 <div class="notice"><b>Current status</b><p>The executive area is operational. Backup status is checked automatically when this page opens.</p></div>
-<h2>Continuity</h2>
+<h2>Continuity</h2><p class="section-intro">Operational continuity, recovery arrangements and storage controls.</p>
+<div class="card-grid">
 <a class="card" href="bcp.html"><b>Business Continuity &amp; Recovery Plan</b><span>The living operational BCP, recovery arrangements and continuity information.</span></a>
 <a class="card" href="backups.html"><b>Repository &amp; Storage Control Centre</b><span>Access Vimuktam's primary repositories and the three recovery systems.</span></a>
-<h2>Philosophy</h2>
+</div>
+<h2>Philosophy</h2><p class="section-intro">The living source archives behind Vimuktam's philosophy and system development.</p>
+<div class="card-grid">
 <a class="card" href="archive.html?doc=philosophy"><b>Philosophical Overview Dump</b><span>The living, indexed archive of Vimuktam's philosophical development.</span></a>
 <a class="card" href="archive.html?doc=balaram"><b>Balaram System Dump</b><span>The living source archive of Vimuktam's system architecture and projects.</span></a>
 <a class="card" href="archive.html?doc=dnc"><b>DNC / Niyam / CSE Source Dump</b><span>The living archival record of DNC, Niyam and related ideas.</span></a>
 <a class="card" href="archive.html?doc=purana"><b>Vimuktam Purāṇa — Purāṇa Narration Dump</b><span>The living source archive of the Vimuktam Purāṇa.</span></a>
-<h2>Marketing &amp; Strategy</h2><a class="card" href="archive.html?doc=marketing"><b>Marketing and Branding Strategy Dump</b><span>The living, indexed archive of Vimuktam's marketing and branding thinking.</span></a>
+</div>
+<h2>Marketing &amp; Strategy</h2><p class="section-intro">The living archive of Vimuktam's marketing and branding work.</p>
+<div class="card-grid">
+<a class="card" href="archive.html?doc=marketing"><b>Marketing and Branding Strategy Dump</b><span>The living, indexed archive of Vimuktam's marketing and branding thinking.</span></a>
+</div>
 </div>
 <footer>Vimuktam · Executive operational area · The actual Credential Key remains a separate physical document.</footer>
 </main>
