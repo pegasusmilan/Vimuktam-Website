@@ -6,8 +6,8 @@
 <meta name="description" content="Vimuktam private repository, storage and recovery control centre">
 <title>Vimuktam — Admin Almirahs</title>
 <style>
-:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.15);--bad:#a33;--ok:#276b43}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:1040px;margin:0 auto;padding:48px 28px 76px}.back{display:inline-block;color:var(--teal);text-decoration:none;margin-bottom:30px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;line-height:1.15;margin:10px 0 12px}h2{color:var(--teal);font-size:13pt;letter-spacing:.04em;margin:42px 0 14px}.intro{max-width:780px;margin:0 0 28px}.notice{background:rgba(255,253,248,.65);border:1px solid var(--line);padding:13px 16px;margin:20px 0 30px;font-size:8.5pt}.cabinet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.cabinet{background:var(--white);border:1px solid var(--line);padding:22px;min-height:235px;display:flex;flex-direction:column}.cabinet h3{color:var(--teal);font-size:13pt;margin:7px 0 7px}.cabinet p{margin:0 0 13px}.number{font-size:8pt;letter-spacing:.14em;color:var(--pink);font-weight:bold}.tag{display:inline-block;font-size:7.5pt;border:1px solid var(--line);padding:3px 7px;margin-bottom:17px;color:var(--gold);align-self:flex-start}.form{margin-top:auto;display:flex;gap:8px}.form button{padding:10px 13px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer;white-space:nowrap}.form button:hover{opacity:.9}.note{font-size:7.5pt;opacity:.68;margin-top:9px}.status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}.status{background:var(--white);border:1px solid var(--line);padding:16px}.status h3{margin:0 0 8px;color:var(--teal);font-size:11pt}.status-line{font-weight:bold;margin-bottom:6px}.ok{color:var(--ok)}.bad{color:var(--bad)}.muted{opacity:.68}.warning{display:none;background:#fff4f4;border:2px solid var(--bad);padding:16px;margin:18px 0;color:#6e2222}.warning.show{display:block}.warning b{display:block;margin-bottom:5px}footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);font-size:8pt;opacity:.7}@media(max-width:800px){.status-grid{grid-template-columns:1fr}.cabinet-grid{grid-template-columns:1fr}main{padding:34px 18px 60px}}
+:root{--ink:#302b27;--paper:#E9DDC8;--white:#FFFDF8;--teal:#176B6B;--pink:#D9829A;--gold:#A67C52;--line:rgba(48,43,39,.15)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Arial,sans-serif;font-size:9pt;line-height:1.6}main{max-width:1040px;margin:0 auto;padding:48px 28px 76px}.back{display:inline-block;color:var(--teal);text-decoration:none;margin-bottom:30px}.eyebrow{color:var(--pink);font-weight:bold;letter-spacing:.16em;text-transform:uppercase;font-size:8pt}h1{color:var(--teal);font-size:25pt;line-height:1.15;margin:10px 0 12px}h2{color:var(--teal);font-size:13pt;letter-spacing:.04em;margin:42px 0 14px}.intro{max-width:780px;margin:0 0 28px}.notice{background:rgba(255,253,248,.65);border:1px solid var(--line);padding:13px 16px;margin:20px 0 30px;font-size:8.5pt}.cabinet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.cabinet{background:var(--white);border:1px solid var(--line);padding:22px;min-height:235px;display:flex;flex-direction:column}.cabinet:hover{box-shadow:0 8px 24px rgba(48,43,39,.07)}.number{font-size:8pt;letter-spacing:.14em;color:var(--pink);font-weight:bold}.cabinet h3{color:var(--teal);font-size:13pt;margin:7px 0 7px}.cabinet p{margin:0 0 13px}.tag{display:inline-block;font-size:7.5pt;border:1px solid var(--line);padding:3px 7px;margin-bottom:17px;color:var(--gold);align-self:flex-start}.form{margin-top:auto;display:flex;gap:8px}.form input{flex:1;min-width:0;padding:10px 11px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}.form button{padding:10px 13px;border:1px solid var(--teal);background:var(--teal);color:#fff;font:inherit;cursor:pointer;white-space:nowrap}.form button:hover{opacity:.9}.note{font-size:7.5pt;opacity:.68;margin-top:9px}.recovery .tag{color:var(--gold)}footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);font-size:8pt;opacity:.7}@media(max-width:720px){.cabinet-grid{grid-template-columns:1fr}main{padding:34px 18px 60px}}
 </style>
 </head>
 <body>
@@ -15,44 +15,80 @@
 <a class="back" href="login.html">← Back to Executive Area</a>
 <div class="eyebrow">Vimuktam · Administration</div>
 <h1>Repository &amp; Storage Almirahs</h1>
-<p class="intro">The human-facing layer over Vimuktam's working storage and recovery systems. Recovery files themselves remain in their underlying services.</p>
-
-<div id="backupWarning" class="warning"><b>BACKUP WARNING</b><span id="warningText"></span></div>
+<p class="intro">A simple Vimuktam-facing layer over the repositories, working storage and recovery systems behind the company. The intention is that routine filing happens here; the underlying services remain infrastructure.</p>
+<div class="notice"><strong>Primary working spaces</strong> are for everyday filing and operation. <strong>Recovery spaces</strong> are independent protection layers and are normally used only when needed.</div>
 
 <h2>Primary · Everyday filing</h2>
 <div class="cabinet-grid">
-<section class="cabinet"><div class="number">01 · PRIMARY</div><h3>Website Repository</h3><p>The complete Vimuktam GitHub repository for routine viewing and management.</p><span class="tag">GitHub · Full repository</span><div class="form"><button onclick="openWebsiteRepository()">Open cabinet</button></div><div class="note">The underlying GitHub interface remains available from inside the cabinet.</div></section>
-<section class="cabinet"><div class="number">02 · PRIMARY</div><h3>Company Documents</h3><p>The everyday filing cupboard for BCPs, policies, agreements and company documents.</p><span class="tag">GitHub · Company docs</span><div class="form"><button onclick="openCompanyDocuments()">Open cabinet</button></div><div class="note">Documents remain in the protected Company docs area.</div></section>
-<section class="cabinet"><div class="number">03 · PRIMARY</div><h3>Main R2</h3><p>The working media and publications cupboard for images and larger files.</p><span class="tag">Cloudflare · Main R2</span><div class="form"><button onclick="openMainR2()">Open cabinet</button></div><div class="note">View, upload and delete from the Main R2 portal.</div></section>
+<section class="cabinet">
+<div class="number">01 · PRIMARY</div><h3>Website Repository</h3>
+<p>The complete Vimuktam GitHub repository, presented through a Vimuktam-facing portal for routine viewing and management.</p>
+<span class="tag">GitHub · Full repository</span>
+<div class="form"><input id="github" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Website Repository cabinet password"><button onclick="openWebsiteRepository()">Enter</button></div>
+<div class="note">The underlying GitHub interface remains available from inside the cabinet when technically required.</div>
+</section>
+
+<section class="cabinet">
+<div class="number">02 · PRIMARY</div><h3>Company Documents</h3>
+<p>The everyday filing cupboard for BCPs, policies, agreements, PDFs, Markdown archives and other company documents.</p>
+<span class="tag">GitHub · Company docs</span>
+<div class="form"><input id="docs" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Company Documents cabinet password"><button onclick="openCompanyDocuments()">Enter</button></div>
+<div class="note">Documents can be filed directly into the Company docs/ folder from inside the cabinet.</div>
+</section>
+
+<section class="cabinet">
+<div class="number">03 · PRIMARY</div><h3>Main R2</h3>
+<p>The working media and publications cupboard for images, publications and other larger files.</p>
+<span class="tag">Cloudflare · Main R2</span>
+<div class="form"><input id="mainr2" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Main R2 cabinet password"><button onclick="openMainR2()">Enter</button></div>
+<div class="note">Inside: view/download, upload and delete. To edit, download the file, edit it, and upload the edited copy.</div>
+</section>
 </div>
 
-<h2>Recovery · Backup status</h2>
-<div class="status-grid">
-<section class="status"><h3>04 · Bitbucket</h3><div id="b4status" class="status-line muted">Checking…</div><div>Last successful pull: <span id="b4last">—</span></div><div class="form"><button onclick="window.open('https://bitbucket.org/vimuktam-group/Vimuktam-Website','_blank')">Open dashboard</button></div></section>
-<section class="status"><h3>05 · GitLab / Standby</h3><div id="b5status" class="status-line muted">Checking…</div><div>Last successful pull: <span id="b5last">—</span></div><div class="form"><button onclick="window.open('https://gitlab.com/vimuktam-group/Vimuktam-Website','_blank')">Open dashboard</button></div></section>
-<section class="status"><h3>06 · R2 Backup</h3><div id="b6status" class="status-line muted">Checking…</div><div>Last successful backup: <span id="b6last">—</span></div><div>Storage: <span id="b6storage">—</span></div><div class="form"><button onclick="window.open('https://vimuktam-media-publications-backup.vimukback03.workers.dev/','_blank')">Open dashboard</button></div></section>
-</div>
-<p class="note">Backup 4–5 are repository recovery copies. Backup 6 is the 90-day rolling R2 recovery copy. No backup password is collected on this page.</p>
+<h2>Recovery · Independent protection</h2>
+<div class="cabinet-grid recovery">
+<section class="cabinet">
+<div class="number">04 · RECOVERY</div><h3>Bitbucket · Backup 1</h3>
+<p>Independent Git recovery copy of the primary repository. Normal Git history is retained.</p>
+<span class="tag">Bitbucket · Daily backup</span>
+<div class="form"><input id="bitbucket" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="Bitbucket cabinet password"><button onclick="openBitbucketBackup1()">Enter</button></div>
+<div class="note">No automatic 90-day Git pruning. Storage can be reviewed manually.</div>
+</section>
 
-<footer>Vimuktam · Executive operational area · Underlying recovery services remain independently accessible from their dashboards.</footer>
+<section class="cabinet">
+<div class="number">05 · RECOVERY</div><h3>GitLab · Backup 2 / Standby</h3>
+<p>Second independent Git recovery and standby copy of the primary repository. Normal Git history is retained.</p>
+<span class="tag">GitLab · Scheduled + push/manual</span>
+<div class="form"><input id="gitlab" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="GitLab cabinet password"><button onclick="openCabinet('gitlab','https://gitlab.com/vimuktam-group/Vimuktam-Website')">Enter</button></div>
+<div class="note">No automatic 90-day Git pruning. Storage can be reviewed manually.</div>
+</section>
+
+<section class="cabinet">
+<div class="number">06 · RECOVERY</div><h3>R2 Backup</h3>
+<p>Disaster-recovery copy of Main R2 with automatic backup, historical/deleted-file retention and restore controls.</p>
+<span class="tag">Cloudflare Worker · 9.90 GB ceiling</span>
+<div class="form"><input id="r2backup" type="password" autocomplete="off" placeholder="Cabinet password" aria-label="R2 Backup cabinet password"><button onclick="openCabinet('r2backup','https://vimuktam-media-publications-backup.vimukback03.workers.dev/')">Enter</button></div>
+<div class="note">Backup console provides storage status, backup, deletion/history and restore controls.</div>
+</section>
+</div>
+
+<footer>Vimuktam · Executive operational area · The cabinet interface is the human-facing layer; underlying credentials and service security remain outside the static page.</footer>
 </main>
 <script>
-function openWebsiteRepository(){window.location.href='repository-portal.html';}
-function openCompanyDocuments(){window.location.href='company-documents-portal.html';}
-function openMainR2(){window.location.href='main-r2-portal.html';}
-function fmtTime(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?'—':d.toLocaleString();}
-function setStatus(id,text,kind){const el=document.getElementById(id);el.textContent=text;el.className='status-line '+(kind||'muted');}
-async function loadBackupStatus(){
-  try{
-    const r=await fetch('/api/backup-status',{cache:'no-store'}); const j=await r.json(); if(!r.ok||!j.ok)throw new Error('status unavailable');
-    const b4=j.backup4||{}; const b5=j.backup5||{}; const b6=j.backup6||{};
-    if(b4.status==='ok'){setStatus('b4status','OK','ok');document.getElementById('b4last').textContent=fmtTime(b4.lastSuccessAt);}else{setStatus('b4status','Dashboard check','muted');document.getElementById('b4last').textContent='See dashboard';}
-    setStatus('b5status',b5.status==='ok'?'OK':b5.status==='running'?'Running':'FAILED',b5.status==='ok'?'ok':b5.status==='running'?'muted':'bad');document.getElementById('b5last').textContent=fmtTime(b5.lastSuccessAt);
-    setStatus('b6status',b6?.ok?'OK':b6?'FAILED':'No record',b6?.ok?'ok':b6?'bad':'muted');document.getElementById('b6last').textContent=fmtTime(b6?.lastSuccessAt);document.getElementById('b6storage').textContent=b6?.storageUsed&&b6?.storageAvailable?`${b6.storageUsed} used / ${b6.storageAvailable} available`:'See dashboard';
-    const failures=[];if(b5.status==='failed')failures.push('Backup 5 (GitLab)');if(b6&&b6.ok===false)failures.push('Backup 6 (R2)');const w=document.getElementById('backupWarning');if(failures.length){document.getElementById('warningText').textContent=failures.join(' and ')+' failed. Open the backup dashboard for details.';w.classList.add('show');}
-  }catch(e){setStatus('b4status','Unavailable','muted');setStatus('b5status','Unavailable','muted');setStatus('b6status','Unavailable','muted');}
+async function cabinetLogin(password, endpoint, destination, button){
+ if(!password){alert('Enter the cabinet password to continue.');return;}
+ button.disabled=true;button.textContent='Checking…';
+ try{const response=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password})});const data=await response.json();if(!response.ok){alert(data.error||'Unable to open cabinet.');return;}window.location.href=destination;}catch(error){alert('The cabinet service could not be reached.');}finally{button.disabled=false;button.textContent='Enter';}
 }
-loadBackupStatus();setInterval(loadBackupStatus,60000);
+function openWebsiteRepository(){const input=document.getElementById('github');cabinetLogin(input.value.trim(),'/api/cabinet/website-repository/login','repository-portal.html',document.querySelector('#github + button'));}
+function openCompanyDocuments(){const input=document.getElementById('docs');cabinetLogin(input.value.trim(),'/api/cabinet/company-documents/login','company-documents-portal.html',document.querySelector('#docs + button'));}
+function openMainR2(){const input=document.getElementById('mainr2');cabinetLogin(input.value.trim(),'/api/cabinet/main-r2/login','main-r2-portal.html',document.querySelector('#mainr2 + button'));}
+function openBitbucketBackup1(){const input=document.getElementById('bitbucket');cabinetLogin(input.value.trim(),'/api/cabinet/bitbucket-backup1/login','https://bitbucket.org/',document.querySelector('#bitbucket + button'));}
+function openCabinet(id,url){const value=document.getElementById(id).value.trim();if(!value){alert('Enter the cabinet password to continue.');return;}window.location.href=url;}
+document.getElementById('github').addEventListener('keydown',event=>{if(event.key==='Enter')openWebsiteRepository();});
+document.getElementById('docs').addEventListener('keydown',event=>{if(event.key==='Enter')openCompanyDocuments();});
+document.getElementById('mainr2').addEventListener('keydown',event=>{if(event.key==='Enter')openMainR2();});
+document.getElementById('bitbucket').addEventListener('keydown',event=>{if(event.key==='Enter')openBitbucketBackup1();});
 </script>
 </body>
 </html>
