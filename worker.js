@@ -75,6 +75,16 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === "/api/admin/login" && request.method === "POST") {
+      if (!env.ADMIN_PASSWORD) return json({ ok: false, error: "Admin authentication is not configured." }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
+      if (!body?.password || body.password !== env.ADMIN_PASSWORD) return json({ ok: false, error: "Incorrect password." }, 401);
+      const expires = Date.now() + 30 * 60 * 1000;
+      const session = await signSession(env.ADMIN_PASSWORD, expires);
+      return json({ ok: true }, 200, { "set-cookie": `vimuktam_admin_session=${encodeURIComponent(session)}; Max-Age=1800; Path=/; HttpOnly; Secure; SameSite=Lax` });
+    }
+
     if (url.pathname === "/api/cabinet/website-repository/login" && request.method === "POST") {
       if (!env.WEBSITE_REPO_PASSWORD) return json({ ok: false, error: "Cabinet authentication is not configured." }, 503);
       let body;
@@ -226,7 +236,9 @@ export default {
       try {
         const listed = await env.MULTIMEDIA.list({ prefix: "Media/", limit: 1000 });
         return json({ ok: true, objects: listed.objects.map((object) => ({ key: object.key, size: object.size, uploaded: object.uploaded })) });
-      } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
+      } catch (error) {
+        return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500);
+      }
     }
 
     if (url.pathname === "/api/main-r2/file" && (request.method === "GET" || request.method === "DELETE")) {
@@ -240,7 +252,10 @@ export default {
       try {
         const object = await env.MULTIMEDIA.get(key);
         if (!object) return json({ ok: false, error: "File not found." }, 404);
-        const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("content-disposition", `attachment; filename="${key.split("/").pop().replace(/["\\]/g, "")}"`);
+        const headers = new Headers();
+        object.writeHttpMetadata(headers);
+        headers.set("etag", object.httpEtag);
+        headers.set("content-disposition", `attachment; filename="${key.split("/").pop().replace(/["\\]/g, "")}"`);
         return new Response(object.body, { headers });
       } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
     }
@@ -248,11 +263,15 @@ export default {
     if (url.pathname === "/api/main-r2/upload" && request.method === "POST") {
       if (!(await validSession(request, env.MAIN_R2_PASSWORD, "vimuktam_main_r2_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
       try {
-        const form = await request.formData(); const file = form.get("file"); const folder = String(form.get("folder") || "").trim().replace(/^\/|\/$/g, "");
+        const form = await request.formData();
+        const file = form.get("file");
+        const folder = String(form.get("folder") || "").trim().replace(/^\/|\/$/g, "");
         if (!(file instanceof File)) return json({ ok: false, error: "Choose a file first." }, 400);
         if (folder.includes("..") || folder.includes("\\")) return json({ ok: false, error: "Invalid folder name." }, 400);
-        const name = file.name.replace(/[/\\]/g, "_").trim(); if (!name || name === "." || name === "..") return json({ ok: false, error: "Invalid file name." }, 400);
-        const key = `Media/${folder ? folder + "/" : ""}${name}`; if (!validR2Key(key)) return json({ ok: false, error: "Invalid storage path." }, 400);
+        const name = file.name.replace(/[/\\]/g, "_").trim();
+        if (!name || name === "." || name === "..") return json({ ok: false, error: "Invalid file name." }, 400);
+        const key = `Media/${folder ? folder + "/" : ""}${name}`;
+        if (!validR2Key(key)) return json({ ok: false, error: "Invalid storage path." }, 400);
         await env.MULTIMEDIA.put(key, file.stream(), { httpMetadata: { contentType: file.type || "application/octet-stream" } });
         return json({ ok: true, key });
       } catch (error) { return json({ ok: false, error: error instanceof Error ? error.message : String(error) }, 500); }
@@ -270,11 +289,14 @@ export default {
     if (url.pathname === "/media/Hindi-teacher-Milan.webp") {
       const object = await env.MULTIMEDIA.get("Media/images/Hindi-teacher-Milan.webp");
       if (!object) return new Response("Not found", { status: 404 });
-      const headers = new Headers(); object.writeHttpMetadata(headers); headers.set("etag", object.httpEtag); headers.set("cache-control", "public, max-age=3600");
+      const headers = new Headers();
+      object.writeHttpMetadata(headers);
+      headers.set("etag", object.httpEtag);
+      headers.set("cache-control", "public, max-age=3600");
       return new Response(object.body, { headers });
     }
 
     if (!env.ASSETS || typeof env.ASSETS.fetch !== "function") return new Response("Website assets are not available in this deployment.", { status: 503 });
     return env.ASSETS.fetch(request);
-  },
+  }
 };
