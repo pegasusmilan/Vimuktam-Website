@@ -97,18 +97,18 @@ function setupSearch(){
 
 async function load(){
   try{
-    const response=await fetch('Company%20docs/Vimuktam_BCP_v1.1.md',{cache:'no-store'});
-    if(!response.ok)throw new Error(`Could not load Company docs/Vimuktam_BCP_v1.1.md (${response.status})`);
+    const response=await fetch('BCP.md',{cache:'no-store'});
+    if(!response.ok)throw new Error(`Could not load BCP.md (${response.status})`);
     const markdown=await response.text();
     const rendered=renderMarkdown(markdown);
     content.innerHTML=rendered.html;
     buildToc();
     setupSearch();
-    status.textContent='Living source: Company docs/Vimuktam_BCP_v1.1.md · rendered at reading time · search indexes the current document';
+    status.textContent='Living source: BCP.md · rendered at reading time · search indexes the current document';
     if(location.hash)requestAnimationFrame(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({block:'start'}));
   }catch(error){
     status.textContent='The BCP could not be loaded.';
-    content.innerHTML=`<div class="error"><strong>Document unavailable.</strong><p>${esc(error.message)}</p><p>The Company Documents copy remains the permanent source of truth in the repository.</p></div>`;
+    content.innerHTML=`<div class="error"><strong>Document unavailable.</strong><p>${esc(error.message)}</p><p>BCP.md remains the sole authoritative BCP in the repository.</p></div>`;
   }
 }
 load();
