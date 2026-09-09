@@ -66,7 +66,10 @@ function githubPath(path) {
 function validCompanyDocsPath(path) {
   return typeof path === "string" && path.startsWith("Company docs/") && !path.includes("..") && !path.includes("\\") && path.length > "Company docs/".length && path.length <= 240;
 }
-
+function validCompanyDocumentPath(path) {
+  if (path === "BCP.md") return true;
+  return validCompanyDocsPath(path);
+}
 function validR2Key(key) {
   return typeof key === "string" && key.startsWith("Media/") && !key.includes("..") && !key.includes("\\") && key.length > "Media/".length && key.length <= 1024;
 }
@@ -139,20 +142,41 @@ export default {
     }
 
     if (url.pathname === "/api/company-documents/tree" && request.method === "GET") {
-      if (!(await validSession(request, env.COMPANY_DOCS_PASSWORD, "vimuktam_docs_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
-      if (!env.GITHUB_TOKEN) return json({ ok: false, error: "GitHub access is not configured." }, 503);
-      const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
-      const response = await githubFetch(env, `/repos/${repo}/git/trees/main?recursive=1`);
-      if (!response.ok) return json({ ok: false, error: `GitHub repository request failed (${response.status}).` }, 502);
-      const data = await response.json();
-      return json({ ok: true, repo, tree: (data.tree || []).filter((item) => item.type === "blob" && item.path.startsWith("Company docs/")).map((item) => ({ path: item.path, size: item.size })) });
-    }
+  if (!(await validSession(request, env.COMPANY_DOCS_PASSWORD, "vimuktam_docs_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "GitHub access is not configured." }, 503);
+
+  const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
+  const response = await githubFetch(env, `/repos/${repo}/git/trees/main?recursive=1`);
+  if (!response.ok) return json({ ok: false, error: `GitHub repository request failed (${response.status}).` }, 502);
+
+  const data = await response.json();
+  const allFiles = data.tree || [];
+
+  const companyDocs = allFiles
+    .filter((item) => item.type === "blob" && item.path.startsWith("Company docs/"))
+    .map((item) => ({
+      path: item.path,
+      size: item.size
+    }));
+
+  const bcp = allFiles.find((item) => item.type === "blob" && item.path === "BCP.md");
+
+  if (bcp) {
+    companyDocs.unshift({
+      path: "BCP.md",
+      size: bcp.size,
+      bcp: true
+    });
+  }
+
+  return json({ ok: true, repo, tree: companyDocs });
+}
 
     if (url.pathname === "/api/company-documents/file" && request.method === "GET") {
       if (!(await validSession(request, env.COMPANY_DOCS_PASSWORD, "vimuktam_docs_session"))) return json({ ok: false, error: "Unauthorized." }, 401);
       if (!env.GITHUB_TOKEN) return json({ ok: false, error: "GitHub access is not configured." }, 503);
       const path = url.searchParams.get("path");
-      if (!validCompanyDocsPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
+      if (!validCompanyDocumentPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
       const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
       const response = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}?ref=main`);
       if (!response.ok) return json({ ok: false, error: `GitHub file request failed (${response.status}).` }, 502);
@@ -189,14 +213,14 @@ export default {
       let body;
       try { body = await request.json(); } catch { return json({ ok: false, error: "Invalid request." }, 400); }
       const path = body?.path; const content = body?.content; const sha = body?.sha;
-      if (!validCompanyDocsPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
+      if (!validCompanyDocumentPath(path)) return json({ ok: false, error: "Invalid company document path." }, 400);
       if (typeof content !== "string") return json({ ok: false, error: "No document content was supplied." }, 400);
       if (typeof sha !== "string" || !sha) return json({ ok: false, error: "The document version could not be verified. Reload the document and try again." }, 409);
       if (content.length > 140000000) return json({ ok: false, error: "This document is too large for the repository portal." }, 413);
       const repo = env.GITHUB_REPO || "pegasusmilan/Vimuktam-Website";
       const response = await githubFetch(env, `/repos/${repo}/contents/${githubPath(path)}`, {
         method: "PUT", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: `Update company document: ${path.slice("Company docs/".length)}`, content: btoa(unescape(encodeURIComponent(content))), sha, branch: "main" }),
+        body: JSON.stringify({ message: `Update company document: ${path === "BCP.md" ? "BCP.md" : path.slice("Company docs/".length)}`, content: btoa(unescape(encodeURIComponent(content))), sha, branch: "main" }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) { if (response.status === 409) return json({ ok: false, error: "This document changed elsewhere. Reload it before saving again." }, 409); return json({ ok: false, error: data?.message || `GitHub update failed (${response.status}).` }, response.status === 403 ? 502 : response.status); }
