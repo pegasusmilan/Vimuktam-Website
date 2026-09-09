@@ -271,7 +271,7 @@ Two physical BCP copies exist: one with the principal Vimuktam custodian and one
 - [ ] Confirm live Vimuktam website is accessible.
 - [ ] Confirm GitHub repository is accessible.
 - [ ] Confirm latest Bitbucket backup has succeeded.
-- [ ] Once established, confirm second independent backup has succeeded.
+- [ ] Confirm the GitLab Backup 2 / Standby has succeeded.
 - [ ] Check for obvious account/security warnings.
 - [ ] Confirm credential changes have been recorded in the Credential Key.
 - [ ] Confirm incidents have been recorded in the Incident Report.
@@ -291,7 +291,7 @@ _________________________________________________________________________
 ### Website and backups
 - [ ] Check GitHub repository.
 - [ ] Check Bitbucket backup.
-- [ ] Check second independent backup once established.
+- [ ] Check GitLab Backup 2 / Standby.
 - [ ] Confirm recent changes exist in backups.
 - [ ] Check Cloudflare and live deployment.
 - [ ] Check domain status.
@@ -303,6 +303,7 @@ _________________________________________________________________________
 - [ ] Review Cloudflare notifications.
 - [ ] Confirm recovery methods remain usable.
 - [ ] Confirm Credential Key access.
+- [ ] Review GitLab project/account notifications.
 
 ### Subscriptions, renewals and payments — every 30th
 - [ ] Check whether any subscription requires payment.
