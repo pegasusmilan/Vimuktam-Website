@@ -12,6 +12,23 @@ This Company Docs copy mirrors the working BCP. It documents the systems, recove
 
 **Actual passwords, tokens, recovery codes and other secrets are never stored in this repository. They remain in the separate physical Credential Key.**
 
+Currently Active (Till the writing of this Pilot)
+Website: Operational.
+Primary repository/digital vault: GitHub — Active.
+GitHub security: Two-step verification enabled.
+Website deployment: Cloudflare — Active.
+Backup 1: Bitbucket — Active.
+Bitbucket backup: Tested successfully.
+Bitbucket backup schedule: Daily at 2:00 AM.
+Bitbucket backup credential: Valid through 11 August 2027.
+Backup 2 / Standby: GitLab — Active.
+GitLab backup workflow: .github/workflows/main.yml.
+GitLab backup schedule: Daily at 18:00 UTC, with additional runs on pushes to main and manual workflow dispatch.
+GitLab backup credential: GitLab Project Access Token; actual token stored separately in the Credential Key; valid through 11 August 2027.
+Atlassian security: Two-step verification enabled.
+Bitbucket security: Two-step verification enabled.
+GitLab project security: Access credential maintained separately in the Credential Key.
+
 ## 2. PURPOSE
 
 This BCP records where important Vimuktam material is stored, how the systems relate to one another, what access is required, where actual credentials are kept, how the website can be recovered, what maintenance is required, what backups exist, and what future areas must be incorporated.
@@ -136,11 +153,21 @@ Verify GitHub remains intact; recover Bitbucket through Atlassian/Bitbucket reco
 
 ### 12.6 If Github is lost and backup must be used
 
-Access Bitbucket; locate and verify the latest successful backup; restore to a GitHub repository; re-establish security; reconnect Cloudflare; verify DNS; deploy and test; re-establish automated backup; update the BCP.
+-Access Bitbucket Backup 1 or GitLab Backup 2 / Standby.
+-Locate the latest successful backup.
+-Verify the expected website and Vimuktam vault material is present.
+-Create/recover a GitHub repository.
+-Restore the backup into GitHub.
+-Re-establish GitHub security.
+-Reconnect Cloudflare.
+-Verify DNS/domain configuration.
+-Deploy and test the website.
+-Re-establish automated Backup 1 and Backup 2 arrangements.
+-Update this BCP with any changed infrastructure.
 
 ### 12.7 Repository damaged
 
-Do not immediately overwrite it. Examine Git history, identify the last known good version, restore appropriately, compare with Bitbucket if necessary, verify the website and record the incident.
+Do not immediately overwrite it. Examine Git history, identify the last known good version, restore appropriately, compare against Bitbucket or GitLab Backup 2 / Standby if necessary, verify the website and record the incident.
 
 ### 12.8 Cloudflare inaccessible
 
@@ -156,7 +183,7 @@ Access GitHub directly. The website and digital vault remain in the repository. 
 
 ### 12.11 Backup failure
 
-Check the latest successful backup, GitHub, the pipeline, token/credential expiry and account notifications. Correct the underlying problem, run a manual backup and verify the result.
+Identify whether the failure concerns Bitbucket Backup 1 or GitLab Backup 2 / Standby. Check the latest successful backup, GitHub, the relevant pipeline/workflow, credential/token expiry and account notifications. Correct the underlying problem, run a manual backup where appropriate and verify the result. Record significant incidents.
 
 ### 12.12 Multiple failures
 
@@ -164,7 +191,7 @@ General order: identity → Vimuktam source/digital vault → public website →
 
 ### 12.13 Everything appears lost
 
-Do not assume Vimuktam is lost. Locate this BCP, the physical Credential Key, Bitbucket backup, second independent backup when established, physical BCP copies and recovery accounts. Establish what still exists, recover identity access and then recover the digital vault before major reconstruction.
+Do not assume Vimuktam has been lost. Locate this BCP, the Credential Key, Backup 1 / Bitbucket, Backup 2 / GitLab Standby, physical BCP copies and recovery accounts. Establish what still exists, recover identity access, then recover the digital vault before beginning major reconstruction.
 
 ### 12.14 External media
 
