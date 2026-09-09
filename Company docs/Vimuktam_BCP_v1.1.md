@@ -167,7 +167,7 @@ Verify GitHub remains intact; recover Bitbucket through Atlassian/Bitbucket reco
 
 ### 12.7 Repository damaged
 
-Do not immediately overwrite it. Examine Git history, identify the last known good version, restore appropriately, compare against Bitbucket or GitLab Backup 2 / Standby if necessary, verify the website and record the incident.
+Do not immediately overwrite it. Examine Git history, identify the last known good version, restore appropriately, compare against Bitbucket Backup 1 or GitLab Backup 2 / Standby if necessary, verify the website and record the incident.
 
 ### 12.8 Cloudflare inaccessible
 
