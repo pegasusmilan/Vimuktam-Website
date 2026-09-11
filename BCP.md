@@ -72,7 +72,7 @@ GitHub is the primary repository and source of truth for website code.
 
 The normal development and deployment chain is:
 
-**VS Code / local editing → GitHub → GitHub Actions → Cloudflare**
+**VS Code / local editing → GitHub → Cloudflare (connected Git deployment)**
 
 The original development computer is not required for recovery. The repository on GitHub is the important recoverable asset.
 
@@ -184,7 +184,7 @@ It is responsible for the Worker that serves the website and provides access to 
 
 The current deployment relationship is:
 
-**GitHub → GitHub Actions → Cloudflare Worker**
+**GitHub → Cloudflare (connected Git deployment) → Cloudflare Worker**
 
 The website Worker also contains the server-side routes required by the website's administrative and Company Documents functions.
 
@@ -194,7 +194,7 @@ If the Cloudflare Worker becomes unavailable or corrupted:
 
 1. Confirm that the GitHub repository is intact.
 2. Confirm that the required Worker source exists in GitHub.
-3. Confirm that the GitHub Actions deployment workflow is functioning.
+3. Confirm that the Cloudflare connected Git deployment is functioning.
 4. Confirm the Cloudflare account and API credentials are available through the Credential Key.
 5. Redeploy the Worker from the GitHub repository.
 6. Confirm the required R2 binding `MULTIMEDIA`.
@@ -449,7 +449,7 @@ The following credential categories must exist and remain recoverable:
 | Bitbucket | Account password, 2FA and recovery mechanisms |
 | GitLab | Account password, 2FA and project credentials |
 | GitLab Backup Workflow | GitHub Actions secret/token required for GitLab mirroring |
-| Cloudflare Deployment | GitHub Actions Cloudflare API credentials |
+| Cloudflare Deployment | Cloudflare account access & connected Git deployment configuration |
 | R2 Backup | Backup account access |
 | R2 Backup Worker | `ADMIN_TOKEN` |
 | Main-to-backup transfer | `BACKUP_UPLOAD_TOKEN` |
