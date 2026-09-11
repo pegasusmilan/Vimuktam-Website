@@ -1,6 +1,6 @@
 # VIMUKTAM — BUSINESS CONTINUITY & RECOVERY PLAN
 
-**Version:** 1.2  
+**Version:** 1.2 or Pilot 
 **Prepared:** September 2026  
 **Status:** Living document
 
@@ -43,7 +43,7 @@ The BCP is a practical recovery document, not merely a description of the techni
 
 Vimuktam currently consists of several interconnected but independently recoverable systems.
 
-### 3.1 Primary systems
+### 3.1 Core systems and backups
 
 1. **GitHub** — primary source repository and source of truth for the website.
 2. **Cloudflare** — website execution, deployment and associated infrastructure.
